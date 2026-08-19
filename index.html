@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🎰 Kamp Casino - Deluxe Rad van Fortuin</title>
+  <!-- Google Fonts & Canvas Confetti -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="background-glow"></div>
+
+  <div class="casino-container">
+    <!-- Header -->
+    <header class="header">
+      <h1 class="glow-title">KAMP CASINO</h1>
+      <p class="subtitle">Rad van Fortuin Royale</p>
+    </header>
+
+    <!-- Scorebord & Inzetten -->
+    <div class="dashboard">
+      <div class="card balance-card">
+        <span class="label">JOUW SALDO</span>
+        <div class="value-container">
+          <span class="currency">🪙</span>
+          <span id="balance">500</span>
+        </div>
+      </div>
+      <div class="card bet-card">
+        <span class="label">INZET PER DRAAI</span>
+        <div class="bet-controls">
+          <button class="bet-btn" onclick="adjustBet(-25)">-25</button>
+          <span id="current-bet">50</span>
+          <button class="bet-btn" onclick="adjustBet(25)">+25</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Het Rad & Pijl -->
+    <div class="wheel-wrapper">
+      <div class="pointer-wrapper">
+        <div class="pointer"></div>
+      </div>
+      <canvas id="wheelCanvas" width="460" height="460"></canvas>
+      <div class="center-hub">
+        <div class="hub-inner">★</div>
+      </div>
+    </div>
+
+    <!-- Actieknoppen & Meldingen -->
+    <div class="action-area">
+      <button id="spinBtn" class="spin-button" onclick="spinWheel()">
+        <span class="btn-text">DRAAI VOOR <span id="btnBetCost">50</span></span>
+      </button>
+      <div id="resultModal" class="result-message">Zet in en waag een gokje!</div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
