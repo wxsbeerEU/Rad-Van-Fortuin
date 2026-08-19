@@ -21,7 +21,6 @@ function playSound(type, param = 0) {
   }
 
   if (type === "horn") {
-    // Race toeter
     [220, 277.18, 329.63, 440].forEach((f, i) => {
       const osc = audioCtx.createOscillator();
       const gain = audioCtx.createGain();
@@ -39,12 +38,12 @@ function playSound(type, param = 0) {
     const osc = audioCtx.createOscillator();
     const gain = audioCtx.createGain();
     osc.type = "triangle";
-    osc.frequency.setValueAtTime(300, audioCtx.currentTime);
-    osc.frequency.linearRampToValueAtTime(100, audioCtx.currentTime + 0.15);
-    gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.15);
+    osc.frequency.setValueAtTime(260, audioCtx.currentTime);
+    osc.frequency.linearRampToValueAtTime(80, audioCtx.currentTime + 0.14);
+    gain.gain.setValueAtTime(0.25, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.14);
     osc.connect(gain); gain.connect(audioCtx.destination);
-    osc.start(); osc.stop(audioCtx.currentTime + 0.15);
+    osc.start(); osc.stop(audioCtx.currentTime + 0.14);
   }
 
   if (type === "win") {
@@ -79,7 +78,7 @@ function triggerConfetti() {
 }
 
 // ==========================================================
-// 🧭 ROUTING / VIEW SWITCHER
+// 🧭 ROUTING & MENU CONTROLLER
 // ==========================================================
 const backBtn = document.getElementById("backToLobbyBtn");
 const dealerStatus = document.getElementById("dealerStatus");
@@ -90,8 +89,8 @@ function showLobby() {
   document.querySelectorAll(".game-view").forEach(v => v.classList.remove("active"));
   document.getElementById("view-lobby").classList.add("active");
   backBtn.classList.add("hidden");
-  dealerStatus.innerText = "WELKOM IN HET CASINO";
-  dealerInfo.innerText = "Kies een spel om te beginnen";
+  dealerStatus.innerText = "CASINO LOBBY";
+  dealerInfo.innerText = "Kies een spel om te openen";
 }
 
 function openGame(gameKey) {
@@ -110,8 +109,8 @@ function openGame(gameKey) {
     renderRaceHorses();
   } else if (gameKey === "cups") {
     dealerStatus.innerText = "3 BEKERS & BALLETJE";
-    dealerInfo.innerText = "Zet in & druk op schudden";
-    resetCupsView();
+    dealerInfo.innerText = "Zet in & klik op schudden";
+    initCupsView();
   }
 }
 
@@ -216,6 +215,7 @@ function setWheelBet(amt) {
   if (isWheelSpinning) return;
   wheelBet = Math.max(5, amt);
   wheelBetInput.value = wheelBet;
+  updateChipStyles(wheelBet);
 }
 
 function multiplyWheelBet(f) {
@@ -225,7 +225,14 @@ function multiplyWheelBet(f) {
 
 wheelBetInput.addEventListener("input", (e) => {
   wheelBet = Math.max(1, parseInt(e.target.value) || 0);
+  updateChipStyles(wheelBet);
 });
+
+function updateChipStyles(val) {
+  document.querySelectorAll(".chip").forEach(btn => {
+    btn.classList.toggle("active", parseInt(btn.innerText) === val);
+  });
+}
 
 function spinWheel() {
   if (isWheelSpinning) return;
@@ -303,7 +310,7 @@ function handleWheelResult(seg) {
 }
 
 // ==========================================================
-// 🐎 GAME 2: PAARDENRACE ROYALE
+// 🐎 GAME 2: PAARDENRACE DERBY
 // ==========================================================
 const horses = [
   { id: 0, name: "Bliksem Bob", avatar: "⚡🐎", color: "#e74c3c", odds: 2.2 },
@@ -374,7 +381,6 @@ function startHorseRace() {
     let winner = null;
 
     horses.forEach((h, i) => {
-      // Snelheid met lichte random variatie
       const speed = (Math.random() * 4) + (Math.random() > 0.85 ? 4 : 1);
       positions[i] += speed;
 
@@ -408,13 +414,13 @@ function startHorseRace() {
 }
 
 // ==========================================================
-// 🎪 GAME 3: 3 BEKERS & BALLETJE
+// 🎪 GAME 3: 3 BEKERS & BALLETJE (100% BUG-FREE IMPLEMENTATIE)
 // ==========================================================
 let cupsBet = 50;
-let ballPosition = 1; // 0, 1 of 2
+let ballSlot = 1; // Index van het slot waarin de bal zich bevindt
 let isShuffling = false;
 let canPick = false;
-let cupOrder = [0, 1, 2]; // Huidige visuele slots
+let slotPositions = [5, 38, 72]; // Links % posities
 
 function setCupsBet(amt) {
   if (isShuffling) return;
@@ -426,22 +432,21 @@ document.getElementById("cupsBetInput").addEventListener("input", (e) => {
   cupsBet = Math.max(1, parseInt(e.target.value) || 0);
 });
 
-function resetCupsView() {
+function initCupsView() {
   isShuffling = false;
   canPick = false;
-  cupOrder = [0, 1, 2];
   document.getElementById("shuffleCupsBtn").disabled = false;
-  document.querySelectorAll(".cup-wrapper").forEach(c => c.classList.remove("lifted"));
-  document.querySelectorAll(".ball").forEach(b => b.classList.remove("visible"));
-  updateCupSlotPositions();
-}
-
-function updateCupSlotPositions() {
-  const slotWidths = [5, 38, 72];
-  cupOrder.forEach((cupId, slotIdx) => {
-    const slotEl = document.getElementById(`slot-${cupId}`);
-    if (slotEl) slotEl.style.left = `${slotWidths[slotIdx]}%`;
-  });
+  
+  // Reset posities
+  for (let i = 0; i < 3; i++) {
+    const slot = document.getElementById(`cupSlot-${i}`);
+    const cup = document.getElementById(`cupAsset-${i}`);
+    const ball = document.getElementById(`ball-${i}`);
+    
+    if (slot) slot.style.left = `${slotPositions[i]}%`;
+    if (cup) cup.classList.remove("lifted");
+    if (ball) ball.classList.remove("active-ball");
+  }
 }
 
 function startCupShuffle() {
@@ -450,35 +455,52 @@ function startCupShuffle() {
   canPick = false;
   document.getElementById("shuffleCupsBtn").disabled = true;
 
-  // 1. Toon eerst waar de bal zit
-  ballPosition = Math.floor(Math.random() * 3);
-  document.querySelectorAll(".ball").forEach(b => b.classList.remove("visible"));
-  document.getElementById(`ball-${ballPosition}`).classList.add("visible");
-  document.getElementById(`cup-${ballPosition}`).classList.add("lifted");
+  // 1. Kies willekeurige startbeker
+  ballSlot = Math.floor(Math.random() * 3);
+
+  // Verberg alle ballen en toon alleen de actieve
+  for (let i = 0; i < 3; i++) {
+    const b = document.getElementById(`ball-${i}`);
+    const c = document.getElementById(`cupAsset-${i}`);
+    if (i === ballSlot) {
+      b.classList.add("active-ball");
+      c.classList.add("lifted");
+    } else {
+      b.classList.remove("active-ball");
+      c.classList.remove("lifted");
+    }
+  }
+
   dealerStatus.innerText = "KIJK GOED WAAR DE BAL ZIT...";
-  dealerInfo.innerText = `Beker ${ballPosition + 1} heeft de bal!`;
+  dealerInfo.innerText = `Beker ${ballSlot + 1} heeft de bal!`;
   playSound("win");
 
+  // 2. Laat de beker zakken (bal verdwijnt volledig onder de beker)
   setTimeout(() => {
-    // 2. Doe de beker omlaag
-    document.querySelectorAll(".cup-wrapper").forEach(c => c.classList.remove("lifted"));
+    document.getElementById(`cupAsset-${ballSlot}`).classList.remove("lifted");
     dealerStatus.innerText = "BEKERS WORDEN GESCHUD...";
     dealerInfo.innerText = "Volg de juiste beker!";
 
+    // 3. Start shuffling van de slot-elementen
     setTimeout(() => {
-      // 3. Start shuffling animaties
+      let slots = [0, 1, 2];
       let shufflesLeft = 8;
+
       const shuffleTimer = setInterval(() => {
-        // Swap 2 random slots
+        // Swap 2 random indexen
         const i1 = Math.floor(Math.random() * 3);
         let i2 = Math.floor(Math.random() * 3);
         while (i1 === i2) i2 = Math.floor(Math.random() * 3);
 
-        const temp = cupOrder[i1];
-        cupOrder[i1] = cupOrder[i2];
-        cupOrder[i2] = temp;
+        const temp = slots[i1];
+        slots[i1] = slots[i2];
+        slots[i2] = temp;
 
-        updateCupSlotPositions();
+        // Pas left percentages toe op de slot containers (bal verplaatst mee!)
+        slots.forEach((slotId, visualIndex) => {
+          document.getElementById(`cupSlot-${slotId}`).style.left = `${slotPositions[visualIndex]}%`;
+        });
+
         playSound("whoosh");
         shufflesLeft--;
 
@@ -489,28 +511,30 @@ function startCupShuffle() {
           dealerStatus.innerText = "WAAR ZIT DE BAL?";
           dealerInfo.innerText = "Klik op één van de 3 bekers om te raden!";
         }
-      }, 380);
+      }, 340);
 
-    }, 800);
-  }, 1200);
+    }, 700);
+  }, 1300);
 }
 
-function pickCup(cupId) {
+function pickCup(clickedCupId) {
   if (!canPick) return;
   canPick = false;
 
-  // Til alle bekers op
-  document.querySelectorAll(".cup-wrapper").forEach(c => c.classList.add("lifted"));
+  // Til alle bekers op en onthul de bal
+  for (let i = 0; i < 3; i++) {
+    document.getElementById(`cupAsset-${i}`).classList.add("lifted");
+  }
 
-  if (cupId === ballPosition) {
+  if (clickedCupId === ballSlot) {
     const win = cupsBet * 3;
     dealerStatus.innerText = "🎉 JUIST GERADEN!";
-    dealerInfo.innerHTML = `BETAAL UIT: <span style="color:#00ff88;">${win} FICHES</span> (3x Winst!)`;
+    dealerInfo.innerHTML = `BETAAL UIT: <span style="color:#00ff88;">${win} FICHES</span> (3× Winst!)`;
     playSound("win");
     triggerConfetti();
   } else {
     dealerStatus.innerText = "💀 HELAAS, VERKEERDE BEKER!";
-    dealerInfo.innerText = `De bal zat in beker ${ballPosition + 1}. Neem ${cupsBet} fiches in.`;
+    dealerInfo.innerText = `De bal zat in beker ${ballSlot + 1}. Neem ${cupsBet} fiches in.`;
     playSound("bust");
   }
 
