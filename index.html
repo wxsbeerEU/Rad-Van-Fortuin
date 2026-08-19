@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>👑 GRAND CASINO ROYALE - Master Arcade Suite</title>
+  <title>👑 GRAND CASINO ROYALE - Kamp Suite</title>
   <!-- Google Fonts & Confetti CDN -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -34,16 +34,10 @@
         </div>
       </div>
 
-      <!-- Speler ID & Live Dealer Display -->
-      <div class="nav-right">
-        <div class="player-tag-box">
-          <span class="player-tag-label">SPELER / TAFEL:</span>
-          <input type="text" id="globalPlayerName" value="Gokker 1" placeholder="Naam speler">
-        </div>
-        <div class="dealer-screen">
-          <span class="dealer-label" id="dealerStatus">CASINO LOBBY</span>
-          <span class="dealer-main" id="dealerInfo">Kies een spel om te openen</span>
-        </div>
+      <!-- Live Dealer Display -->
+      <div class="dealer-screen">
+        <span class="dealer-label" id="dealerStatus">CASINO LOBBY</span>
+        <span class="dealer-main" id="dealerInfo">Kies een spel om te openen</span>
       </div>
     </header>
 
@@ -86,14 +80,14 @@
             <button class="play-btn">KIES BEKER ▶</button>
           </div>
 
-          <!-- Card 4: Kraak de Kluis -->
-          <div class="lobby-card" onclick="openGame('vault')">
+          <!-- Card 4: Diamanten Mijn (Langdurige spanning) -->
+          <div class="lobby-card card-mine" onclick="openGame('mine')">
             <div class="card-neon-border"></div>
-            <div class="card-icon">🗄️</div>
-            <h2>KRAAK DE KLUIS</h2>
-            <p>Kraak de 3-cijferige kluiscode via Mastermind laser-hints!</p>
-            <div class="card-tag">JACKPOT POOL</div>
-            <button class="play-btn">KRAAK KLUIS ▶</button>
+            <div class="card-icon">💎</div>
+            <h2>DIAMANTEN MIJN</h2>
+            <p>Klim etappe voor etappe omhoog. Cash out op tijd of ga voor 100x!</p>
+            <div class="card-tag">TOT 100X WINST</div>
+            <button class="play-btn">START EXPEDITIE ▶</button>
           </div>
 
           <!-- Card 5: Plinko Royale -->
@@ -118,7 +112,7 @@
             <div class="deck-box">
               <div class="deck-head">
                 <h2>RAD INZET</h2>
-                <p>Kies je fiches op tafel</p>
+                <p>Kies fiches op tafel</p>
               </div>
               <div class="bet-input-box">
                 <span class="coin-icon">🪙</span>
@@ -197,7 +191,7 @@
           </aside>
           <main class="race-stage">
             <div class="race-commentary-bar" id="raceCommentary">
-              🎙️ DERBY ARENA: PLAATS JE INZET VOOR DE START!
+              🎙️ DERBY ARENA: KIES EEN PAARD & START DE RACE!
             </div>
             <div class="track-casing" id="raceTrack">
               <div class="track-finish-line"><div class="finish-badge">FINISH</div></div>
@@ -233,7 +227,7 @@
               </div>
               <div class="instruction-box">
                 <div class="inst-head">💡 REGELS:</div>
-                <p>1. Onthoud waar de bal start.<br>2. De bekers zakken en glijden soepel over het vilt.<br>3. Klik op een beker om te onthullen!</p>
+                <p>1. Onthoud waar de bal start.<br>2. De bekers zakken en schudden over het vilt.<br>3. Klik op een beker om te onthullen!</p>
               </div>
               <button id="shuffleCupsBtn" class="gold-action-btn w-full" onclick="startCupShuffle()">
                 <span class="btn-shine"></span>
@@ -266,66 +260,51 @@
       </section>
 
       <!-- ==========================================
-           VIEW 4: KRAAK DE KLUIS (VAULT)
+           VIEW 4: DE DIAMANTEN MIJN (TOWER RUN)
       =========================================== -->
-      <section id="view-vault" class="game-view">
+      <section id="view-mine" class="game-view">
         <div class="game-split">
           <aside class="bet-deck">
             <div class="deck-box">
               <div class="deck-head">
-                <h2>KLUIS INZET</h2>
-                <p>Elke poging kost inzet • Win de JACKPOT!</p>
+                <h2>MIJN INZET</h2>
+                <p>Kies je inzet & start de expeditie</p>
               </div>
               <div class="bet-input-box">
                 <span class="coin-icon">🪙</span>
-                <input type="number" id="vaultBetInput" value="50" min="5" step="5">
+                <input type="number" id="mineBetInput" value="50" min="5" step="5">
                 <span class="unit-tag">FICHES</span>
               </div>
               <div class="chip-rack">
-                <button class="chip c-10" onclick="setVaultBet(10)">10</button>
-                <button class="chip c-25" onclick="setVaultBet(25)">25</button>
-                <button class="chip c-50 active" onclick="setVaultBet(50)">50</button>
-                <button class="chip c-100" onclick="setVaultBet(100)">100</button>
-                <button class="chip c-250" onclick="setVaultBet(250)">250</button>
-                <button class="chip c-500" onclick="setVaultBet(500)">500</button>
+                <button class="chip c-10" onclick="setMineBet(10)">10</button>
+                <button class="chip c-25" onclick="setMineBet(25)">25</button>
+                <button class="chip c-50 active" onclick="setMineBet(50)">50</button>
+                <button class="chip c-100" onclick="setMineBet(100)">100</button>
+                <button class="chip c-250" onclick="setMineBet(250)">250</button>
+                <button class="chip c-500" onclick="setMineBet(500)">500</button>
               </div>
-              <div class="vault-pool-card">
-                <span class="pool-tag">💰 KLUIS JACKPOT:</span>
-                <span class="pool-amount" id="vaultJackpotAmount">1500 FICHES</span>
+              <div class="mine-status-card">
+                <span class="m-card-lbl">HUIDIGE WAARDE:</span>
+                <span class="m-card-val" id="mineCurrentCashout">0 FICHES</span>
               </div>
-              <div class="instruction-box">
-                <div class="inst-head">💡 MASTERMIND HINTS:</div>
-                <p>🟩 <strong>Groen:</strong> Cijfer klopt exact op zijn plek.<br>🟨 <strong>Geel:</strong> Cijfer zit in code, andere plek.<br>⬛ <strong>Grijs:</strong> Cijfer zit niet in code.</p>
+              
+              <!-- Mine Action Knoppen -->
+              <div class="mine-action-stack">
+                <button id="startMineBtn" class="gold-action-btn w-full" onclick="startMineExpedition()">
+                  <span class="btn-shine"></span>
+                  <span class="btn-txt">START EXPEDITIE ⛏️</span>
+                </button>
+                <button id="cashoutMineBtn" class="cashout-action-btn w-full hidden" onclick="cashoutMine()">
+                  <span class="btn-txt">💰 CASH OUT & NEEM WINST!</span>
+                </button>
               </div>
             </div>
           </aside>
-          <main class="vault-stage">
-            <div class="vault-safe-door">
-              <div class="vault-bolts top-bolt"></div>
-              <div class="vault-bolts bottom-bolt"></div>
-              <div class="vault-dial-frame">
-                <div class="vault-screen" id="vaultPinDisplay">_ _ _</div>
-                <div class="vault-hints" id="vaultHints">
-                  <span class="hint-dot dot-1" id="hdot-0"></span>
-                  <span class="hint-dot dot-2" id="hdot-1"></span>
-                  <span class="hint-dot dot-3" id="hdot-2"></span>
-                </div>
-              </div>
-              <!-- Keypad -->
-              <div class="keypad-grid">
-                <button class="key-btn" onclick="pressKey(1)">1</button>
-                <button class="key-btn" onclick="pressKey(2)">2</button>
-                <button class="key-btn" onclick="pressKey(3)">3</button>
-                <button class="key-btn" onclick="pressKey(4)">4</button>
-                <button class="key-btn" onclick="pressKey(5)">5</button>
-                <button class="key-btn" onclick="pressKey(6)">6</button>
-                <button class="key-btn" onclick="pressKey(7)">7</button>
-                <button class="key-btn" onclick="pressKey(8)">8</button>
-                <button class="key-btn" onclick="pressKey(9)">9</button>
-                <button class="key-btn key-clear" onclick="clearKeypad()">C</button>
-                <button class="key-btn" onclick="pressKey(0)">0</button>
-                <button class="key-btn key-enter" onclick="submitVaultGuess()">KRAAK 🔓</button>
-              </div>
+          
+          <!-- Tower Grid Stage -->
+          <main class="mine-stage">
+            <div class="mine-tower-casing" id="mineTower">
+              <!-- Verdiepingen worden dynamisch gegenereerd van etappe 8 naar 1 -->
             </div>
           </main>
         </div>
@@ -383,7 +362,6 @@
       <div class="winner-card">
         <div class="winner-glow"></div>
         <div class="winner-icon" id="modalIcon">👑</div>
-        <span class="winner-player-title" id="modalPlayerTitle">SPELER: THOMAS</span>
         <h2 class="winner-main-heading" id="modalHeading">MEGA JACKPOT WINNAAR!</h2>
         <div class="winner-badge-box">
           <span class="modal-multiplier" id="modalMultiplier">10X MULTIPLIER</span>
