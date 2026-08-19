@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>👑 GRAND CASINO ROYALE - Kamp Suite</title>
+  <title>👑 GRAND CASINO ROYALE - Master Arcade Suite</title>
   <!-- Google Fonts & Confetti CDN -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- Achtergrond Spotlights & Gouden Stofdeeltjes -->
+  <!-- Achtergrond Canvas & Spotlights -->
   <canvas id="ambientParticlesCanvas"></canvas>
   <div class="spotlight spot-1"></div>
   <div class="spotlight spot-2"></div>
@@ -80,14 +80,14 @@
             <button class="play-btn">KIES BEKER ▶</button>
           </div>
 
-          <!-- Card 4: Diamanten Mijn (Langdurige spanning) -->
-          <div class="lobby-card card-mine" onclick="openGame('mine')">
+          <!-- Card 4: De Kip Steekt Over (Chicken Cross) -->
+          <div class="lobby-card card-chicken" onclick="openGame('chicken')">
             <div class="card-neon-border"></div>
-            <div class="card-icon">💎</div>
-            <h2>DIAMANTEN MIJN</h2>
-            <p>Klim etappe voor etappe omhoog. Cash out op tijd of ga voor 100x!</p>
-            <div class="card-tag">TOT 100X WINST</div>
-            <button class="play-btn">START EXPEDITIE ▶</button>
+            <div class="card-icon">🐔</div>
+            <h2>KIP STEEKT OVER</h2>
+            <p>Help de kip de snelweg over te steken. Cash out of ga voor 100x!</p>
+            <div class="card-tag">TOT 100X GOUDEN EI</div>
+            <button class="play-btn">STEEK OVER ▶</button>
           </div>
 
           <!-- Card 5: Plinko Royale -->
@@ -260,51 +260,54 @@
       </section>
 
       <!-- ==========================================
-           VIEW 4: DE DIAMANTEN MIJN (TOWER RUN)
+           VIEW 4: DE KIP STEEKT OVER (CHICKEN ROAD)
       =========================================== -->
-      <section id="view-mine" class="game-view">
+      <section id="view-chicken" class="game-view">
         <div class="game-split">
           <aside class="bet-deck">
             <div class="deck-box">
               <div class="deck-head">
-                <h2>MIJN INZET</h2>
-                <p>Kies je inzet & start de expeditie</p>
+                <h2>KIP INZET</h2>
+                <p>Help de kip heelhuids oversteken</p>
               </div>
               <div class="bet-input-box">
                 <span class="coin-icon">🪙</span>
-                <input type="number" id="mineBetInput" value="50" min="5" step="5">
+                <input type="number" id="chickenBetInput" value="50" min="5" step="5">
                 <span class="unit-tag">FICHES</span>
               </div>
               <div class="chip-rack">
-                <button class="chip c-10" onclick="setMineBet(10)">10</button>
-                <button class="chip c-25" onclick="setMineBet(25)">25</button>
-                <button class="chip c-50 active" onclick="setMineBet(50)">50</button>
-                <button class="chip c-100" onclick="setMineBet(100)">100</button>
-                <button class="chip c-250" onclick="setMineBet(250)">250</button>
-                <button class="chip c-500" onclick="setMineBet(500)">500</button>
+                <button class="chip c-10" onclick="setChickenBet(10)">10</button>
+                <button class="chip c-25" onclick="setChickenBet(25)">25</button>
+                <button class="chip c-50 active" onclick="setChickenBet(50)">50</button>
+                <button class="chip c-100" onclick="setChickenBet(100)">100</button>
+                <button class="chip c-250" onclick="setChickenBet(250)">250</button>
+                <button class="chip c-500" onclick="setChickenBet(500)">500</button>
               </div>
-              <div class="mine-status-card">
-                <span class="m-card-lbl">HUIDIGE WAARDE:</span>
-                <span class="m-card-val" id="mineCurrentCashout">0 FICHES</span>
+              <div class="chicken-status-card">
+                <span class="c-card-lbl">HUIDIGE WAARDE:</span>
+                <span class="c-card-val" id="chickenCurrentCashout">0 FICHES</span>
               </div>
               
-              <!-- Mine Action Knoppen -->
-              <div class="mine-action-stack">
-                <button id="startMineBtn" class="gold-action-btn w-full" onclick="startMineExpedition()">
+              <!-- Chicken Action Stack -->
+              <div class="chicken-action-stack">
+                <button id="startChickenBtn" class="gold-action-btn w-full" onclick="startChickenGame()">
                   <span class="btn-shine"></span>
-                  <span class="btn-txt">START EXPEDITIE ⛏️</span>
+                  <span class="btn-txt">START MET KIP 🐔</span>
                 </button>
-                <button id="cashoutMineBtn" class="cashout-action-btn w-full hidden" onclick="cashoutMine()">
+                <button id="stepChickenBtn" class="chicken-step-btn w-full hidden" onclick="stepChicken()">
+                  <span class="btn-txt">STEEK BAAN OVER! 💨</span>
+                </button>
+                <button id="cashoutChickenBtn" class="cashout-action-btn w-full hidden" onclick="cashoutChicken()">
                   <span class="btn-txt">💰 CASH OUT & NEEM WINST!</span>
                 </button>
               </div>
             </div>
           </aside>
           
-          <!-- Tower Grid Stage -->
-          <main class="mine-stage">
-            <div class="mine-tower-casing" id="mineTower">
-              <!-- Verdiepingen worden dynamisch gegenereerd van etappe 8 naar 1 -->
+          <!-- Chicken Highway Grid -->
+          <main class="chicken-stage">
+            <div class="chicken-highway" id="chickenHighway">
+              <!-- Dynamische 8 rijbanen (Finish bovenaan, start onderaan) -->
             </div>
           </main>
         </div>
