@@ -32,19 +32,17 @@ html, body {
   width: 100vw;
   height: 100vh;
   height: 100dvh;
-  padding: clamp(6px, 1.2vh, 14px) clamp(8px, 1.8vw, 20px);
+  padding: clamp(6px, 1.2vh, 12px) clamp(8px, 1.5vw, 18px);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: clamp(6px, 1.2vh, 12px);
+  gap: clamp(6px, 1vh, 10px);
   background: radial-gradient(circle at 50% 30%, #151a2a 0%, #07090e 75%);
 }
 
-/* ==========================================================
-   TOP NAVIGATION
-========================================================== */
+/* TOP NAVIGATION */
 .top-nav {
-  height: clamp(48px, 7.5vh, 62px);
+  height: clamp(48px, 7.5vh, 60px);
   background: var(--panel-bg);
   border: var(--border-gold);
   border-radius: 14px;
@@ -79,9 +77,7 @@ html, body {
   color: #000;
 }
 
-.lobby-back-btn.hidden {
-  display: none;
-}
+.lobby-back-btn.hidden { display: none; }
 
 .brand {
   display: flex;
@@ -112,14 +108,14 @@ html, body {
   margin-top: -2px;
 }
 
-.dealer-banner {
+.dealer-screen {
   text-align: right;
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
 
-.dealer-status {
+.dealer-label {
   font-size: clamp(0.55rem, 0.8vw, 0.68rem);
   font-weight: 800;
   letter-spacing: 1.5px;
@@ -127,7 +123,7 @@ html, body {
   text-transform: uppercase;
 }
 
-.dealer-info {
+.dealer-main {
   font-family: 'Cinzel', serif;
   font-size: clamp(0.85rem, 1.3vw, 1.15rem);
   font-weight: 900;
@@ -135,10 +131,8 @@ html, body {
   text-shadow: 0 0 8px rgba(255, 215, 0, 0.4);
 }
 
-/* ==========================================================
-   VIEWS FRAMEWORK
-========================================================== */
-.view-container {
+/* VIEWPORT CONTAINER */
+.view-viewport {
   flex: 1;
   min-height: 0;
   position: relative;
@@ -150,13 +144,9 @@ html, body {
   height: 100%;
 }
 
-.game-view.active {
-  display: flex;
-}
+.game-view.active { display: flex; }
 
-/* ==========================================================
-   VIEW 0: LOBBY
-========================================================== */
+/* LOBBY VIEW */
 #view-lobby {
   align-items: center;
   justify-content: center;
@@ -165,7 +155,7 @@ html, body {
 .lobby-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: clamp(12px, 2.5vw, 28px);
+  gap: clamp(12px, 2.5vw, 24px);
   width: 100%;
   max-width: 1150px;
 }
@@ -175,7 +165,7 @@ html, body {
   background: var(--panel-bg);
   border: var(--border-gold);
   border-radius: 20px;
-  padding: clamp(20px, 3vh, 32px) clamp(16px, 2vw, 24px);
+  padding: clamp(16px, 2.5vh, 28px) clamp(14px, 1.8vw, 22px);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -187,7 +177,7 @@ html, body {
 }
 
 .lobby-card:hover {
-  transform: translateY(-8px) scale(1.03);
+  transform: translateY(-6px) scale(1.02);
   border-color: var(--gold-2);
   box-shadow: 0 15px 40px rgba(255, 215, 0, 0.3);
 }
@@ -200,36 +190,36 @@ html, body {
 }
 
 .card-icon {
-  font-size: clamp(3rem, 5vh, 4.5rem);
-  margin-bottom: 12px;
+  font-size: clamp(2.8rem, 4.5vh, 4rem);
+  margin-bottom: 10px;
   filter: drop-shadow(0 4px 10px rgba(0,0,0,0.8));
 }
 
 .lobby-card h2 {
   font-family: 'Cinzel', serif;
-  font-size: clamp(1.1rem, 1.6vw, 1.45rem);
+  font-size: clamp(1rem, 1.5vw, 1.35rem);
   font-weight: 900;
   color: var(--gold-2);
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .lobby-card p {
-  font-size: clamp(0.7rem, 0.95vw, 0.82rem);
+  font-size: clamp(0.7rem, 0.9vw, 0.8rem);
   color: #8c9bb5;
   line-height: 1.4;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
   flex: 1;
 }
 
-.card-badge {
+.card-tag {
   background: rgba(255, 215, 0, 0.15);
   border: 1px solid var(--gold-2);
   color: var(--gold-2);
-  font-size: 0.65rem;
+  font-size: 0.62rem;
   font-weight: 800;
   padding: 4px 12px;
   border-radius: 50px;
-  margin-bottom: 16px;
+  margin-bottom: 14px;
   letter-spacing: 1px;
 }
 
@@ -237,19 +227,17 @@ html, body {
   background: var(--gold-grad);
   border: none;
   border-radius: 50px;
-  padding: 10px 24px;
+  padding: 8px 22px;
   font-weight: 900;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   color: #110d02;
   cursor: pointer;
   letter-spacing: 1px;
   box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
 }
 
-/* ==========================================================
-   SHARED CASINO BETTING PANEL
-========================================================== */
-.game-layout, .race-layout, .cups-layout {
+/* SHARED GAME LAYOUT */
+.game-split {
   width: 100%;
   height: 100%;
   display: grid;
@@ -258,19 +246,19 @@ html, body {
   align-items: center;
 }
 
-.bet-deck, .race-bet-deck, .cups-bet-deck {
+.bet-deck {
   height: 100%;
   max-height: 100%;
   display: flex;
   flex-direction: column;
 }
 
-.deck-inner {
+.deck-box {
   height: 100%;
   background: var(--panel-bg);
   border: var(--border-gold);
   border-radius: 16px;
-  padding: clamp(10px, 1.5vh, 16px);
+  padding: clamp(10px, 1.4vh, 16px);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -278,13 +266,13 @@ html, body {
   overflow-y: auto;
 }
 
-.deck-header h2 {
+.deck-head h2 {
   font-family: 'Cinzel', serif;
   font-size: clamp(0.9rem, 1.3vw, 1.1rem);
   color: var(--gold-2);
 }
 
-.deck-header p {
+.deck-head p {
   font-size: clamp(0.65rem, 0.85vw, 0.72rem);
   color: #7b88a3;
   margin-top: 2px;
@@ -296,7 +284,7 @@ html, body {
   background: #090c14;
   border: 2px solid var(--gold-2);
   border-radius: 12px;
-  padding: clamp(5px, 0.8vh, 8px) 12px;
+  padding: clamp(4px, 0.7vh, 8px) 12px;
   box-shadow: inset 0 0 10px rgba(0,0,0,0.8), var(--glow-gold);
 }
 
@@ -315,17 +303,17 @@ html, body {
   outline: none;
 }
 
-.unit-text {
+.unit-tag {
   font-size: 0.7rem;
   font-weight: 900;
   color: var(--gold-2);
 }
 
-/* 3D Casino Chips */
+/* CHIPS */
 .chip-rack {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: clamp(5px, 0.8vh, 8px);
+  gap: clamp(4px, 0.7vh, 8px);
 }
 
 .chip {
@@ -418,7 +406,7 @@ html, body {
 
 .empty-hw { font-size: 0.65rem; color: #555; font-style: italic; }
 
-/* Grote Gouden Knop */
+/* ACTION BUTTON */
 .gold-action-btn {
   position: relative;
   overflow: hidden;
@@ -431,7 +419,7 @@ html, body {
   transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.gold-action-btn.w-full { width: 100%; margin-top: 8px; }
+.gold-action-btn.w-full { width: 100%; margin-top: 6px; }
 
 .gold-action-btn:hover:not(:disabled) {
   transform: translateY(-2px) scale(1.03);
@@ -472,9 +460,7 @@ html, body {
   25%, 100% { left: 200%; }
 }
 
-/* ==========================================================
-   VIEW 1: WHEEL STAGE
-========================================================== */
+/* VIEW 1: RAD */
 .wheel-stage {
   height: 100%;
   display: flex;
@@ -486,8 +472,8 @@ html, body {
 
 .wheel-mount {
   position: relative;
-  width: min(60vh, 46vw, 500px);
-  height: min(60vh, 46vw, 500px);
+  width: min(60vh, 46vw, 490px);
+  height: min(60vh, 46vw, 490px);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -548,22 +534,20 @@ html, body {
   pointer-events: none;
 }
 
-/* ==========================================================
-   VIEW 2: HORSE RACE
-========================================================== */
+/* VIEW 2: PAARDENRACE */
 .horse-selection-list {
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  margin: 6px 0;
+  gap: 5px;
+  margin: 4px 0;
 }
 
 .horse-bet-card {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 6px 10px;
-  border-radius: 10px;
+  padding: 5px 10px;
+  border-radius: 8px;
   background: rgba(255,255,255,0.04);
   border: 1px solid rgba(255,255,255,0.1);
   cursor: pointer;
@@ -587,17 +571,10 @@ html, body {
   gap: 8px;
 }
 
-.h-avatar {
-  font-size: 1.2rem;
-}
-
-.h-name {
-  font-size: 0.78rem;
-  font-weight: 800;
-}
-
+.h-avatar { font-size: 1.1rem; }
+.h-name { font-size: 0.75rem; font-weight: 800; }
 .h-odds {
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   font-weight: 900;
   color: var(--gold-2);
   background: #000;
@@ -605,20 +582,20 @@ html, body {
   border-radius: 4px;
 }
 
-.track-stage {
+.race-stage {
   height: 100%;
   display: flex;
   align-items: center;
 }
 
-.track-container {
+.track-casing {
   position: relative;
   width: 100%;
   height: min(65vh, 480px);
   background: radial-gradient(circle at 50% 50%, #2e7d32 0%, #1b5e20 80%);
   border: 4px solid #3e2723;
   border-radius: 16px;
-  padding: 10px 16px;
+  padding: 8px 14px;
   box-shadow: inset 0 0 30px rgba(0,0,0,0.6), 0 8px 30px rgba(0,0,0,0.8);
   display: flex;
   flex-direction: column;
@@ -630,22 +607,22 @@ html, body {
   position: absolute;
   top: 0;
   bottom: 0;
-  right: 60px;
+  right: 55px;
   width: 14px;
   background: repeating-linear-gradient(45deg, #fff, #fff 6px, #000 6px, #000 12px);
   box-shadow: 0 0 10px rgba(255,255,255,0.4);
   z-index: 5;
 }
 
-.finish-banner {
+.finish-badge {
   position: absolute;
-  top: 6px;
+  top: 4px;
   right: -18px;
   background: #ff0055;
   color: #fff;
-  font-size: 0.6rem;
+  font-size: 0.58rem;
   font-weight: 900;
-  padding: 2px 6px;
+  padding: 2px 5px;
   border-radius: 4px;
   letter-spacing: 1px;
 }
@@ -672,17 +649,17 @@ html, body {
   display: flex;
   align-items: center;
   gap: 6px;
-  transition: transform 0.05s linear;
+  transition: transform 0.04s linear;
 }
 
 .runner-sprite {
-  font-size: clamp(1.4rem, 2.5vh, 2rem);
+  font-size: clamp(1.3rem, 2.3vh, 1.9rem);
   filter: drop-shadow(0 2px 4px rgba(0,0,0,0.8));
   display: inline-block;
 }
 
 .horse-running .runner-sprite {
-  animation: gallop 0.25s infinite alternate ease-in-out;
+  animation: gallop 0.22s infinite alternate ease-in-out;
 }
 
 @keyframes gallop {
@@ -700,17 +677,21 @@ html, body {
   white-space: nowrap;
 }
 
-/* ==========================================================
-   VIEW 3: CUPS & BALL
-========================================================== */
-.cups-instruction-card {
+/* VIEW 3: 3 BEKERS & BALLETJE */
+.instruction-box {
   background: rgba(0,0,0,0.3);
   border-radius: 8px;
-  padding: 10px;
-  font-size: 0.72rem;
+  padding: 8px 10px;
+  font-size: 0.7rem;
   color: #a0aec0;
-  line-height: 1.4;
+  line-height: 1.35;
   border-left: 3px solid var(--gold-2);
+}
+
+.inst-head {
+  font-weight: 800;
+  color: var(--gold-2);
+  margin-bottom: 4px;
 }
 
 .cups-stage {
@@ -720,7 +701,7 @@ html, body {
   justify-content: center;
 }
 
-.table-felt {
+.cups-table-felt {
   width: 100%;
   height: min(65vh, 480px);
   background: radial-gradient(circle at 50% 50%, #0d5c3a 0%, #063822 80%);
@@ -733,101 +714,108 @@ html, body {
   position: relative;
 }
 
-.cups-arena {
-  width: 80%;
-  max-width: 600px;
-  height: 200px;
+.cups-container {
+  width: 85%;
+  max-width: 650px;
+  height: 220px;
   position: relative;
 }
 
+/* HET BEKER SLOT: BAL EN BEKER BEVINDEN ZICH IN DEZELFDE CONTAINER */
 .cup-slot {
   position: absolute;
-  top: 0;
-  width: 110px;
-  height: 160px;
+  top: 15px;
+  width: 120px;
+  height: 180px;
+  cursor: pointer;
+  transition: left 0.32s cubic-bezier(0.25, 1, 0.5, 1);
   display: flex;
   flex-direction: column;
   align-items: center;
-  cursor: pointer;
-  transition: left 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+  justify-content: flex-end;
 }
 
-#slot-0 { left: 5%; }
-#slot-1 { left: 38%; }
-#slot-2 { left: 72%; }
+#cupSlot-0 { left: 5%; }
+#cupSlot-1 { left: 38%; }
+#cupSlot-2 { left: 72%; }
 
-.cup-wrapper {
-  position: relative;
-  z-index: 10;
+/* Beker Asset (Zit BOVEN de bal) */
+.cup-asset {
+  position: absolute;
+  bottom: 25px;
+  width: 95px;
+  height: 120px;
+  z-index: 20; /* Bedekt de bal altijd wanneer neergelaten */
   transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.cup-wrapper.lifted {
-  transform: translateY(-70px);
+.cup-asset.lifted {
+  transform: translateY(-80px);
 }
 
-.cup-3d {
-  width: 85px;
-  height: 110px;
+.cup-body {
+  width: 100%;
+  height: 100%;
   background: linear-gradient(135deg, #ffd700 0%, #cca000 50%, #664d00 100%);
-  clip-path: polygon(15% 0%, 85% 0%, 100% 100%, 0% 100%);
+  clip-path: polygon(18% 0%, 82% 0%, 100% 100%, 0% 100%);
   border-radius: 6px 6px 12px 12px;
-  box-shadow: 0 10px 20px rgba(0,0,0,0.6), inset 0 0 15px rgba(255,255,255,0.7);
-  position: relative;
+  box-shadow: inset 0 0 15px rgba(255,255,255,0.7);
 }
 
-.cup-rim {
+.cup-lip {
   position: absolute;
   bottom: 0;
   width: 100%;
-  height: 10px;
+  height: 12px;
   background: #ffe57f;
   border-radius: 4px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.5);
 }
 
-.ball {
+/* De Bal (Ligt onder de beker op het vilt) */
+.table-ball {
   position: absolute;
-  bottom: 35px;
-  width: 28px;
-  height: 28px;
+  bottom: 30px;
+  width: 32px;
+  height: 32px;
   background: radial-gradient(circle at 35% 35%, #ff4d6d, #b3002d);
   border-radius: 50%;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.8), 0 0 10px rgba(255,0,85,0.6);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.8), 0 0 12px rgba(255,0,85,0.7);
+  z-index: 10; /* Ligt ONDER de beker */
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.table-ball.active-ball {
+  opacity: 1; /* Alleen zichtbaar als beker opgetild is */
+}
+
+.cup-shadow {
+  position: absolute;
+  bottom: 12px;
+  width: 80px;
+  height: 16px;
+  background: rgba(0,0,0,0.45);
+  border-radius: 50%;
+  filter: blur(4px);
   z-index: 5;
-  display: none;
 }
 
-.ball.visible {
-  display: block;
-}
-
-.slot-marker {
-  margin-top: 15px;
-  font-size: 0.7rem;
-  font-weight: 800;
-  color: rgba(255,255,255,0.5);
-  letter-spacing: 1px;
-}
-
-/* Responsive fix voor kleine schermen */
+/* RESPONSIVENESS */
 @media (max-width: 850px) {
   .casino-app {
     height: auto;
     min-height: 100dvh;
     overflow-y: auto;
   }
-  .lobby-grid {
-    grid-template-columns: 1fr;
-  }
-  .game-layout, .race-layout, .cups-layout {
+  .lobby-grid { grid-template-columns: 1fr; }
+  .game-split {
     grid-template-columns: 1fr;
     height: auto;
   }
-  .wheel-stage, .track-stage, .cups-stage {
+  .wheel-stage, .race-stage, .cups-stage {
     order: 1;
     margin: 10px 0;
   }
-  .bet-deck, .race-bet-deck, .cups-bet-deck {
-    order: 2;
-  }
+  .bet-deck { order: 2; }
 }
