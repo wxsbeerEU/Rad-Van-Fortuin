@@ -1,12 +1,14 @@
 :root {
-  --gold-grad-bright: linear-gradient(135deg, #fff2a3 0%, #ffd700 40%, #cca000 75%, #806000 100%);
-  --gold-grad-dark: linear-gradient(180deg, #332608 0%, #171104 100%);
-  --gold-border: rgba(255, 215, 0, 0.45);
-  --gold-glow: 0 0 25px rgba(255, 215, 0, 0.5);
+  --gold-1: #fff2a3;
+  --gold-2: #ffd700;
+  --gold-3: #cca000;
+  --gold-grad: linear-gradient(135deg, #fff2a3 0%, #ffd700 40%, #cca000 75%, #806000 100%);
+  --bg-dark: #07090e;
+  --panel-bg: rgba(16, 21, 35, 0.94);
+  --border-gold: 1px solid rgba(255, 215, 0, 0.35);
+  --glow-gold: 0 0 20px rgba(255, 215, 0, 0.4);
   --neon-green: #00ff88;
   --neon-red: #ff2a55;
-  --bg-primary: #06070c;
-  --panel-bg: rgba(14, 18, 30, 0.92);
 }
 
 * {
@@ -14,321 +16,478 @@
   margin: 0;
   padding: 0;
   user-select: none;
+  font-family: 'Montserrat', sans-serif;
 }
 
 html, body {
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
   overflow: hidden;
-  background-color: var(--bg-primary);
-  font-family: 'Montserrat', sans-serif;
-  color: #ffffff;
+  background: var(--bg-dark);
+  color: #fff;
 }
 
 .casino-app {
   width: 100vw;
   height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-}
-
-/* Dynamische Achtergrond Lichteffecten */
-.casino-bg {
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(circle at 60% 50%, #1b160b 0%, #06070c 80%);
-  z-index: 0;
-}
-
-.light-beam {
-  position: absolute;
-  top: -150px;
-  width: 350px;
-  height: 1200px;
-  opacity: 0.08;
-  pointer-events: none;
-  z-index: 0;
-}
-
-.lb-left {
-  left: 10%;
-  background: linear-gradient(180deg, #ffd700 0%, transparent 80%);
-  transform: rotate(-30deg);
-}
-
-.lb-right {
-  right: 10%;
-  background: linear-gradient(180deg, #ff2a55 0%, transparent 80%);
-  transform: rotate(30deg);
-}
-
-/* Hoofdcontainer */
-.casino-stage {
-  position: relative;
-  z-index: 1;
-  width: 96vw;
-  max-width: 1400px;
-  height: 94vh;
+  height: 100dvh;
+  padding: clamp(6px, 1.2vh, 14px) clamp(8px, 1.8vw, 20px);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  gap: clamp(6px, 1.2vh, 12px);
+  background: radial-gradient(circle at 50% 30%, #151a2a 0%, #07090e 75%);
 }
 
-/* Topbar & Resultaten Display */
-.casino-topbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+/* ==========================================================
+   TOP NAVIGATION
+========================================================== */
+.top-nav {
+  height: clamp(48px, 7.5vh, 62px);
   background: var(--panel-bg);
-  border: 1px solid var(--gold-border);
-  border-radius: 18px;
-  padding: 10px 24px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+  border: var(--border-gold);
+  border-radius: 14px;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+  flex-shrink: 0;
 }
 
-.brand {
+.nav-left {
   display: flex;
   align-items: center;
   gap: 12px;
 }
 
-.casino-crown {
-  font-size: 2.2rem;
-  filter: drop-shadow(0 0 10px #ffd700);
-}
-
-.brand-text h1 {
-  font-family: 'Cinzel', serif;
-  font-size: 1.6rem;
-  font-weight: 900;
-  background: var(--gold-grad-bright);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  letter-spacing: 2px;
-}
-
-.edition-tag {
-  font-size: 0.65rem;
-  font-weight: 800;
-  letter-spacing: 2px;
-  color: #ffd700;
-}
-
-.dealer-banner {
-  text-align: right;
-}
-
-.banner-status {
-  font-size: 0.75rem;
-  font-weight: 800;
-  letter-spacing: 2px;
-  color: #8fa0c0;
-  text-transform: uppercase;
-}
-
-.banner-amount {
-  font-family: 'Cinzel', serif;
-  font-size: 1.3rem;
-  font-weight: 900;
-  color: #ffd700;
-  text-shadow: 0 0 12px rgba(255, 215, 0, 0.4);
-}
-
-/* Arena Grid (Linker console + Rad) */
-.arena-grid {
-  display: grid;
-  grid-template-columns: 360px 1fr;
-  gap: 24px;
-  height: calc(100% - 85px);
-  align-items: center;
-}
-
-/* Linkerpaneel (Inzet Console) */
-.betting-console {
-  height: 100%;
-  max-height: 720px;
-}
-
-.console-box {
-  background: var(--panel-bg);
-  border: 1px solid var(--gold-border);
-  border-radius: 20px;
-  padding: 20px;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  box-shadow: 0 15px 40px rgba(0,0,0,0.7);
-}
-
-.console-title {
-  font-family: 'Cinzel', serif;
-  font-size: 1.2rem;
-  color: #ffd700;
-  letter-spacing: 1px;
-}
-
-.console-sub {
-  font-size: 0.75rem;
-  color: #7b87a0;
-  margin-top: -6px;
-}
-
-.current-bet-display {
-  display: flex;
-  align-items: center;
-  background: #090b12;
-  border: 2px solid #ffd700;
-  border-radius: 12px;
-  padding: 8px 14px;
-  box-shadow: inset 0 0 10px rgba(0,0,0,0.8), var(--gold-glow);
-}
-
-.chip-icon {
-  font-size: 1.6rem;
-  margin-right: 8px;
-}
-
-#betAmountInput {
-  background: transparent;
-  border: none;
-  color: #ffffff;
-  font-size: 1.8rem;
-  font-weight: 900;
-  font-family: 'Montserrat', sans-serif;
-  width: 100%;
-  outline: none;
-}
-
-.fiches-unit {
-  font-size: 0.75rem;
-  font-weight: 800;
-  color: #ffd700;
-}
-
-/* 3D Casino Chips */
-.chip-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-}
-
-.chip-btn {
-  aspect-ratio: 1;
-  border-radius: 50%;
-  border: 3px dashed rgba(255,255,255,0.7);
-  cursor: pointer;
-  box-shadow: 0 5px 12px rgba(0,0,0,0.6);
-  transition: transform 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.chip-btn:hover {
-  transform: translateY(-4px) scale(1.06);
-}
-
-.chip-btn.active {
-  transform: translateY(-4px) scale(1.1);
-  border: 3px solid #ffffff;
-  box-shadow: 0 0 15px rgba(255, 215, 0, 0.9);
-}
-
-.chip-inner {
-  font-weight: 900;
-  font-size: 1rem;
-  color: #fff;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.8);
-}
-
-.chip-10  { background: radial-gradient(circle, #2980b9, #1b4f72); }
-.chip-25  { background: radial-gradient(circle, #27ae60, #145a32); }
-.chip-50  { background: radial-gradient(circle, #e74c3c, #78281f); }
-.chip-100 { background: radial-gradient(circle, #2c3e50, #111111); }
-.chip-250 { background: radial-gradient(circle, #8e44ad, #512e5f); }
-.chip-500 { background: radial-gradient(circle, #d35400, #6e2c00); }
-
-/* Modifiers */
-.bet-modifiers {
-  display: flex;
-  gap: 8px;
-}
-
-.mod-btn {
-  flex: 1;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  color: #b8c4db;
-  padding: 8px;
+.lobby-back-btn {
+  background: rgba(255, 215, 0, 0.15);
+  border: 1px solid var(--gold-2);
+  color: var(--gold-2);
+  padding: 6px 14px;
   border-radius: 8px;
-  font-weight: 700;
-  font-size: 0.75rem;
+  font-weight: 800;
+  font-size: clamp(0.7rem, 1vw, 0.85rem);
   cursor: pointer;
   transition: 0.2s;
 }
 
-.mod-btn:hover {
-  background: rgba(255, 215, 0, 0.2);
-  border-color: #ffd700;
-  color: #fff;
+.lobby-back-btn:hover {
+  background: var(--gold-2);
+  color: #000;
 }
 
-/* History Log */
-.recent-spins-panel {
-  background: rgba(0,0,0,0.4);
-  border-radius: 10px;
-  padding: 10px;
-  border: 1px solid rgba(255,255,255,0.05);
+.lobby-back-btn.hidden {
+  display: none;
 }
 
-.panel-header {
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.crown {
+  font-size: clamp(1.3rem, 2.2vw, 1.7rem);
+  filter: drop-shadow(0 0 6px var(--gold-2));
+}
+
+.brand-title h1 {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(0.95rem, 1.6vw, 1.35rem);
+  font-weight: 900;
+  background: var(--gold-grad);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.edition-badge {
+  display: block;
+  font-size: clamp(0.5rem, 0.8vw, 0.62rem);
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: var(--gold-2);
+  margin-top: -2px;
+}
+
+.dealer-banner {
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.dealer-status {
+  font-size: clamp(0.55rem, 0.8vw, 0.68rem);
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  color: #8c9bb5;
+  text-transform: uppercase;
+}
+
+.dealer-info {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(0.85rem, 1.3vw, 1.15rem);
+  font-weight: 900;
+  color: var(--gold-2);
+  text-shadow: 0 0 8px rgba(255, 215, 0, 0.4);
+}
+
+/* ==========================================================
+   VIEWS FRAMEWORK
+========================================================== */
+.view-container {
+  flex: 1;
+  min-height: 0;
+  position: relative;
+}
+
+.game-view {
+  display: none;
+  width: 100%;
+  height: 100%;
+}
+
+.game-view.active {
+  display: flex;
+}
+
+/* ==========================================================
+   VIEW 0: LOBBY
+========================================================== */
+#view-lobby {
+  align-items: center;
+  justify-content: center;
+}
+
+.lobby-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(12px, 2.5vw, 28px);
+  width: 100%;
+  max-width: 1150px;
+}
+
+.lobby-card {
+  position: relative;
+  background: var(--panel-bg);
+  border: var(--border-gold);
+  border-radius: 20px;
+  padding: clamp(20px, 3vh, 32px) clamp(16px, 2vw, 24px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.7);
+  transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.lobby-card:hover {
+  transform: translateY(-8px) scale(1.03);
+  border-color: var(--gold-2);
+  box-shadow: 0 15px 40px rgba(255, 215, 0, 0.3);
+}
+
+.card-glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 0%, rgba(255,215,0,0.15) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.card-icon {
+  font-size: clamp(3rem, 5vh, 4.5rem);
+  margin-bottom: 12px;
+  filter: drop-shadow(0 4px 10px rgba(0,0,0,0.8));
+}
+
+.lobby-card h2 {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(1.1rem, 1.6vw, 1.45rem);
+  font-weight: 900;
+  color: var(--gold-2);
+  margin-bottom: 8px;
+}
+
+.lobby-card p {
+  font-size: clamp(0.7rem, 0.95vw, 0.82rem);
+  color: #8c9bb5;
+  line-height: 1.4;
+  margin-bottom: 20px;
+  flex: 1;
+}
+
+.card-badge {
+  background: rgba(255, 215, 0, 0.15);
+  border: 1px solid var(--gold-2);
+  color: var(--gold-2);
   font-size: 0.65rem;
   font-weight: 800;
-  color: #7b87a0;
-  margin-bottom: 6px;
+  padding: 4px 12px;
+  border-radius: 50px;
+  margin-bottom: 16px;
   letter-spacing: 1px;
 }
 
-.spins-list {
+.play-btn {
+  background: var(--gold-grad);
+  border: none;
+  border-radius: 50px;
+  padding: 10px 24px;
+  font-weight: 900;
+  font-size: 0.85rem;
+  color: #110d02;
+  cursor: pointer;
+  letter-spacing: 1px;
+  box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
+}
+
+/* ==========================================================
+   SHARED CASINO BETTING PANEL
+========================================================== */
+.game-layout, .race-layout, .cups-layout {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: minmax(280px, 330px) 1fr;
+  gap: clamp(10px, 1.8vw, 20px);
+  align-items: center;
+}
+
+.bet-deck, .race-bet-deck, .cups-bet-deck {
+  height: 100%;
+  max-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.deck-inner {
+  height: 100%;
+  background: var(--panel-bg);
+  border: var(--border-gold);
+  border-radius: 16px;
+  padding: clamp(10px, 1.5vh, 16px);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.7);
+  overflow-y: auto;
+}
+
+.deck-header h2 {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(0.9rem, 1.3vw, 1.1rem);
+  color: var(--gold-2);
+}
+
+.deck-header p {
+  font-size: clamp(0.65rem, 0.85vw, 0.72rem);
+  color: #7b88a3;
+  margin-top: 2px;
+}
+
+.bet-input-box {
+  display: flex;
+  align-items: center;
+  background: #090c14;
+  border: 2px solid var(--gold-2);
+  border-radius: 12px;
+  padding: clamp(5px, 0.8vh, 8px) 12px;
+  box-shadow: inset 0 0 10px rgba(0,0,0,0.8), var(--glow-gold);
+}
+
+.coin-icon {
+  font-size: clamp(1.2rem, 1.6vw, 1.5rem);
+  margin-right: 8px;
+}
+
+.bet-input-box input {
+  background: transparent;
+  border: none;
+  color: #ffffff;
+  font-size: clamp(1.3rem, 1.8vw, 1.6rem);
+  font-weight: 900;
+  width: 100%;
+  outline: none;
+}
+
+.unit-text {
+  font-size: 0.7rem;
+  font-weight: 900;
+  color: var(--gold-2);
+}
+
+/* 3D Casino Chips */
+.chip-rack {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(5px, 0.8vh, 8px);
+}
+
+.chip {
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 3px dashed rgba(255,255,255,0.7);
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.6);
+  transition: all 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 900;
+  font-size: clamp(0.75rem, 1vw, 0.9rem);
+  color: #fff;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.9);
+}
+
+.chip:hover { transform: translateY(-2px) scale(1.06); }
+.chip.active {
+  transform: translateY(-3px) scale(1.1);
+  border: 3px solid #fff;
+  box-shadow: 0 0 14px rgba(255, 215, 0, 0.9);
+}
+
+.c-10  { background: radial-gradient(circle, #2980b9, #154360); }
+.c-25  { background: radial-gradient(circle, #27ae60, #145a32); }
+.c-50  { background: radial-gradient(circle, #e74c3c, #78281f); }
+.c-100 { background: radial-gradient(circle, #2c3e50, #111111); }
+.c-250 { background: radial-gradient(circle, #8e44ad, #4a235a); }
+.c-500 { background: radial-gradient(circle, #d35400, #6e2c00); }
+
+.bet-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.action-btn {
+  flex: 1;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.15);
+  color: #b5c2db;
+  padding: 6px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 0.72rem;
+  cursor: pointer;
+  transition: 0.15s;
+}
+
+.action-btn:hover {
+  background: rgba(255, 215, 0, 0.2);
+  border-color: var(--gold-2);
+  color: #fff;
+}
+
+.history-widget {
+  background: rgba(0,0,0,0.35);
+  border-radius: 8px;
+  padding: 6px 10px;
+  border: 1px solid rgba(255,255,255,0.05);
+}
+
+.hw-title {
+  font-size: 0.6rem;
+  font-weight: 800;
+  color: #7b88a3;
+  letter-spacing: 1px;
+}
+
+.hw-list {
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 2px;
+  margin-top: 4px;
+  max-height: 48px;
+  overflow-y: hidden;
 }
 
-.spin-record {
-  font-size: 0.75rem;
+.hw-item {
+  font-size: 0.68rem;
   font-weight: 700;
-  padding: 4px 8px;
+  padding: 2px 4px;
   border-radius: 4px;
   background: rgba(255,255,255,0.03);
   display: flex;
   justify-content: space-between;
 }
 
-.empty-entry {
-  font-size: 0.7rem;
-  color: #555;
-  font-style: italic;
+.empty-hw { font-size: 0.65rem; color: #555; font-style: italic; }
+
+/* Grote Gouden Knop */
+.gold-action-btn {
+  position: relative;
+  overflow: hidden;
+  background: var(--gold-grad);
+  border: 2px solid #fff;
+  border-radius: 50px;
+  padding: clamp(8px, 1.4vh, 12px) clamp(24px, 3vw, 40px);
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(255, 215, 0, 0.4);
+  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-/* Rechterpaneel: Het Rad */
-.wheel-arena {
+.gold-action-btn.w-full { width: 100%; margin-top: 8px; }
+
+.gold-action-btn:hover:not(:disabled) {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 8px 25px rgba(255, 215, 0, 0.7);
+}
+
+.gold-action-btn:disabled {
+  background: #333845;
+  border-color: #555e70;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
+.btn-txt {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(0.85rem, 1.2vw, 1.05rem);
+  font-weight: 900;
+  color: #110d02;
+  letter-spacing: 1.5px;
+}
+
+.gold-action-btn:disabled .btn-txt { color: #727c91; }
+
+.btn-shine {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.7), transparent);
+  transform: skewX(-25deg);
+  animation: shine 3.5s infinite;
+}
+
+@keyframes shine {
+  0% { left: -100%; }
+  25%, 100% { left: 200%; }
+}
+
+/* ==========================================================
+   VIEW 1: WHEEL STAGE
+========================================================== */
+.wheel-stage {
   height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  position: relative;
+  gap: clamp(6px, 1.2vh, 12px);
 }
 
-.wheel-stage-container {
+.wheel-mount {
   position: relative;
-  width: min(64vh, 560px);
-  height: min(64vh, 560px);
+  width: min(60vh, 46vw, 500px);
+  height: min(60vh, 46vw, 500px);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -337,13 +496,12 @@ html, body {
 #wheelCanvas {
   width: 100%;
   height: 100%;
-  filter: drop-shadow(0 0 35px rgba(0, 0, 0, 0.9));
+  filter: drop-shadow(0 0 20px rgba(0,0,0,0.95));
 }
 
-/* Mechanische Flipper / Pijl */
-.flipper-assembly {
+.wheel-flipper {
   position: absolute;
-  top: -15px;
+  top: -10px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 30;
@@ -352,136 +510,324 @@ html, body {
   align-items: center;
 }
 
-.flipper-pin {
-  width: 18px;
-  height: 18px;
-  background: var(--gold-grad-bright);
+.flipper-head {
+  width: 16px;
+  height: 16px;
+  background: var(--gold-grad);
   border-radius: 50%;
-  box-shadow: 0 0 10px #ffd700;
   border: 2px solid #000;
   z-index: 31;
 }
 
-.flipper-needle {
+.flipper-point {
   width: 0;
   height: 0;
-  margin-top: -6px;
-  border-left: 14px solid transparent;
-  border-right: 14px solid transparent;
-  border-top: 36px solid #ffffff;
-  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.8));
+  margin-top: -5px;
+  border-left: 11px solid transparent;
+  border-right: 11px solid transparent;
+  border-top: 30px solid #ffffff;
+  filter: drop-shadow(0 3px 6px rgba(0,0,0,0.8));
   transform-origin: 50% 0%;
-  transition: transform 0.06s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transition: transform 0.05s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-/* Centrum Hub */
-.wheel-hub {
+.wheel-center-gem {
   position: absolute;
-  width: 75px;
-  height: 75px;
+  width: clamp(42px, 7vh, 60px);
+  height: clamp(42px, 7vh, 60px);
   border-radius: 50%;
-  background: var(--gold-grad-bright);
-  border: 4px solid #111;
-  box-shadow: 0 0 20px rgba(0,0,0,0.9), inset 0 0 10px rgba(255,255,255,0.8);
+  background: var(--gold-grad);
+  border: 3px solid #111;
+  box-shadow: 0 0 15px rgba(0,0,0,0.9);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 10;
+  font-size: clamp(1.1rem, 2vh, 1.5rem);
+  color: #111;
   pointer-events: none;
 }
 
-.hub-ring {
-  width: 55px;
-  height: 55px;
-  border-radius: 50%;
-  border: 2px dashed #000;
+/* ==========================================================
+   VIEW 2: HORSE RACE
+========================================================== */
+.horse-selection-list {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  gap: 6px;
+  margin: 6px 0;
+}
+
+.horse-bet-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 10px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1);
+  cursor: pointer;
+  transition: 0.15s;
+}
+
+.horse-bet-card:hover {
+  background: rgba(255, 215, 0, 0.15);
+  border-color: var(--gold-2);
+}
+
+.horse-bet-card.selected {
+  background: rgba(255, 215, 0, 0.25);
+  border: 2px solid var(--gold-2);
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
+}
+
+.h-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.h-avatar {
+  font-size: 1.2rem;
+}
+
+.h-name {
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.h-odds {
+  font-size: 0.75rem;
+  font-weight: 900;
+  color: var(--gold-2);
+  background: #000;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.track-stage {
+  height: 100%;
+  display: flex;
   align-items: center;
 }
 
-.hub-star {
-  font-size: 1.8rem;
-  color: #111;
-}
-
-/* Spin Knop */
-.action-dock {
-  margin-top: 15px;
-}
-
-.spin-trigger-btn {
+.track-container {
   position: relative;
+  width: 100%;
+  height: min(65vh, 480px);
+  background: radial-gradient(circle at 50% 50%, #2e7d32 0%, #1b5e20 80%);
+  border: 4px solid #3e2723;
+  border-radius: 16px;
+  padding: 10px 16px;
+  box-shadow: inset 0 0 30px rgba(0,0,0,0.6), 0 8px 30px rgba(0,0,0,0.8);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
   overflow: hidden;
-  background: var(--gold-grad-bright);
-  border: 2px solid #fff;
-  border-radius: 50px;
-  padding: 14px 50px;
-  cursor: pointer;
-  box-shadow: 0 8px 30px rgba(255, 215, 0, 0.4), var(--gold-glow);
-  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.spin-trigger-btn:hover:not(:disabled) {
-  transform: translateY(-3px) scale(1.04);
-  box-shadow: 0 12px 40px rgba(255, 215, 0, 0.7);
-}
-
-.spin-trigger-btn:active:not(:disabled) {
-  transform: translateY(1px);
-}
-
-.spin-trigger-btn:disabled {
-  background: #333842;
-  border-color: #555c6d;
-  cursor: not-allowed;
-  box-shadow: none;
-  transform: none;
-}
-
-.btn-caption {
-  font-family: 'Cinzel', serif;
-  font-size: 1.15rem;
-  font-weight: 900;
-  color: #110d02;
-  letter-spacing: 2px;
-}
-
-.spin-trigger-btn:disabled .btn-caption {
-  color: #727a8c;
-}
-
-.btn-flare {
+.track-finish-line {
   position: absolute;
   top: 0;
-  left: -100%;
-  width: 60%;
+  bottom: 0;
+  right: 60px;
+  width: 14px;
+  background: repeating-linear-gradient(45deg, #fff, #fff 6px, #000 6px, #000 12px);
+  box-shadow: 0 0 10px rgba(255,255,255,0.4);
+  z-index: 5;
+}
+
+.finish-banner {
+  position: absolute;
+  top: 6px;
+  right: -18px;
+  background: #ff0055;
+  color: #fff;
+  font-size: 0.6rem;
+  font-weight: 900;
+  padding: 2px 6px;
+  border-radius: 4px;
+  letter-spacing: 1px;
+}
+
+.track-lanes {
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.7), transparent);
-  transform: skewX(-25deg);
-  animation: flareAnim 3.5s infinite;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  z-index: 10;
 }
 
-@keyframes flareAnim {
-  0% { left: -100%; }
-  25%, 100% { left: 200%; }
+.lane {
+  position: relative;
+  height: 18%;
+  border-bottom: 2px dashed rgba(255,255,255,0.25);
+  display: flex;
+  align-items: center;
 }
 
-/* Responsiviteit voor kleinere schermen */
-@media (max-width: 950px) {
-  .casino-stage {
+.horse-runner {
+  position: absolute;
+  left: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: transform 0.05s linear;
+}
+
+.runner-sprite {
+  font-size: clamp(1.4rem, 2.5vh, 2rem);
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.8));
+  display: inline-block;
+}
+
+.horse-running .runner-sprite {
+  animation: gallop 0.25s infinite alternate ease-in-out;
+}
+
+@keyframes gallop {
+  from { transform: translateY(0px) rotate(0deg); }
+  to { transform: translateY(-4px) rotate(8deg); }
+}
+
+.runner-tag {
+  font-size: 0.65rem;
+  font-weight: 800;
+  background: rgba(0,0,0,0.7);
+  padding: 2px 6px;
+  border-radius: 4px;
+  border-left: 3px solid var(--gold-2);
+  white-space: nowrap;
+}
+
+/* ==========================================================
+   VIEW 3: CUPS & BALL
+========================================================== */
+.cups-instruction-card {
+  background: rgba(0,0,0,0.3);
+  border-radius: 8px;
+  padding: 10px;
+  font-size: 0.72rem;
+  color: #a0aec0;
+  line-height: 1.4;
+  border-left: 3px solid var(--gold-2);
+}
+
+.cups-stage {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.table-felt {
+  width: 100%;
+  height: min(65vh, 480px);
+  background: radial-gradient(circle at 50% 50%, #0d5c3a 0%, #063822 80%);
+  border: 8px solid #3e2723;
+  border-radius: 24px;
+  box-shadow: inset 0 0 40px rgba(0,0,0,0.8), 0 10px 30px rgba(0,0,0,0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.cups-arena {
+  width: 80%;
+  max-width: 600px;
+  height: 200px;
+  position: relative;
+}
+
+.cup-slot {
+  position: absolute;
+  top: 0;
+  width: 110px;
+  height: 160px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  transition: left 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+#slot-0 { left: 5%; }
+#slot-1 { left: 38%; }
+#slot-2 { left: 72%; }
+
+.cup-wrapper {
+  position: relative;
+  z-index: 10;
+  transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.cup-wrapper.lifted {
+  transform: translateY(-70px);
+}
+
+.cup-3d {
+  width: 85px;
+  height: 110px;
+  background: linear-gradient(135deg, #ffd700 0%, #cca000 50%, #664d00 100%);
+  clip-path: polygon(15% 0%, 85% 0%, 100% 100%, 0% 100%);
+  border-radius: 6px 6px 12px 12px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.6), inset 0 0 15px rgba(255,255,255,0.7);
+  position: relative;
+}
+
+.cup-rim {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 10px;
+  background: #ffe57f;
+  border-radius: 4px;
+}
+
+.ball {
+  position: absolute;
+  bottom: 35px;
+  width: 28px;
+  height: 28px;
+  background: radial-gradient(circle at 35% 35%, #ff4d6d, #b3002d);
+  border-radius: 50%;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.8), 0 0 10px rgba(255,0,85,0.6);
+  z-index: 5;
+  display: none;
+}
+
+.ball.visible {
+  display: block;
+}
+
+.slot-marker {
+  margin-top: 15px;
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: rgba(255,255,255,0.5);
+  letter-spacing: 1px;
+}
+
+/* Responsive fix voor kleine schermen */
+@media (max-width: 850px) {
+  .casino-app {
     height: auto;
+    min-height: 100dvh;
     overflow-y: auto;
   }
-  .arena-grid {
+  .lobby-grid {
+    grid-template-columns: 1fr;
+  }
+  .game-layout, .race-layout, .cups-layout {
     grid-template-columns: 1fr;
     height: auto;
   }
-  .betting-console {
-    order: 2;
-  }
-  .wheel-arena {
+  .wheel-stage, .track-stage, .cups-stage {
     order: 1;
-    margin: 20px 0;
+    margin: 10px 0;
+  }
+  .bet-deck, .race-bet-deck, .cups-bet-deck {
+    order: 2;
   }
 }
