@@ -80,13 +80,13 @@
             <button class="play-btn">KIES BEKER ▶</button>
           </div>
 
-          <!-- Card 4: De Kip Steekt Over (Chicken Cross Extreme) -->
+          <!-- Card 4: De Kip Steekt Over (Live Arcade) -->
           <div class="lobby-card card-chicken" onclick="openGame('chicken')">
             <div class="card-neon-border"></div>
             <div class="card-icon">🐔</div>
             <h2>KIP STEEKT OVER</h2>
-            <p>Kies je rijstrook per baan. Ontwijk het verkeer of cash out tot 100x!</p>
-            <div class="card-tag">TOT 100X GOUDEN EI</div>
+            <p>Live geanimeerd verkeer! Spring straat voor straat of cash out tot 100x!</p>
+            <div class="card-tag">LIVE ANIMATIE • 100X</div>
             <button class="play-btn">STEEK OVER ▶</button>
           </div>
 
@@ -260,7 +260,7 @@
       </section>
 
       <!-- ==========================================
-           VIEW 4: DE KIP STEEKT OVER (CHICKEN ROAD EXTREME)
+           VIEW 4: DE KIP STEEKT OVER (LIVE ANIMATED HIGHWAY)
       =========================================== -->
       <section id="view-chicken" class="game-view">
         <div class="game-split">
@@ -268,7 +268,7 @@
             <div class="deck-box">
               <div class="deck-head">
                 <h2>KIP INZET</h2>
-                <p>Kies links, midden of rechts per baan</p>
+                <p>Kies je inzet en spring over de snelweg</p>
               </div>
               <div class="bet-input-box">
                 <span class="coin-icon">🪙</span>
@@ -288,11 +288,14 @@
                 <span class="c-card-val" id="chickenCurrentCashout">0 FICHES</span>
               </div>
               
-              <!-- Chicken Action Stack -->
+              <!-- Live Chicken Action Buttons -->
               <div class="chicken-action-stack">
                 <button id="startChickenBtn" class="gold-action-btn w-full" onclick="startChickenGame()">
                   <span class="btn-shine"></span>
-                  <span class="btn-txt">START KIP EXPEDITIE 🐔</span>
+                  <span class="btn-txt">START MET KIP 🐔</span>
+                </button>
+                <button id="hopChickenBtn" class="chicken-hop-btn w-full hidden" onclick="hopChickenForward()">
+                  <span class="btn-txt">SPRING VOORUIT! 🐔💨</span>
                 </button>
                 <button id="cashoutChickenBtn" class="cashout-action-btn w-full hidden" onclick="cashoutChicken()">
                   <span class="btn-txt">💰 CASH OUT & NEEM WINST!</span>
@@ -300,16 +303,16 @@
               </div>
 
               <div class="instruction-box">
-                <div class="inst-head">🛣️ HOE TE OVERLEVEN:</div>
-                <p>Klik op 1 van de 3 rijstroken (◀ L | ● M | R ▶) op de oplichtende baan om vooruit te springen!</p>
+                <div class="inst-head">🛣️ LIVE HIGHWAY:</div>
+                <p>Druk op 'SPRING VOORUIT' om een straat over te steken. Pas op voor scheurende auto's! Cash out wanneer je durft.</p>
               </div>
             </div>
           </aside>
           
-          <!-- Chicken Highway Arcade Grid -->
+          <!-- Live 2D Animated Highway Canvas Stage -->
           <main class="chicken-stage">
-            <div class="chicken-highway" id="chickenHighway">
-              <!-- Dynamische 8 rijbanen (Finish 8 bovenaan, Baan 1 onderaan) -->
+            <div class="chicken-canvas-casing">
+              <canvas id="chickenCanvas"></canvas>
             </div>
           </main>
         </div>
