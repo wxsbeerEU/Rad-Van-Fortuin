@@ -9,6 +9,7 @@
   --glow-gold: 0 0 20px rgba(255, 215, 0, 0.4);
   --neon-green: #00ff88;
   --neon-red: #ff2a55;
+  --neon-yellow: #ffbb00;
 }
 
 * {
@@ -32,17 +33,18 @@ html, body {
   width: 100vw;
   height: 100vh;
   height: 100dvh;
-  padding: clamp(6px, 1.2vh, 12px) clamp(8px, 1.5vw, 18px);
+  padding: clamp(6px, 1vh, 12px) clamp(8px, 1.4vw, 18px);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   gap: clamp(6px, 1vh, 10px);
   background: radial-gradient(circle at 50% 30%, #151a2a 0%, #07090e 75%);
+  position: relative;
 }
 
 /* TOP NAVIGATION */
 .top-nav {
-  height: clamp(48px, 7.5vh, 60px);
+  height: clamp(48px, 7.5vh, 62px);
   background: var(--panel-bg);
   border: var(--border-gold);
   border-radius: 14px;
@@ -72,11 +74,7 @@ html, body {
   transition: 0.2s;
 }
 
-.lobby-back-btn:hover {
-  background: var(--gold-2);
-  color: #000;
-}
-
+.lobby-back-btn:hover { background: var(--gold-2); color: #000; }
 .lobby-back-btn.hidden { display: none; }
 
 .brand {
@@ -92,7 +90,7 @@ html, body {
 
 .brand-title h1 {
   font-family: 'Cinzel', serif;
-  font-size: clamp(0.95rem, 1.6vw, 1.35rem);
+  font-size: clamp(0.95rem, 1.5vw, 1.3rem);
   font-weight: 900;
   background: var(--gold-grad);
   -webkit-background-clip: text;
@@ -106,6 +104,37 @@ html, body {
   letter-spacing: 2px;
   color: var(--gold-2);
   margin-top: -2px;
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.player-tag-box {
+  display: flex;
+  flex-direction: column;
+  background: #090c14;
+  border: 1px solid var(--gold-2);
+  border-radius: 8px;
+  padding: 2px 8px;
+}
+
+.player-tag-label {
+  font-size: 0.55rem;
+  font-weight: 900;
+  color: var(--gold-2);
+}
+
+#globalPlayerName {
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 800;
+  outline: none;
+  width: 110px;
 }
 
 .dealer-screen {
@@ -146,7 +175,7 @@ html, body {
 
 .game-view.active { display: flex; }
 
-/* LOBBY VIEW */
+/* LOBBY VIEW (5 GAMES GRID) */
 #view-lobby {
   align-items: center;
   justify-content: center;
@@ -154,18 +183,18 @@ html, body {
 
 .lobby-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: clamp(12px, 2.5vw, 24px);
+  grid-template-columns: repeat(5, 1fr);
+  gap: clamp(8px, 1.5vw, 16px);
   width: 100%;
-  max-width: 1150px;
+  max-width: 1350px;
 }
 
 .lobby-card {
   position: relative;
   background: var(--panel-bg);
   border: var(--border-gold);
-  border-radius: 20px;
-  padding: clamp(16px, 2.5vh, 28px) clamp(14px, 1.8vw, 22px);
+  border-radius: 18px;
+  padding: clamp(14px, 2vh, 22px) clamp(10px, 1.2vw, 16px);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -177,9 +206,9 @@ html, body {
 }
 
 .lobby-card:hover {
-  transform: translateY(-6px) scale(1.02);
+  transform: translateY(-6px) scale(1.03);
   border-color: var(--gold-2);
-  box-shadow: 0 15px 40px rgba(255, 215, 0, 0.3);
+  box-shadow: 0 15px 40px rgba(255, 215, 0, 0.35);
 }
 
 .card-glow {
@@ -190,24 +219,24 @@ html, body {
 }
 
 .card-icon {
-  font-size: clamp(2.8rem, 4.5vh, 4rem);
-  margin-bottom: 10px;
+  font-size: clamp(2.4rem, 4vh, 3.5rem);
+  margin-bottom: 8px;
   filter: drop-shadow(0 4px 10px rgba(0,0,0,0.8));
 }
 
 .lobby-card h2 {
   font-family: 'Cinzel', serif;
-  font-size: clamp(1rem, 1.5vw, 1.35rem);
+  font-size: clamp(0.85rem, 1.1vw, 1.05rem);
   font-weight: 900;
   color: var(--gold-2);
   margin-bottom: 6px;
 }
 
 .lobby-card p {
-  font-size: clamp(0.7rem, 0.9vw, 0.8rem);
+  font-size: clamp(0.65rem, 0.8vw, 0.72rem);
   color: #8c9bb5;
-  line-height: 1.4;
-  margin-bottom: 16px;
+  line-height: 1.35;
+  margin-bottom: 12px;
   flex: 1;
 }
 
@@ -215,11 +244,11 @@ html, body {
   background: rgba(255, 215, 0, 0.15);
   border: 1px solid var(--gold-2);
   color: var(--gold-2);
-  font-size: 0.62rem;
+  font-size: 0.58rem;
   font-weight: 800;
-  padding: 4px 12px;
+  padding: 3px 8px;
   border-radius: 50px;
-  margin-bottom: 14px;
+  margin-bottom: 10px;
   letter-spacing: 1px;
 }
 
@@ -227,9 +256,9 @@ html, body {
   background: var(--gold-grad);
   border: none;
   border-radius: 50px;
-  padding: 8px 22px;
+  padding: 7px 16px;
   font-weight: 900;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   color: #110d02;
   cursor: pointer;
   letter-spacing: 1px;
@@ -241,7 +270,7 @@ html, body {
   width: 100%;
   height: 100%;
   display: grid;
-  grid-template-columns: minmax(280px, 330px) 1fr;
+  grid-template-columns: minmax(270px, 320px) 1fr;
   gap: clamp(10px, 1.8vw, 20px);
   align-items: center;
 }
@@ -258,7 +287,7 @@ html, body {
   background: var(--panel-bg);
   border: var(--border-gold);
   border-radius: 16px;
-  padding: clamp(10px, 1.4vh, 16px);
+  padding: clamp(8px, 1.3vh, 14px);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -268,14 +297,14 @@ html, body {
 
 .deck-head h2 {
   font-family: 'Cinzel', serif;
-  font-size: clamp(0.9rem, 1.3vw, 1.1rem);
+  font-size: clamp(0.9rem, 1.3vw, 1.05rem);
   color: var(--gold-2);
 }
 
 .deck-head p {
-  font-size: clamp(0.65rem, 0.85vw, 0.72rem);
+  font-size: clamp(0.62rem, 0.8vw, 0.7rem);
   color: #7b88a3;
-  margin-top: 2px;
+  margin-top: 1px;
 }
 
 .bet-input-box {
@@ -284,27 +313,27 @@ html, body {
   background: #090c14;
   border: 2px solid var(--gold-2);
   border-radius: 12px;
-  padding: clamp(4px, 0.7vh, 8px) 12px;
+  padding: clamp(4px, 0.6vh, 7px) 10px;
   box-shadow: inset 0 0 10px rgba(0,0,0,0.8), var(--glow-gold);
 }
 
 .coin-icon {
-  font-size: clamp(1.2rem, 1.6vw, 1.5rem);
-  margin-right: 8px;
+  font-size: clamp(1.1rem, 1.5vw, 1.4rem);
+  margin-right: 6px;
 }
 
 .bet-input-box input {
   background: transparent;
   border: none;
   color: #ffffff;
-  font-size: clamp(1.3rem, 1.8vw, 1.6rem);
+  font-size: clamp(1.2rem, 1.6vw, 1.5rem);
   font-weight: 900;
   width: 100%;
   outline: none;
 }
 
 .unit-tag {
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   font-weight: 900;
   color: var(--gold-2);
 }
@@ -313,7 +342,7 @@ html, body {
 .chip-rack {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: clamp(4px, 0.7vh, 8px);
+  gap: clamp(4px, 0.6vh, 6px);
 }
 
 .chip {
@@ -327,7 +356,7 @@ html, body {
   justify-content: center;
   align-items: center;
   font-weight: 900;
-  font-size: clamp(0.75rem, 1vw, 0.9rem);
+  font-size: clamp(0.72rem, 0.95vw, 0.85rem);
   color: #fff;
   text-shadow: 0 1px 3px rgba(0,0,0,0.9);
 }
@@ -356,10 +385,10 @@ html, body {
   background: rgba(255,255,255,0.06);
   border: 1px solid rgba(255,255,255,0.15);
   color: #b5c2db;
-  padding: 6px;
+  padding: 5px;
   border-radius: 8px;
   font-weight: 700;
-  font-size: 0.72rem;
+  font-size: 0.68rem;
   cursor: pointer;
   transition: 0.15s;
 }
@@ -373,12 +402,12 @@ html, body {
 .history-widget {
   background: rgba(0,0,0,0.35);
   border-radius: 8px;
-  padding: 6px 10px;
+  padding: 6px 8px;
   border: 1px solid rgba(255,255,255,0.05);
 }
 
 .hw-title {
-  font-size: 0.6rem;
+  font-size: 0.58rem;
   font-weight: 800;
   color: #7b88a3;
   letter-spacing: 1px;
@@ -389,13 +418,13 @@ html, body {
   display: flex;
   flex-direction: column;
   gap: 2px;
-  margin-top: 4px;
-  max-height: 48px;
+  margin-top: 3px;
+  max-height: 42px;
   overflow-y: hidden;
 }
 
 .hw-item {
-  font-size: 0.68rem;
+  font-size: 0.65rem;
   font-weight: 700;
   padding: 2px 4px;
   border-radius: 4px;
@@ -404,7 +433,23 @@ html, body {
   justify-content: space-between;
 }
 
-.empty-hw { font-size: 0.65rem; color: #555; font-style: italic; }
+.empty-hw { font-size: 0.62rem; color: #555; font-style: italic; }
+
+.instruction-box {
+  background: rgba(0,0,0,0.3);
+  border-radius: 8px;
+  padding: 6px 8px;
+  font-size: 0.68rem;
+  color: #a0aec0;
+  line-height: 1.35;
+  border-left: 3px solid var(--gold-2);
+}
+
+.inst-head {
+  font-weight: 800;
+  color: var(--gold-2);
+  margin-bottom: 2px;
+}
 
 /* ACTION BUTTON */
 .gold-action-btn {
@@ -413,13 +458,13 @@ html, body {
   background: var(--gold-grad);
   border: 2px solid #fff;
   border-radius: 50px;
-  padding: clamp(8px, 1.4vh, 12px) clamp(24px, 3vw, 40px);
+  padding: clamp(7px, 1.2vh, 11px) clamp(20px, 2.5vw, 36px);
   cursor: pointer;
   box-shadow: 0 6px 20px rgba(255, 215, 0, 0.4);
   transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.gold-action-btn.w-full { width: 100%; margin-top: 6px; }
+.gold-action-btn.w-full { width: 100%; margin-top: 5px; }
 
 .gold-action-btn:hover:not(:disabled) {
   transform: translateY(-2px) scale(1.03);
@@ -436,7 +481,7 @@ html, body {
 
 .btn-txt {
   font-family: 'Cinzel', serif;
-  font-size: clamp(0.85rem, 1.2vw, 1.05rem);
+  font-size: clamp(0.8rem, 1.1vw, 1rem);
   font-weight: 900;
   color: #110d02;
   letter-spacing: 1.5px;
@@ -472,8 +517,8 @@ html, body {
 
 .wheel-mount {
   position: relative;
-  width: min(60vh, 46vw, 490px);
-  height: min(60vh, 46vw, 490px);
+  width: min(60vh, 45vw, 480px);
+  height: min(60vh, 45vw, 480px);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -519,8 +564,8 @@ html, body {
 
 .wheel-center-gem {
   position: absolute;
-  width: clamp(42px, 7vh, 60px);
-  height: clamp(42px, 7vh, 60px);
+  width: clamp(40px, 6.5vh, 55px);
+  height: clamp(40px, 6.5vh, 55px);
   border-radius: 50%;
   background: var(--gold-grad);
   border: 3px solid #111;
@@ -529,7 +574,7 @@ html, body {
   justify-content: center;
   align-items: center;
   z-index: 10;
-  font-size: clamp(1.1rem, 2vh, 1.5rem);
+  font-size: clamp(1.1rem, 2vh, 1.4rem);
   color: #111;
   pointer-events: none;
 }
@@ -538,15 +583,15 @@ html, body {
 .horse-selection-list {
   display: flex;
   flex-direction: column;
-  gap: 5px;
-  margin: 4px 0;
+  gap: 4px;
+  margin: 3px 0;
 }
 
 .horse-bet-card {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 5px 10px;
+  padding: 4px 8px;
   border-radius: 8px;
   background: rgba(255,255,255,0.04);
   border: 1px solid rgba(255,255,255,0.1);
@@ -565,20 +610,15 @@ html, body {
   box-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
 }
 
-.h-info {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.h-avatar { font-size: 1.1rem; }
-.h-name { font-size: 0.75rem; font-weight: 800; }
+.h-info { display: flex; align-items: center; gap: 6px; }
+.h-avatar { font-size: 1.05rem; }
+.h-name { font-size: 0.72rem; font-weight: 800; }
 .h-odds {
-  font-size: 0.72rem;
+  font-size: 0.7rem;
   font-weight: 900;
   color: var(--gold-2);
   background: #000;
-  padding: 2px 6px;
+  padding: 2px 5px;
   border-radius: 4px;
 }
 
@@ -595,7 +635,7 @@ html, body {
   background: radial-gradient(circle at 50% 50%, #2e7d32 0%, #1b5e20 80%);
   border: 4px solid #3e2723;
   border-radius: 16px;
-  padding: 8px 14px;
+  padding: 8px 12px;
   box-shadow: inset 0 0 30px rgba(0,0,0,0.6), 0 8px 30px rgba(0,0,0,0.8);
   display: flex;
   flex-direction: column;
@@ -607,7 +647,7 @@ html, body {
   position: absolute;
   top: 0;
   bottom: 0;
-  right: 55px;
+  right: 50px;
   width: 14px;
   background: repeating-linear-gradient(45deg, #fff, #fff 6px, #000 6px, #000 12px);
   box-shadow: 0 0 10px rgba(255,255,255,0.4);
@@ -620,7 +660,7 @@ html, body {
   right: -18px;
   background: #ff0055;
   color: #fff;
-  font-size: 0.58rem;
+  font-size: 0.55rem;
   font-weight: 900;
   padding: 2px 5px;
   border-radius: 4px;
@@ -653,7 +693,7 @@ html, body {
 }
 
 .runner-sprite {
-  font-size: clamp(1.3rem, 2.3vh, 1.9rem);
+  font-size: clamp(1.3rem, 2.3vh, 1.8rem);
   filter: drop-shadow(0 2px 4px rgba(0,0,0,0.8));
   display: inline-block;
 }
@@ -668,32 +708,16 @@ html, body {
 }
 
 .runner-tag {
-  font-size: 0.65rem;
+  font-size: 0.62rem;
   font-weight: 800;
   background: rgba(0,0,0,0.7);
-  padding: 2px 6px;
+  padding: 2px 5px;
   border-radius: 4px;
   border-left: 3px solid var(--gold-2);
   white-space: nowrap;
 }
 
 /* VIEW 3: 3 BEKERS & BALLETJE */
-.instruction-box {
-  background: rgba(0,0,0,0.3);
-  border-radius: 8px;
-  padding: 8px 10px;
-  font-size: 0.7rem;
-  color: #a0aec0;
-  line-height: 1.35;
-  border-left: 3px solid var(--gold-2);
-}
-
-.inst-head {
-  font-weight: 800;
-  color: var(--gold-2);
-  margin-bottom: 4px;
-}
-
 .cups-stage {
   height: 100%;
   display: flex;
@@ -716,17 +740,16 @@ html, body {
 
 .cups-container {
   width: 85%;
-  max-width: 650px;
-  height: 220px;
+  max-width: 620px;
+  height: 200px;
   position: relative;
 }
 
-/* HET BEKER SLOT: BAL EN BEKER BEVINDEN ZICH IN DEZELFDE CONTAINER */
 .cup-slot {
   position: absolute;
   top: 15px;
-  width: 120px;
-  height: 180px;
+  width: 110px;
+  height: 170px;
   cursor: pointer;
   transition: left 0.32s cubic-bezier(0.25, 1, 0.5, 1);
   display: flex;
@@ -739,19 +762,16 @@ html, body {
 #cupSlot-1 { left: 38%; }
 #cupSlot-2 { left: 72%; }
 
-/* Beker Asset (Zit BOVEN de bal) */
 .cup-asset {
   position: absolute;
   bottom: 25px;
-  width: 95px;
-  height: 120px;
-  z-index: 20; /* Bedekt de bal altijd wanneer neergelaten */
+  width: 90px;
+  height: 115px;
+  z-index: 20;
   transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.cup-asset.lifted {
-  transform: translateY(-80px);
-}
+.cup-asset.lifted { transform: translateY(-75px); }
 
 .cup-body {
   width: 100%;
@@ -772,50 +792,309 @@ html, body {
   box-shadow: 0 4px 8px rgba(0,0,0,0.5);
 }
 
-/* De Bal (Ligt onder de beker op het vilt) */
 .table-ball {
   position: absolute;
   bottom: 30px;
-  width: 32px;
-  height: 32px;
+  width: 30px;
+  height: 30px;
   background: radial-gradient(circle at 35% 35%, #ff4d6d, #b3002d);
   border-radius: 50%;
   box-shadow: 0 4px 8px rgba(0,0,0,0.8), 0 0 12px rgba(255,0,85,0.7);
-  z-index: 10; /* Ligt ONDER de beker */
+  z-index: 10;
   opacity: 0;
   transition: opacity 0.2s ease-in-out;
 }
 
-.table-ball.active-ball {
-  opacity: 1; /* Alleen zichtbaar als beker opgetild is */
-}
+.table-ball.active-ball { opacity: 1; }
 
 .cup-shadow {
   position: absolute;
   bottom: 12px;
-  width: 80px;
-  height: 16px;
+  width: 75px;
+  height: 14px;
   background: rgba(0,0,0,0.45);
   border-radius: 50%;
   filter: blur(4px);
   z-index: 5;
 }
 
+/* VIEW 4: KRAAK DE KLUIS (VAULT) */
+.vault-pool-card {
+  background: rgba(255, 215, 0, 0.15);
+  border: 1px solid var(--gold-2);
+  border-radius: 8px;
+  padding: 8px;
+  text-align: center;
+}
+
+.pool-tag {
+  display: block;
+  font-size: 0.65rem;
+  font-weight: 900;
+  color: var(--gold-2);
+}
+
+.pool-amount {
+  font-family: 'Cinzel', serif;
+  font-size: 1.15rem;
+  font-weight: 900;
+  color: #fff;
+  text-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
+}
+
+.vault-stage {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.vault-safe-door {
+  width: min(60vh, 480px);
+  height: min(60vh, 480px);
+  background: radial-gradient(circle, #252833 0%, #0d0f17 90%);
+  border: 12px solid #3a3f52;
+  border-radius: 50%;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.9), inset 0 0 30px rgba(0,0,0,0.9);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  position: relative;
+}
+
+.vault-dial-frame {
+  background: #000;
+  border: 2px solid var(--gold-2);
+  border-radius: 12px;
+  padding: 8px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 12px;
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+}
+
+.vault-screen {
+  font-family: 'Cinzel', serif;
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: var(--gold-2);
+  letter-spacing: 6px;
+}
+
+.vault-hints {
+  display: flex;
+  gap: 12px;
+  margin-top: 4px;
+}
+
+.hint-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #333;
+  border: 1px solid #555;
+  transition: all 0.3s;
+}
+
+.hint-dot.exact { background: var(--neon-green); box-shadow: 0 0 10px var(--neon-green); }
+.hint-dot.near  { background: var(--neon-yellow); box-shadow: 0 0 10px var(--neon-yellow); }
+.hint-dot.miss  { background: #555; }
+
+.keypad-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  width: 220px;
+}
+
+.key-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 900;
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.15s;
+}
+
+.key-btn:hover { background: rgba(255, 215, 0, 0.3); border-color: var(--gold-2); }
+.key-clear { background: rgba(255, 42, 85, 0.2); border-color: #ff2a55; }
+.key-enter { background: var(--gold-grad); color: #000; font-size: 0.75rem; }
+
+/* VIEW 5: PLINKO ROYALE */
+.plinko-stage {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.plinko-board-casing {
+  width: min(65vh, 480px);
+  height: min(65vh, 480px);
+  background: radial-gradient(circle at 50% 30%, #151a2e 0%, #080a12 85%);
+  border: 6px solid #cca000;
+  border-radius: 20px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.9), inset 0 0 25px rgba(255, 215, 0, 0.15);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+#plinkoCanvas {
+  width: 100%;
+  height: 100%;
+}
+
+/* ==========================================================
+   VEGAS WINNER & SHOWCASE MODAL
+========================================================== */
+.winner-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(12px);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeInModal 0.25s ease-out;
+}
+
+.winner-modal-overlay.hidden { display: none; }
+
+@keyframes fadeInModal {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.winner-card {
+  position: relative;
+  background: var(--panel-bg);
+  border: 2px solid var(--gold-2);
+  border-radius: 24px;
+  padding: 30px 40px;
+  text-align: center;
+  max-width: 500px;
+  width: 90%;
+  box-shadow: 0 0 50px rgba(255, 215, 0, 0.5);
+  animation: popModal 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes popModal {
+  from { transform: scale(0.85); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.winner-glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 0%, rgba(255, 215, 0, 0.2) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.winner-icon {
+  font-size: 3.5rem;
+  margin-bottom: 8px;
+  filter: drop-shadow(0 4px 12px rgba(255, 215, 0, 0.6));
+}
+
+.winner-player-title {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 900;
+  letter-spacing: 2px;
+  color: var(--gold-2);
+  text-transform: uppercase;
+}
+
+.winner-main-heading {
+  font-family: 'Cinzel', serif;
+  font-size: 1.8rem;
+  font-weight: 900;
+  margin: 6px 0 12px 0;
+  color: #fff;
+}
+
+.winner-badge-box {
+  display: inline-block;
+  background: rgba(255, 215, 0, 0.15);
+  border: 1px solid var(--gold-2);
+  padding: 4px 16px;
+  border-radius: 50px;
+  margin-bottom: 18px;
+}
+
+.modal-multiplier {
+  font-size: 0.85rem;
+  font-weight: 900;
+  color: var(--gold-2);
+}
+
+.winner-payout-box {
+  background: #090c14;
+  border: 2px solid #2ecc71;
+  border-radius: 14px;
+  padding: 12px;
+  margin-bottom: 20px;
+}
+
+.winner-payout-box.loss {
+  border-color: var(--neon-red);
+}
+
+.payout-label {
+  display: block;
+  font-size: 0.65rem;
+  font-weight: 900;
+  color: #8c9bb5;
+  letter-spacing: 1px;
+}
+
+.payout-val {
+  font-family: 'Cinzel', serif;
+  font-size: 1.3rem;
+  font-weight: 900;
+  color: var(--neon-green);
+}
+
+.winner-payout-box.loss .payout-val {
+  color: var(--neon-red);
+}
+
+.modal-close-btn {
+  background: var(--gold-grad);
+  border: none;
+  border-radius: 50px;
+  padding: 12px 35px;
+  font-size: 0.95rem;
+  font-weight: 900;
+  color: #000;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
+  transition: 0.2s;
+}
+
+.modal-close-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 215, 0, 0.7);
+}
+
 /* RESPONSIVENESS */
+@media (max-width: 1050px) {
+  .lobby-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
 @media (max-width: 850px) {
-  .casino-app {
-    height: auto;
-    min-height: 100dvh;
-    overflow-y: auto;
-  }
+  .casino-app { height: auto; min-height: 100dvh; overflow-y: auto; }
   .lobby-grid { grid-template-columns: 1fr; }
-  .game-split {
-    grid-template-columns: 1fr;
-    height: auto;
-  }
-  .wheel-stage, .race-stage, .cups-stage {
-    order: 1;
-    margin: 10px 0;
-  }
+  .game-split { grid-template-columns: 1fr; height: auto; }
+  .wheel-stage, .race-stage, .cups-stage, .vault-stage, .plinko-stage { order: 1; margin: 10px 0; }
   .bet-deck { order: 2; }
 }
