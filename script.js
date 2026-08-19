@@ -24,12 +24,12 @@ function playSound(type, param = 0) {
     const osc = audioCtx.createOscillator();
     const gain = audioCtx.createGain();
     osc.type = "triangle";
-    osc.frequency.setValueAtTime(550 + param * 50, audioCtx.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(250, audioCtx.currentTime + 0.07);
-    gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.07);
+    osc.frequency.setValueAtTime(560 + param * 50, audioCtx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(260, audioCtx.currentTime + 0.08);
+    gain.gain.setValueAtTime(0.35, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.08);
     osc.connect(gain); gain.connect(audioCtx.destination);
-    osc.start(); osc.stop(audioCtx.currentTime + 0.07);
+    osc.start(); osc.stop(audioCtx.currentTime + 0.08);
   }
 
   if (type === "car_crash") {
@@ -37,8 +37,8 @@ function playSound(type, param = 0) {
     const gain = audioCtx.createGain();
     osc.type = "sawtooth";
     osc.frequency.setValueAtTime(950, audioCtx.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(100, audioCtx.currentTime + 0.35);
-    gain.gain.setValueAtTime(0.4, audioCtx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(80, audioCtx.currentTime + 0.35);
+    gain.gain.setValueAtTime(0.45, audioCtx.currentTime);
     gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.35);
     osc.connect(gain); gain.connect(audioCtx.destination);
     osc.start(); osc.stop(audioCtx.currentTime + 0.35);
@@ -229,8 +229,8 @@ function openGame(gameKey) {
     initCupsView();
   } else if (gameKey === "chicken") {
     dealerStatus.innerText = "DE KIP STEEKT OVER";
-    dealerInfo.innerText = "Kies je rijstrook per baan om over te steken!";
-    initChickenGame();
+    dealerInfo.innerText = "Druk op 'SPRING VOORUIT' om een straat over te steken!";
+    setTimeout(initChickenGame, 50);
   } else if (gameKey === "plinko") {
     dealerStatus.innerText = "PLINKO ROYALE";
     dealerInfo.innerText = "Drop de bal voor multipliers";
@@ -634,7 +634,6 @@ function startCupShuffle() {
 
   ballSlot = Math.floor(Math.random() * 3);
 
-  // 1. Toon bal
   for (let i = 0; i < 3; i++) {
     const b = document.getElementById(`ball-${i}`);
     const c = document.getElementById(`cupAsset-${i}`);
@@ -651,13 +650,11 @@ function startCupShuffle() {
   dealerInfo.innerText = `Beker ${ballSlot + 1} heeft de bal!`;
   playSound("win");
 
-  // 2. Sluit beker
   setTimeout(() => {
     document.getElementById(`cupAsset-${ballSlot}`).classList.remove("lifted");
     dealerStatus.innerText = "⚡ VEGAS SPEED SHUFFLE...";
     dealerInfo.innerText = "Focus je ogen op de beker!";
 
-    // 3. Start 14 snelle wissels (inclusief dubbele swaps)
     setTimeout(() => {
       let slots = [0, 1, 2];
       let shufflesLeft = 14;
@@ -685,7 +682,7 @@ function startCupShuffle() {
           dealerStatus.innerText = "WAAR ZIT DE BAL?";
           dealerInfo.innerText = "Klik op één van de 3 bekers om te raden!";
         }
-      }, 190); // Snelle wissel
+      }, 190);
 
     }, 550);
   }, 1000);
@@ -723,25 +720,25 @@ function pickCup(clickedCupId) {
 }
 
 // ==========================================================
-// 🐔 GAME 4: DE KIP STEEKT OVER (ARCADE CROSSY ROAD EXTREME)
+// 🐔 GAME 4: DE KIP STEEKT OVER (LIVE ANIMATED 2D HIGHWAY)
 // ==========================================================
 let chickenBet = 50;
-let chickenLane = 0; // 0 = startveld, 1..8
+let chickenLane = 0; // 0 = startgras onderaan, 1..8 = rijbanen
 let isChickenGameActive = false;
+let isChickenAlive = true;
+let isChickenHopping = false;
+let deadlyLane = 5; // De straat waar de kip zal crashen
 
-const chickenHighwayConfig = [
-  { lane: 1, mult: 1.4, deadPaths: [0] },
-  { lane: 2, mult: 2.0, deadPaths: [2] },
-  { lane: 3, mult: 3.2, deadPaths: [1] },
-  { lane: 4, mult: 5.0, deadPaths: [0] },
-  { lane: 5, mult: 8.5, deadPaths: [2] },
-  { lane: 6, mult: 15.0, deadPaths: [1] },
-  { lane: 7, mult: 30.0, deadPaths: [0] },
-  { lane: 8, mult: 100.0, deadPaths: [1] } // TOP FINISH
-];
+const chickenMultipliers = [1.4, 2.0, 3.2, 5.0, 8.5, 15.0, 30.0, 100.0];
+const chickenCanvas = document.getElementById("chickenCanvas");
+const chickenCtx = chickenCanvas.getContext("2d");
 
-// Per spel worden gevaren willekeurig verdeeld over pad 0, 1 of 2
-let dynamicDeadPaths = [];
+let chickenAnimationId = null;
+let chickenVehicles = [];
+let chickenY = 0;
+let targetChickenY = 0;
+let hopProgress = 1;
+let chickenCrashingCar = null;
 
 function setChickenBet(amt) {
   if (isChickenGameActive) return;
@@ -755,143 +752,181 @@ document.getElementById("chickenBetInput").addEventListener("input", (e) => {
 
 function initChickenGame() {
   isChickenGameActive = false;
+  isChickenAlive = true;
+  isChickenHopping = false;
   chickenLane = 0;
+  chickenCrashingCar = null;
+
   document.getElementById("startChickenBtn").classList.remove("hidden");
+  document.getElementById("hopChickenBtn").classList.add("hidden");
   document.getElementById("cashoutChickenBtn").classList.add("hidden");
   document.getElementById("chickenCurrentCashout").innerText = "0 FICHES";
-  renderChickenHighway();
+
+  resizeChickenCanvas();
+  spawnHighwayVehicles();
+  startChickenAnimationLoop();
 }
 
-function renderChickenHighway() {
-  const container = document.getElementById("chickenHighway");
-  container.innerHTML = "";
+function resizeChickenCanvas() {
+  if (activeGame !== "chicken") return;
+  const rect = chickenCanvas.getBoundingClientRect();
+  const dpr = window.devicePixelRatio || 1;
+  chickenCanvas.width = rect.width * dpr;
+  chickenCanvas.height = rect.height * dpr;
+  chickenCtx.scale(dpr, dpr);
 
-  // Render van Baan 8 (bovenaan) naar Baan 1 (onderaan)
-  for (let l = 8; l >= 1; l--) {
-    const cfg = chickenHighwayConfig[l - 1];
-    const isCurrent = (l === chickenLane + 1) && isChickenGameActive;
-    const isCleared = (l <= chickenLane);
-    const isFinish = (l === 8);
-    const isLocked = (l > chickenLane + 1) || !isChickenGameActive;
+  const h = rect.height;
+  chickenY = h - 25;
+  targetChickenY = chickenY;
+}
 
-    const row = document.createElement("div");
-    row.className = `highway-lane-row ${isCurrent ? 'active-lane' : ''} ${isCleared ? 'cleared-lane' : ''} ${isFinish ? 'finish-golden-lane' : ''} ${isLocked ? 'locked-lane' : ''}`;
-    row.id = `highwayLaneRow-${l}`;
+window.addEventListener("resize", () => {
+  if (activeGame === "chicken") resizeChickenCanvas();
+});
 
-    row.innerHTML = `
-      <span class="lane-num-badge">BAAN ${l}</span>
-      <div class="lane-tiles-group">
-        <button class="chicken-path-tile" id="cTile-${l}-0" onclick="chooseChickenLanePath(${l}, 0)">◀</button>
-        <button class="chicken-path-tile" id="cTile-${l}-1" onclick="chooseChickenLanePath(${l}, 1)">●</button>
-        <button class="chicken-path-tile" id="cTile-${l}-2" onclick="chooseChickenLanePath(${l}, 2)">▶</button>
-      </div>
-      <span class="lane-mult-tag">${cfg.mult}x</span>
-    `;
+function spawnHighwayVehicles() {
+  chickenVehicles = [];
+  const rect = chickenCanvas.getBoundingClientRect();
+  const w = rect.width || 480;
+  const h = rect.height || 480;
+  const laneHeight = (h - 70) / 8;
 
-    container.appendChild(row);
+  const carIcons = ["🏎️", "🚗", "🚕", "🚙", "🚌", "🚛", "🚓", "🚜"];
+
+  for (let l = 1; l <= 8; l++) {
+    const laneY = (h - 45) - (l * laneHeight) + (laneHeight / 2);
+    const dir = (l % 2 === 0) ? 1 : -1;
+    const speed = (1.5 + (l * 0.35) + Math.random() * 0.8) * dir;
+
+    // 2 auto's per baan
+    chickenVehicles.push({
+      lane: l,
+      x: Math.random() * w,
+      y: laneY,
+      speed: speed,
+      icon: carIcons[l - 1],
+      width: 40
+    });
+
+    chickenVehicles.push({
+      lane: l,
+      x: (Math.random() * w + w / 2) % w,
+      y: laneY,
+      speed: speed,
+      icon: carIcons[(l + 2) % carIcons.length],
+      width: 40
+    });
   }
 }
 
 function startChickenGame() {
   isChickenGameActive = true;
+  isChickenAlive = true;
+  isChickenHopping = false;
   chickenLane = 0;
+  chickenCrashingCar = null;
 
-  // Genereer voor elke baan 1 gevaarlijke rijstrook (0, 1 of 2)
-  dynamicDeadPaths = [];
-  for (let i = 0; i < 8; i++) {
-    dynamicDeadPaths.push(Math.floor(Math.random() * 3));
-  }
+  // Bepaal de fatale straat (tussen baan 2 en 8)
+  deadlyLane = Math.floor(Math.random() * 7) + 2;
 
   document.getElementById("startChickenBtn").classList.add("hidden");
+  document.getElementById("hopChickenBtn").classList.remove("hidden");
   document.getElementById("cashoutChickenBtn").classList.add("hidden");
   document.getElementById("chickenCurrentCashout").innerText = `${chickenBet} FICHES`;
 
   dealerStatus.innerText = "🐔 KIP IS GESTART!";
-  dealerInfo.innerText = "Klik op ◀, ● of ▶ op Baan 1 om over te steken!";
+  dealerInfo.innerText = "Druk op 'SPRING VOORUIT' om straat voor straat over te steken!";
   playSound("whoosh");
-  renderChickenHighway();
 }
 
-function chooseChickenLanePath(laneNum, pathIdx) {
-  if (!isChickenGameActive || laneNum !== chickenLane + 1) return;
+function hopChickenForward() {
+  if (!isChickenGameActive || !isChickenAlive || isChickenHopping) return;
 
-  const deadPathIdx = dynamicDeadPaths[laneNum - 1];
-  const clickedTile = document.getElementById(`cTile-${laneNum}-${pathIdx}`);
+  isChickenHopping = true;
+  const nextLane = chickenLane + 1;
+  const rect = chickenCanvas.getBoundingClientRect();
+  const h = rect.height;
+  const laneHeight = (h - 70) / 8;
 
-  if (pathIdx === deadPathIdx) {
-    // 💥 AANGEREDEN! GEROOSTERDE KIP!
-    clickedTile.innerText = "🍗";
-    clickedTile.classList.add("has-crash");
-    playSound("car_crash");
+  const startY = (h - 25) - (chickenLane * laneHeight);
+  targetChickenY = (h - 25) - (nextLane * laneHeight);
+  hopProgress = 0;
 
-    // Toon auto op de gecrashte strook
-    for (let i = 0; i < 3; i++) {
-      if (i === deadPathIdx) {
-        document.getElementById(`cTile-${laneNum}-${i}`).innerText = "🚗💥";
+  const isDoomed = (nextLane >= deadlyLane);
+
+  playSound("chicken_hop", nextLane);
+
+  const hopInterval = setInterval(() => {
+    hopProgress += 0.12;
+    if (hopProgress >= 1) {
+      hopProgress = 1;
+      clearInterval(hopInterval);
+      isChickenHopping = false;
+      chickenLane = nextLane;
+
+      if (isDoomed) {
+        // 💥 GECRASHT DOOR EEN AUTO!
+        isChickenAlive = false;
+        isChickenGameActive = false;
+        playSound("car_crash");
+
+        document.getElementById("hopChickenBtn").classList.add("hidden");
+        document.getElementById("cashoutChickenBtn").classList.add("hidden");
+        document.getElementById("startChickenBtn").classList.remove("hidden");
+        document.getElementById("chickenCurrentCashout").innerText = "0 FICHES";
+
+        setTimeout(() => {
+          openWinnerModal({
+            icon: "🍗",
+            heading: "AANGEREDEN DOOR VERKEER!",
+            multiplierTag: `GEROOSTERD OP STRAAT ${nextLane}`,
+            payoutText: `NEEM INZET VAN ${chickenBet} FICHES IN`,
+            isLoss: true
+          });
+        }, 600);
+
       } else {
-        document.getElementById(`cTile-${laneNum}-${i}`).innerText = "🌱";
+        // ✅ VEILIG GELAND!
+        const currentMult = chickenMultipliers[chickenLane - 1];
+        const currentVal = Math.round(chickenBet * currentMult);
+        document.getElementById("chickenCurrentCashout").innerText = `${currentVal} FICHES (${currentMult}x)`;
+        document.getElementById("cashoutChickenBtn").classList.remove("hidden");
+
+        if (chickenLane === 8) {
+          // 🏆 GOUDEN EI BEREIKT! 100X MULTIPLIER!
+          isChickenGameActive = false;
+          document.getElementById("hopChickenBtn").classList.add("hidden");
+          document.getElementById("cashoutChickenBtn").classList.add("hidden");
+          document.getElementById("startChickenBtn").classList.remove("hidden");
+
+          setTimeout(() => {
+            openWinnerModal({
+              icon: "👑",
+              heading: "GOUDEN EI BEREIKT! 100X WINST!",
+              multiplierTag: "100X GRAND JACKPOT!",
+              payoutText: `BETAAL DE HOOFDPRIJS VAN ${currentVal} FICHES UIT!`,
+              isGrand: true
+            });
+          }, 500);
+
+        } else {
+          dealerStatus.innerText = `🐔 STRAAT ${chickenLane} VEILIG OVERGESTOKEN!`;
+          dealerInfo.innerText = `Waarde nu: ${currentVal} fiches. Cash out of waag de volgende straat!`;
+        }
       }
     }
-
-    isChickenGameActive = false;
-    document.getElementById("cashoutChickenBtn").classList.add("hidden");
-    document.getElementById("startChickenBtn").classList.remove("hidden");
-    document.getElementById("chickenCurrentCashout").innerText = "0 FICHES";
-
-    setTimeout(() => {
-      openWinnerModal({
-        icon: "🍗",
-        heading: "AANGEREDEN DOOR VERKEER!",
-        multiplierTag: `GEROOSTERD OP BAAN ${laneNum}`,
-        payoutText: `NEEM INZET VAN ${chickenBet} FICHES IN`,
-        isLoss: true
-      });
-    }, 600);
-
-  } else {
-    // 🐔 SUCCESVOL OVERGESTOKEN!
-    clickedTile.innerText = "🐔";
-    clickedTile.classList.add("has-chicken");
-    playSound("chicken_hop", laneNum);
-
-    chickenLane = laneNum;
-    const currentMult = chickenHighwayConfig[chickenLane - 1].mult;
-    const currentVal = Math.round(chickenBet * currentMult);
-    document.getElementById("chickenCurrentCashout").innerText = `${currentVal} FICHES (${currentMult}x)`;
-    document.getElementById("cashoutChickenBtn").classList.remove("hidden");
-
-    if (chickenLane === 8) {
-      // 🏆 GOUDEN EI BEREIKT! 100X GRAND JACKPOT!
-      isChickenGameActive = false;
-      document.getElementById("cashoutChickenBtn").classList.add("hidden");
-      document.getElementById("startChickenBtn").classList.remove("hidden");
-
-      setTimeout(() => {
-        openWinnerModal({
-          icon: "👑",
-          heading: "GOUDEN EI BEREIKT! 100X WINST!",
-          multiplierTag: "100X GRAND JACKPOT!",
-          payoutText: `BETAAL DE HOOFDPRIJS VAN ${currentVal} FICHES UIT!`,
-          isGrand: true
-        });
-      }, 500);
-
-    } else {
-      dealerStatus.innerText = `🐔 BAAN ${chickenLane} VEILIG OVERGESTOKEN!`;
-      dealerInfo.innerText = `Waarde nu: ${currentVal} fiches. Cash out of kies Baan ${chickenLane + 1}!`;
-      renderChickenHighway();
-    }
-  }
+  }, 20);
 }
 
 function cashoutChicken() {
   if (!isChickenGameActive || chickenLane === 0) return;
 
-  const currentMult = chickenHighwayConfig[chickenLane - 1].mult;
+  const currentMult = chickenMultipliers[chickenLane - 1];
   const payout = Math.round(chickenBet * currentMult);
   const profit = payout - chickenBet;
 
   isChickenGameActive = false;
+  document.getElementById("hopChickenBtn").classList.add("hidden");
   document.getElementById("cashoutChickenBtn").classList.add("hidden");
   document.getElementById("startChickenBtn").classList.remove("hidden");
   document.getElementById("chickenCurrentCashout").innerText = "0 FICHES";
@@ -905,6 +940,125 @@ function cashoutChicken() {
   });
 
   initChickenGame();
+}
+
+function startChickenAnimationLoop() {
+  if (chickenAnimationId) cancelAnimationFrame(chickenAnimationId);
+
+  function renderLoop() {
+    if (activeGame === "chicken") {
+      drawChickenHighwayFrame();
+    }
+    chickenAnimationId = requestAnimationFrame(renderLoop);
+  }
+  chickenAnimationId = requestAnimationFrame(renderLoop);
+}
+
+function drawChickenHighwayFrame() {
+  const rect = chickenCanvas.getBoundingClientRect();
+  const w = rect.width;
+  const h = rect.height;
+  if (!w || !h) return;
+
+  chickenCtx.clearRect(0, 0, w, h);
+
+  const laneHeight = (h - 70) / 8;
+
+  // 1. Finish Grass Zone (Top)
+  chickenCtx.fillStyle = "#1e7e34";
+  chickenCtx.fillRect(0, 0, w, 35);
+  chickenCtx.fillStyle = "#ffd700";
+  chickenCtx.font = "900 13px 'Cinzel', serif";
+  chickenCtx.textAlign = "center";
+  chickenCtx.fillText("🏆 GOUDEN EI FINISH (100X)", w / 2, 22);
+
+  // 2. Start Grass Zone (Bottom)
+  chickenCtx.fillStyle = "#28a745";
+  chickenCtx.fillRect(0, h - 35, w, 35);
+  chickenCtx.fillStyle = "#ffffff";
+  chickenCtx.font = "800 11px Montserrat";
+  chickenCtx.textAlign = "center";
+  chickenCtx.fillText("STARTZONE (VEILIG)", w / 2, h - 12);
+
+  // 3. 8 Asfalt Rijbanen
+  for (let l = 1; l <= 8; l++) {
+    const laneY = (h - 35) - (l * laneHeight);
+    chickenCtx.fillStyle = (l % 2 === 0) ? "#222631" : "#1a1e27";
+    chickenCtx.fillRect(0, laneY, w, laneHeight);
+
+    // Witte wegstrepen
+    chickenCtx.strokeStyle = "rgba(255, 255, 255, 0.25)";
+    chickenCtx.lineWidth = 2;
+    chickenCtx.setLineDash([12, 12]);
+    chickenCtx.beginPath();
+    chickenCtx.moveTo(0, laneY);
+    chickenCtx.lineTo(w, laneY);
+    chickenCtx.stroke();
+    chickenCtx.setLineDash([]);
+
+    // Multiplier label aan de zijkant
+    chickenCtx.fillStyle = "rgba(255, 215, 0, 0.7)";
+    chickenCtx.font = "900 11px Montserrat";
+    chickenCtx.textAlign = "right";
+    chickenCtx.fillText(`${chickenMultipliers[l - 1]}x`, w - 8, laneY + laneHeight / 2 + 4);
+  }
+
+  // 4. Update & Render Auto's
+  chickenVehicles.forEach(v => {
+    v.x += v.speed;
+    if (v.speed > 0 && v.x > w + 40) v.x = -40;
+    if (v.speed < 0 && v.x < -40) v.x = w + 40;
+
+    chickenCtx.font = "24px sans-serif";
+    chickenCtx.textAlign = "center";
+    chickenCtx.textBaseline = "middle";
+
+    // Auto koplampen effect
+    if (v.speed > 0) {
+      chickenCtx.fillStyle = "rgba(255, 255, 200, 0.15)";
+      chickenCtx.beginPath();
+      chickenCtx.moveTo(v.x + 15, v.y);
+      chickenCtx.lineTo(v.x + 70, v.y - 12);
+      chickenCtx.lineTo(v.x + 70, v.y + 12);
+      chickenCtx.fill();
+    } else {
+      chickenCtx.fillStyle = "rgba(255, 255, 200, 0.15)";
+      chickenCtx.beginPath();
+      chickenCtx.moveTo(v.x - 15, v.y);
+      chickenCtx.lineTo(v.x - 70, v.y - 12);
+      chickenCtx.lineTo(v.x - 70, v.y + 12);
+      chickenCtx.fill();
+    }
+
+    chickenCtx.fillText(v.icon, v.x, v.y);
+  });
+
+  // 5. Render de Kip
+  let curY = targetChickenY;
+  if (isChickenHopping) {
+    const prevY = (h - 25) - ((chickenLane) * laneHeight);
+    const hopArc = Math.sin(hopProgress * Math.PI) * 16; // Boog omhoog
+    curY = prevY + (targetChickenY - prevY) * hopProgress - hopArc;
+  } else {
+    curY = (h - 25) - (chickenLane * laneHeight);
+  }
+
+  chickenCtx.font = isChickenAlive ? "28px sans-serif" : "32px sans-serif";
+  chickenCtx.textAlign = "center";
+  chickenCtx.textBaseline = "middle";
+
+  if (isChickenAlive) {
+    // Schaduw onder kip
+    chickenCtx.fillStyle = "rgba(0,0,0,0.4)";
+    chickenCtx.beginPath();
+    chickenCtx.ellipse(w / 2, curY + 12, 10, 4, 0, 0, Math.PI * 2);
+    chickenCtx.fill();
+
+    chickenCtx.fillText("🐔", w / 2, curY);
+  } else {
+    // Geroosterde kip & crash effect
+    chickenCtx.fillText("🍗💥", w / 2, curY);
+  }
 }
 
 // ==========================================================
