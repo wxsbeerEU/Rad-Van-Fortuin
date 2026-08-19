@@ -3,15 +3,20 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>👑 GRAND CASINO ROYALE - 5-in-1 Suite</title>
+  <title>👑 GRAND CASINO ROYALE - Master Arcade Suite</title>
   <!-- Google Fonts & Confetti CDN -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Montserrat:wght@500;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@700;900&family=Montserrat:wght@500;700;800;900&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <!-- Achtergrond Spotlights & Gouden Stofdeeltjes -->
+  <canvas id="ambientParticlesCanvas"></canvas>
+  <div class="spotlight spot-1"></div>
+  <div class="spotlight spot-2"></div>
+
   <div class="casino-app">
     
     <!-- Top Navigation Bar -->
@@ -23,8 +28,8 @@
         <div class="brand">
           <span class="crown">👑</span>
           <div class="brand-title">
-            <h1 id="appTitle">CASINO ROYALE</h1>
-            <span class="edition-badge">KAMP HIGH-ROLLER 5-IN-1</span>
+            <h1 id="appTitle">GRAND CASINO</h1>
+            <span class="edition-badge">KAMP MASTER SUITE 5-IN-1</span>
           </div>
         </div>
       </div>
@@ -53,50 +58,50 @@
           
           <!-- Card 1: Rad van Fortuin -->
           <div class="lobby-card" onclick="openGame('wheel')">
-            <div class="card-glow"></div>
+            <div class="card-neon-border"></div>
             <div class="card-icon">🎡</div>
             <h2>RAD VAN FORTUIN</h2>
-            <p>Draai voor 10x vermenigvuldigers, fiches of maffe kampopdrachten!</p>
-            <div class="card-tag">HIGH MULTIPLIER</div>
+            <p>Draai voor 10x multipliers, fiches of maffe kampopdrachten!</p>
+            <div class="card-tag">MEGA MULTIPLIERS</div>
             <button class="play-btn">SPEEL RAD ▶</button>
           </div>
 
           <!-- Card 2: Paardenrace -->
           <div class="lobby-card" onclick="openGame('race')">
-            <div class="card-glow"></div>
+            <div class="card-neon-border"></div>
             <div class="card-icon">🐎</div>
             <h2>PAARDENRACE</h2>
-            <p>Zet in op kamp-paarden met dynamische odds en live commentaar!</p>
+            <p>Live derby met dynamische commentaren, odds en fotofinish!</p>
             <div class="card-tag">LIVE DERBY</div>
             <button class="play-btn">NAAR DE BAAN ▶</button>
           </div>
 
           <!-- Card 3: Bekers & Bal -->
           <div class="lobby-card" onclick="openGame('cups')">
-            <div class="card-glow"></div>
+            <div class="card-neon-border"></div>
             <div class="card-icon">🎪</div>
-            <h2>3 BEKERS & BAL</h2>
-            <p>Volg de beker met de bal tijdens het schudden en win 3× je inzet!</p>
+            <h2>3 GOUDEN BEKERS</h2>
+            <p>Volg de beker met de bal tijdens het schudden en pak 3× winst!</p>
             <div class="card-tag">3X WINST</div>
-            <button class="play-btn">KIES EEN BEKER ▶</button>
+            <button class="play-btn">KIES BEKER ▶</button>
           </div>
 
           <!-- Card 4: Kraak de Kluis -->
           <div class="lobby-card" onclick="openGame('vault')">
-            <div class="card-glow"></div>
+            <div class="card-neon-border"></div>
             <div class="card-icon">🗄️</div>
             <h2>KRAAK DE KLUIS</h2>
-            <p>Kraak de geheime 3-cijferige kluiscode via Mastermind-hints!</p>
+            <p>Kraak de 3-cijferige kluiscode via Mastermind laser-hints!</p>
             <div class="card-tag">JACKPOT POOL</div>
-            <button class="play-btn">KRAAK DE KLUIS ▶</button>
+            <button class="play-btn">KRAAK KLUIS ▶</button>
           </div>
 
           <!-- Card 5: Plinko Royale -->
           <div class="lobby-card" onclick="openGame('plinko')">
-            <div class="card-glow"></div>
+            <div class="card-neon-border"></div>
             <div class="card-icon">⚡</div>
             <h2>PLINKO ROYALE</h2>
-            <p>Drop de gouden fiche door de pinnen en raak de 25× jackpot slot!</p>
+            <p>Drop de bal door de pinnen en raak de 25× jackpot slot!</p>
             <div class="card-tag">TOT 25X WINST</div>
             <button class="play-btn">DROP FICHE ▶</button>
           </div>
@@ -140,17 +145,20 @@
             </div>
           </aside>
           <main class="wheel-stage">
-            <div class="wheel-mount">
-              <div class="wheel-flipper">
-                <div class="flipper-head"></div>
-                <div class="flipper-point" id="wheelNeedle"></div>
+            <div class="wheel-casing-frame">
+              <div class="led-bulb-ring" id="wheelLedRing"></div>
+              <div class="wheel-mount">
+                <div class="wheel-flipper">
+                  <div class="flipper-head"></div>
+                  <div class="flipper-point" id="wheelNeedle"></div>
+                </div>
+                <canvas id="wheelCanvas"></canvas>
+                <div class="wheel-center-gem">★</div>
               </div>
-              <canvas id="wheelCanvas"></canvas>
-              <div class="wheel-center-gem">★</div>
             </div>
             <button id="wheelSpinBtn" class="gold-action-btn" onclick="spinWheel()">
               <span class="btn-shine"></span>
-              <span class="btn-txt">DRAAI HET RAD!</span>
+              <span class="btn-txt">DRAAI HET RAD! 🎡</span>
             </button>
           </main>
         </div>
@@ -188,6 +196,9 @@
             </div>
           </aside>
           <main class="race-stage">
+            <div class="race-commentary-bar" id="raceCommentary">
+              🎙️ DERBY ARENA: PLAATS JE INZET VOOR DE START!
+            </div>
             <div class="track-casing" id="raceTrack">
               <div class="track-finish-line"><div class="finish-badge">FINISH</div></div>
               <div class="track-lanes" id="trackLanes"></div>
@@ -222,7 +233,7 @@
               </div>
               <div class="instruction-box">
                 <div class="inst-head">💡 REGELS:</div>
-                <p>1. Onthoud waar de bal begint.<br>2. De bekers zakken en schudden over het vilt.<br>3. Klik op een beker om te raden!</p>
+                <p>1. Onthoud waar de bal start.<br>2. De bekers zakken en glijden soepel over het vilt.<br>3. Klik op een beker om te onthullen!</p>
               </div>
               <button id="shuffleCupsBtn" class="gold-action-btn w-full" onclick="startCupShuffle()">
                 <span class="btn-shine"></span>
@@ -284,12 +295,14 @@
               </div>
               <div class="instruction-box">
                 <div class="inst-head">💡 MASTERMIND HINTS:</div>
-                <p>🟩 <strong>Groen:</strong> Cijfer klopt exact op zijn plek.<br>🟨 <strong>Geel:</strong> Cijfer zit in code, maar andere plek.<br>⬛ <strong>Grijs:</strong> Cijfer zit niet in code.</p>
+                <p>🟩 <strong>Groen:</strong> Cijfer klopt exact op zijn plek.<br>🟨 <strong>Geel:</strong> Cijfer zit in code, andere plek.<br>⬛ <strong>Grijs:</strong> Cijfer zit niet in code.</p>
               </div>
             </div>
           </aside>
           <main class="vault-stage">
             <div class="vault-safe-door">
+              <div class="vault-bolts top-bolt"></div>
+              <div class="vault-bolts bottom-bolt"></div>
               <div class="vault-dial-frame">
                 <div class="vault-screen" id="vaultPinDisplay">_ _ _</div>
                 <div class="vault-hints" id="vaultHints">
@@ -344,7 +357,7 @@
               </div>
               <div class="instruction-box">
                 <div class="inst-head">🎯 MULTIPLIER SLOTS:</div>
-                <p>Buitenste hoeken geven tot <strong>25× JACKPOT</strong>! Het midden is safe maar lager.</p>
+                <p>Buitenste hoeken geven tot <strong>25× JACKPOT</strong>! Het midden is veiliger.</p>
               </div>
               <button id="dropPlinkoBtn" class="gold-action-btn w-full" onclick="dropPlinkoBall()">
                 <span class="btn-shine"></span>
@@ -366,6 +379,7 @@
          VEGAS WINNER & SHOWCASE OVERLAY MODAL
     =========================================== -->
     <div id="winnerModal" class="winner-modal-overlay hidden">
+      <div class="winner-god-rays"></div>
       <div class="winner-card">
         <div class="winner-glow"></div>
         <div class="winner-icon" id="modalIcon">👑</div>
