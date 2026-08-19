@@ -80,12 +80,12 @@
             <button class="play-btn">KIES BEKER ▶</button>
           </div>
 
-          <!-- Card 4: De Kip Steekt Over (Live Arcade) -->
-          <div class="lobby-card card-chicken" onclick="openGame('chicken')">
+          <!-- Card 4: De Kip Steekt Over -->
+          <div class="lobby-card" onclick="openGame('chicken')">
             <div class="card-neon-border"></div>
             <div class="card-icon">🐔</div>
             <h2>KIP STEEKT OVER</h2>
-            <p>Betonblokken beschermen de kip tegen scheurende auto's. Cash out tot 100x!</p>
+            <p>Ontwijk rijdende auto's met betonblok-schilden en cash out tot 100x!</p>
             <div class="card-tag">BETONBLOK SHIELD • 100X</div>
             <button class="play-btn">STEEK OVER ▶</button>
           </div>
@@ -202,7 +202,7 @@
       </section>
 
       <!-- ==========================================
-           VIEW 3: 3 BEKERS & BALLETJE (HARDCORE SPEED)
+           VIEW 3: 3 BEKERS & BALLETJE
       =========================================== -->
       <section id="view-cups" class="game-view">
         <div class="game-split">
@@ -260,7 +260,7 @@
       </section>
 
       <!-- ==========================================
-           VIEW 4: DE KIP STEEKT OVER (BETONBLOK HIGHWAY)
+           VIEW 4: DE KIP STEEKT OVER
       =========================================== -->
       <section id="view-chicken" class="game-view">
         <div class="game-split">
@@ -288,9 +288,10 @@
                 <span class="c-card-val" id="chickenCurrentCashout">0 FICHES</span>
               </div>
               
-              <!-- ÉÉN DUIDELIJKE ACTIEKNOPPEN STACK -->
+              <!-- Action Stack in Vegas Gold / Green Thema -->
               <div class="chicken-action-stack">
-                <button id="hopChickenBtn" class="chicken-hop-btn w-full" onclick="hopChickenForward()">
+                <button id="hopChickenBtn" class="gold-action-btn w-full" onclick="hopChickenForward()">
+                  <span class="btn-shine"></span>
                   <span class="btn-txt">SPRING VOORUIT! 🐔💨</span>
                 </button>
                 <button id="cashoutChickenBtn" class="cashout-action-btn w-full hidden" onclick="cashoutChicken()">
