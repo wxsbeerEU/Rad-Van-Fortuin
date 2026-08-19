@@ -959,11 +959,17 @@ html, body {
   cursor: pointer;
   box-shadow: 0 6px 20px rgba(0, 255, 136, 0.5);
   transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  animation: pulseCashout 1.2s infinite alternate;
 }
 
 .cashout-action-btn:hover {
   transform: translateY(-2px) scale(1.03);
   box-shadow: 0 10px 30px rgba(0, 255, 136, 0.8);
+}
+
+@keyframes pulseCashout {
+  from { box-shadow: 0 0 15px rgba(0, 255, 136, 0.4); }
+  to { box-shadow: 0 0 30px rgba(0, 255, 136, 0.9); }
 }
 
 .cashout-action-btn .btn-txt {
