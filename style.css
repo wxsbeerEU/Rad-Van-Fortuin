@@ -1,0 +1,248 @@
+:root {
+  --gold-gradient: linear-gradient(135deg, #ffe066 0%, #f5af19 50%, #e65c00 100%);
+  --gold-glow: 0 0 25px rgba(245, 175, 25, 0.45);
+  --neon-red: #ff0055;
+  --bg-dark: #0a0b10;
+  --card-bg: rgba(20, 24, 38, 0.85);
+  --border-gold: 2px solid rgba(245, 175, 25, 0.4);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg-dark);
+  font-family: 'Montserrat', sans-serif;
+  color: #fff;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Dynamische achtergrond verlichting */
+.background-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(230, 92, 0, 0.25) 0%, rgba(10, 11, 16, 0) 70%);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.casino-container {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 550px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+/* Header */
+.header {
+  margin-bottom: 20px;
+}
+
+.glow-title {
+  font-family: 'Cinzel', serif;
+  font-size: 2.4rem;
+  font-weight: 900;
+  background: var(--gold-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: var(--gold-glow);
+  letter-spacing: 2px;
+}
+
+.subtitle {
+  font-size: 0.95rem;
+  color: #a0a5b8;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  margin-top: 4px;
+}
+
+/* Dashboard / Scoreborden */
+.dashboard {
+  display: flex;
+  gap: 15px;
+  width: 100%;
+  margin-bottom: 25px;
+}
+
+.card {
+  flex: 1;
+  background: var(--card-bg);
+  border: var(--border-gold);
+  border-radius: 14px;
+  padding: 12px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.card .label {
+  display: block;
+  font-size: 0.75rem;
+  color: #8b92a5;
+  font-weight: 800;
+  letter-spacing: 1px;
+  margin-bottom: 5px;
+}
+
+.value-container {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #ffd700;
+}
+
+.bet-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  font-size: 1.4rem;
+  font-weight: 800;
+}
+
+.bet-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-weight: bold;
+  transition: 0.2s;
+}
+
+.bet-btn:hover {
+  background: #f5af19;
+  color: #000;
+}
+
+/* Het Rad */
+.wheel-wrapper {
+  position: relative;
+  width: 440px;
+  height: 440px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+#wheelCanvas {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.8), var(--gold-glow);
+}
+
+/* Gouden Casino Pijl */
+.pointer-wrapper {
+  position: absolute;
+  top: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+}
+
+.pointer {
+  width: 0;
+  height: 0;
+  border-left: 18px solid transparent;
+  border-right: 18px solid transparent;
+  border-top: 36px solid #ffcc00;
+  filter: drop-shadow(0 4px 10px rgba(0,0,0,0.7));
+  transform-origin: 50% 0%;
+  transition: transform 0.1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Gouden Center Hub */
+.center-hub {
+  position: absolute;
+  width: 64px;
+  height: 64px;
+  background: var(--gold-gradient);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.8), inset 0 0 8px rgba(255, 255, 255, 0.6);
+  border: 3px solid #111;
+  pointer-events: none;
+}
+
+.hub-inner {
+  font-size: 1.5rem;
+  color: #111;
+  font-weight: 900;
+}
+
+/* Spin Knop */
+.spin-button {
+  background: var(--gold-gradient);
+  border: none;
+  border-radius: 50px;
+  padding: 16px 45px;
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: #111;
+  cursor: pointer;
+  letter-spacing: 1px;
+  box-shadow: 0 8px 25px rgba(245, 175, 25, 0.4);
+  transition: all 0.2s cubic-bezier(0.25, 1, 0.5, 1);
+  text-transform: uppercase;
+}
+
+.spin-button:hover:not(:disabled) {
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 12px 30px rgba(245, 175, 25, 0.6);
+}
+
+.spin-button:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.spin-button:disabled {
+  background: #4a4d57;
+  color: #8b92a5;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
+/* Resultaat Bericht */
+.result-message {
+  margin-top: 18px;
+  font-size: 1.25rem;
+  font-weight: 700;
+  min-height: 40px;
+  color: #fff;
+  transition: all 0.3s;
+}
+
+/* Responsive voor mobiele schermen */
+@media (max-width: 480px) {
+  .wheel-wrapper {
+    width: 320px;
+    height: 320px;
+  }
+  .glow-title {
+    font-size: 1.8rem;
+  }
+}
