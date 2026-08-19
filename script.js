@@ -21,26 +21,24 @@ function playSound(type, param = 0) {
   }
 
   if (type === "chicken_hop") {
-    // Tok-tok geluid
     const osc = audioCtx.createOscillator();
     const gain = audioCtx.createGain();
     osc.type = "triangle";
-    osc.frequency.setValueAtTime(600 + param * 40, audioCtx.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(300, audioCtx.currentTime + 0.06);
-    gain.gain.setValueAtTime(0.25, audioCtx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.06);
+    osc.frequency.setValueAtTime(550 + param * 50, audioCtx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(250, audioCtx.currentTime + 0.07);
+    gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.07);
     osc.connect(gain); gain.connect(audioCtx.destination);
-    osc.start(); osc.stop(audioCtx.currentTime + 0.06);
+    osc.start(); osc.stop(audioCtx.currentTime + 0.07);
   }
 
   if (type === "car_crash") {
-    // Piepende banden + crash
     const osc = audioCtx.createOscillator();
     const gain = audioCtx.createGain();
     osc.type = "sawtooth";
-    osc.frequency.setValueAtTime(900, audioCtx.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(120, audioCtx.currentTime + 0.25);
-    gain.gain.setValueAtTime(0.35, audioCtx.currentTime);
+    osc.frequency.setValueAtTime(950, audioCtx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(100, audioCtx.currentTime + 0.35);
+    gain.gain.setValueAtTime(0.4, audioCtx.currentTime);
     gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.35);
     osc.connect(gain); gain.connect(audioCtx.destination);
     osc.start(); osc.stop(audioCtx.currentTime + 0.35);
@@ -75,12 +73,12 @@ function playSound(type, param = 0) {
     const osc = audioCtx.createOscillator();
     const gain = audioCtx.createGain();
     osc.type = "triangle";
-    osc.frequency.setValueAtTime(260, audioCtx.currentTime);
-    osc.frequency.linearRampToValueAtTime(80, audioCtx.currentTime + 0.14);
+    osc.frequency.setValueAtTime(320, audioCtx.currentTime);
+    osc.frequency.linearRampToValueAtTime(90, audioCtx.currentTime + 0.1);
     gain.gain.setValueAtTime(0.25, audioCtx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.14);
+    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
     osc.connect(gain); gain.connect(audioCtx.destination);
-    osc.start(); osc.stop(audioCtx.currentTime + 0.14);
+    osc.start(); osc.stop(audioCtx.currentTime + 0.1);
   }
 
   if (type === "win") {
@@ -231,7 +229,7 @@ function openGame(gameKey) {
     initCupsView();
   } else if (gameKey === "chicken") {
     dealerStatus.innerText = "DE KIP STEEKT OVER";
-    dealerInfo.innerText = "Help de kip oversteken & pak de multipliers!";
+    dealerInfo.innerText = "Kies je rijstrook per baan om over te steken!";
     initChickenGame();
   } else if (gameKey === "plinko") {
     dealerStatus.innerText = "PLINKO ROYALE";
@@ -594,7 +592,7 @@ function startHorseRace() {
 }
 
 // ==========================================================
-// 🎪 GAME 3: 3 GOUDEN BEKERS & BALLETJE
+// 🎪 GAME 3: 3 GOUDEN BEKERS (HARDCORE SPEED MODE)
 // ==========================================================
 let cupsBet = 50;
 let ballSlot = 1;
@@ -636,6 +634,7 @@ function startCupShuffle() {
 
   ballSlot = Math.floor(Math.random() * 3);
 
+  // 1. Toon bal
   for (let i = 0; i < 3; i++) {
     const b = document.getElementById(`ball-${i}`);
     const c = document.getElementById(`cupAsset-${i}`);
@@ -652,14 +651,16 @@ function startCupShuffle() {
   dealerInfo.innerText = `Beker ${ballSlot + 1} heeft de bal!`;
   playSound("win");
 
+  // 2. Sluit beker
   setTimeout(() => {
     document.getElementById(`cupAsset-${ballSlot}`).classList.remove("lifted");
-    dealerStatus.innerText = "BEKERS WORDEN GESCHUD...";
-    dealerInfo.innerText = "Volg de juiste beker!";
+    dealerStatus.innerText = "⚡ VEGAS SPEED SHUFFLE...";
+    dealerInfo.innerText = "Focus je ogen op de beker!";
 
+    // 3. Start 14 snelle wissels (inclusief dubbele swaps)
     setTimeout(() => {
       let slots = [0, 1, 2];
-      let shufflesLeft = 8;
+      let shufflesLeft = 14;
 
       const shuffleTimer = setInterval(() => {
         const i1 = Math.floor(Math.random() * 3);
@@ -684,10 +685,10 @@ function startCupShuffle() {
           dealerStatus.innerText = "WAAR ZIT DE BAL?";
           dealerInfo.innerText = "Klik op één van de 3 bekers om te raden!";
         }
-      }, 340);
+      }, 190); // Snelle wissel
 
-    }, 700);
-  }, 1300);
+    }, 550);
+  }, 1000);
 }
 
 function pickCup(clickedCupId) {
@@ -704,7 +705,7 @@ function pickCup(clickedCupId) {
     openWinnerModal({
       icon: "🎪",
       heading: "JUIST GERADEN!",
-      multiplierTag: "3X TRIPLE WINST",
+      multiplierTag: "3X HARDCORE WINST",
       payoutText: `BETAAL ${win} FICHES UIT (+${profit} winst)`,
       isGrand: false
     });
@@ -722,23 +723,25 @@ function pickCup(clickedCupId) {
 }
 
 // ==========================================================
-// 🐔 GAME 4: DE KIP STEEKT OVER (CHICKEN ROAD CASINO)
+// 🐔 GAME 4: DE KIP STEEKT OVER (ARCADE CROSSY ROAD EXTREME)
 // ==========================================================
 let chickenBet = 50;
-let chickenLane = 0; // 0 = startveld onderaan, 1..8 = banen
-let isChickenAlive = true;
+let chickenLane = 0; // 0 = startveld, 1..8
 let isChickenGameActive = false;
 
-const chickenLanesConfig = [
-  { lane: 1, mult: 1.3, crashChance: 0.12, icon: "🚗" },
-  { lane: 2, mult: 1.8, crashChance: 0.18, icon: "🚕" },
-  { lane: 3, mult: 2.6, crashChance: 0.24, icon: "🚙" },
-  { lane: 4, mult: 4.0, crashChance: 0.30, icon: "🚌" },
-  { lane: 5, mult: 7.0, crashChance: 0.35, icon: "🚛" },
-  { lane: 6, mult: 15.0, crashChance: 0.40, icon: "🏎️" },
-  { lane: 7, mult: 35.0, crashChance: 0.45, icon: "🚜" },
-  { lane: 8, mult: 100.0, crashChance: 0.50, icon: "🏆 GOUDEN EI" }
+const chickenHighwayConfig = [
+  { lane: 1, mult: 1.4, deadPaths: [0] },
+  { lane: 2, mult: 2.0, deadPaths: [2] },
+  { lane: 3, mult: 3.2, deadPaths: [1] },
+  { lane: 4, mult: 5.0, deadPaths: [0] },
+  { lane: 5, mult: 8.5, deadPaths: [2] },
+  { lane: 6, mult: 15.0, deadPaths: [1] },
+  { lane: 7, mult: 30.0, deadPaths: [0] },
+  { lane: 8, mult: 100.0, deadPaths: [1] } // TOP FINISH
 ];
+
+// Per spel worden gevaren willekeurig verdeeld over pad 0, 1 of 2
+let dynamicDeadPaths = [];
 
 function setChickenBet(amt) {
   if (isChickenGameActive) return;
@@ -753,9 +756,7 @@ document.getElementById("chickenBetInput").addEventListener("input", (e) => {
 function initChickenGame() {
   isChickenGameActive = false;
   chickenLane = 0;
-  isChickenAlive = true;
   document.getElementById("startChickenBtn").classList.remove("hidden");
-  document.getElementById("stepChickenBtn").classList.add("hidden");
   document.getElementById("cashoutChickenBtn").classList.add("hidden");
   document.getElementById("chickenCurrentCashout").innerText = "0 FICHES";
   renderChickenHighway();
@@ -765,29 +766,25 @@ function renderChickenHighway() {
   const container = document.getElementById("chickenHighway");
   container.innerHTML = "";
 
-  // Render van boven naar beneden (Baan 8 Finish bovenaan, Baan 1 onderaan)
+  // Render van Baan 8 (bovenaan) naar Baan 1 (onderaan)
   for (let l = 8; l >= 1; l--) {
-    const cfg = chickenLanesConfig[l - 1];
-    const isCurrent = (l === chickenLane);
+    const cfg = chickenHighwayConfig[l - 1];
+    const isCurrent = (l === chickenLane + 1) && isChickenGameActive;
+    const isCleared = (l <= chickenLane);
     const isFinish = (l === 8);
+    const isLocked = (l > chickenLane + 1) || !isChickenGameActive;
 
     const row = document.createElement("div");
-    row.className = `highway-lane-row ${isCurrent ? 'current-chicken-lane' : ''} ${isFinish ? 'finish-golden-lane' : ''}`;
-    row.id = `highwayLane-${l}`;
-
-    let centerContent = "";
-    if (isCurrent) {
-      centerContent = `<span class="chicken-sprite">${isChickenAlive ? '🐔' : '🍗💥'}</span>`;
-    } else {
-      centerContent = `
-        <span class="car-obstacle-sprite car-left">${cfg.icon}</span>
-        <span class="car-obstacle-sprite car-right">${cfg.icon}</span>
-      `;
-    }
+    row.className = `highway-lane-row ${isCurrent ? 'active-lane' : ''} ${isCleared ? 'cleared-lane' : ''} ${isFinish ? 'finish-golden-lane' : ''} ${isLocked ? 'locked-lane' : ''}`;
+    row.id = `highwayLaneRow-${l}`;
 
     row.innerHTML = `
       <span class="lane-num-badge">BAAN ${l}</span>
-      <div class="lane-center-track">${centerContent}</div>
+      <div class="lane-tiles-group">
+        <button class="chicken-path-tile" id="cTile-${l}-0" onclick="chooseChickenLanePath(${l}, 0)">◀</button>
+        <button class="chicken-path-tile" id="cTile-${l}-1" onclick="chooseChickenLanePath(${l}, 1)">●</button>
+        <button class="chicken-path-tile" id="cTile-${l}-2" onclick="chooseChickenLanePath(${l}, 2)">▶</button>
+      </div>
       <span class="lane-mult-tag">${cfg.mult}x</span>
     `;
 
@@ -798,37 +795,45 @@ function renderChickenHighway() {
 function startChickenGame() {
   isChickenGameActive = true;
   chickenLane = 0;
-  isChickenAlive = true;
+
+  // Genereer voor elke baan 1 gevaarlijke rijstrook (0, 1 of 2)
+  dynamicDeadPaths = [];
+  for (let i = 0; i < 8; i++) {
+    dynamicDeadPaths.push(Math.floor(Math.random() * 3));
+  }
 
   document.getElementById("startChickenBtn").classList.add("hidden");
-  document.getElementById("stepChickenBtn").classList.remove("hidden");
   document.getElementById("cashoutChickenBtn").classList.add("hidden");
   document.getElementById("chickenCurrentCashout").innerText = `${chickenBet} FICHES`;
 
-  dealerStatus.innerText = "🐔 KIP STAAT KLAAR BIJ DE SNELWEG!";
-  dealerInfo.innerText = "Druk op 'STEEK BAAN OVER' om te springen!";
+  dealerStatus.innerText = "🐔 KIP IS GESTART!";
+  dealerInfo.innerText = "Klik op ◀, ● of ▶ op Baan 1 om over te steken!";
   playSound("whoosh");
   renderChickenHighway();
 }
 
-function stepChicken() {
-  if (!isChickenGameActive || !isChickenAlive) return;
+function chooseChickenLanePath(laneNum, pathIdx) {
+  if (!isChickenGameActive || laneNum !== chickenLane + 1) return;
 
-  const nextLane = chickenLane + 1;
-  const cfg = chickenLanesConfig[nextLane - 1];
+  const deadPathIdx = dynamicDeadPaths[laneNum - 1];
+  const clickedTile = document.getElementById(`cTile-${laneNum}-${pathIdx}`);
 
-  // Kansberekening voor botsing
-  const isCrashed = Math.random() < cfg.crashChance;
-
-  if (isCrashed) {
-    // 💥 GEROOSTERDE KIP! CRASH!
-    chickenLane = nextLane;
-    isChickenAlive = false;
-    isChickenGameActive = false;
-    renderChickenHighway();
-
+  if (pathIdx === deadPathIdx) {
+    // 💥 AANGEREDEN! GEROOSTERDE KIP!
+    clickedTile.innerText = "🍗";
+    clickedTile.classList.add("has-crash");
     playSound("car_crash");
-    document.getElementById("stepChickenBtn").classList.add("hidden");
+
+    // Toon auto op de gecrashte strook
+    for (let i = 0; i < 3; i++) {
+      if (i === deadPathIdx) {
+        document.getElementById(`cTile-${laneNum}-${i}`).innerText = "🚗💥";
+      } else {
+        document.getElementById(`cTile-${laneNum}-${i}`).innerText = "🌱";
+      }
+    }
+
+    isChickenGameActive = false;
     document.getElementById("cashoutChickenBtn").classList.add("hidden");
     document.getElementById("startChickenBtn").classList.remove("hidden");
     document.getElementById("chickenCurrentCashout").innerText = "0 FICHES";
@@ -836,34 +841,34 @@ function stepChicken() {
     setTimeout(() => {
       openWinnerModal({
         icon: "🍗",
-        heading: "AAN GEREDEN! GEROOSTERDE KIP!",
-        multiplierTag: `GEPLET OP BAAN ${nextLane}`,
+        heading: "AANGEREDEN DOOR VERKEER!",
+        multiplierTag: `GEROOSTERD OP BAAN ${laneNum}`,
         payoutText: `NEEM INZET VAN ${chickenBet} FICHES IN`,
         isLoss: true
       });
-    }, 500);
+    }, 600);
 
   } else {
     // 🐔 SUCCESVOL OVERGESTOKEN!
-    chickenLane = nextLane;
-    playSound("chicken_hop", chickenLane);
+    clickedTile.innerText = "🐔";
+    clickedTile.classList.add("has-chicken");
+    playSound("chicken_hop", laneNum);
 
-    const currentVal = Math.round(chickenBet * cfg.mult);
-    document.getElementById("chickenCurrentCashout").innerText = `${currentVal} FICHES (${cfg.mult}x)`;
+    chickenLane = laneNum;
+    const currentMult = chickenHighwayConfig[chickenLane - 1].mult;
+    const currentVal = Math.round(chickenBet * currentMult);
+    document.getElementById("chickenCurrentCashout").innerText = `${currentVal} FICHES (${currentMult}x)`;
     document.getElementById("cashoutChickenBtn").classList.remove("hidden");
 
-    renderChickenHighway();
-
     if (chickenLane === 8) {
-      // 🏆 GOUDEN EI BEREIKT! 100X MULTIPLIER!
+      // 🏆 GOUDEN EI BEREIKT! 100X GRAND JACKPOT!
       isChickenGameActive = false;
-      document.getElementById("stepChickenBtn").classList.add("hidden");
       document.getElementById("cashoutChickenBtn").classList.add("hidden");
       document.getElementById("startChickenBtn").classList.remove("hidden");
 
       setTimeout(() => {
         openWinnerModal({
-          icon: "🏆",
+          icon: "👑",
           heading: "GOUDEN EI BEREIKT! 100X WINST!",
           multiplierTag: "100X GRAND JACKPOT!",
           payoutText: `BETAAL DE HOOFDPRIJS VAN ${currentVal} FICHES UIT!`,
@@ -873,7 +878,8 @@ function stepChicken() {
 
     } else {
       dealerStatus.innerText = `🐔 BAAN ${chickenLane} VEILIG OVERGESTOKEN!`;
-      dealerInfo.innerText = `Waarde nu: ${currentVal} fiches. Cash out of spring naar Baan ${chickenLane + 1}!`;
+      dealerInfo.innerText = `Waarde nu: ${currentVal} fiches. Cash out of kies Baan ${chickenLane + 1}!`;
+      renderChickenHighway();
     }
   }
 }
@@ -881,12 +887,11 @@ function stepChicken() {
 function cashoutChicken() {
   if (!isChickenGameActive || chickenLane === 0) return;
 
-  const currentMult = chickenLanesConfig[chickenLane - 1].mult;
+  const currentMult = chickenHighwayConfig[chickenLane - 1].mult;
   const payout = Math.round(chickenBet * currentMult);
   const profit = payout - chickenBet;
 
   isChickenGameActive = false;
-  document.getElementById("stepChickenBtn").classList.add("hidden");
   document.getElementById("cashoutChickenBtn").classList.add("hidden");
   document.getElementById("startChickenBtn").classList.remove("hidden");
   document.getElementById("chickenCurrentCashout").innerText = "0 FICHES";
@@ -896,7 +901,7 @@ function cashoutChicken() {
     heading: "KIP VEILIG GECASHT!",
     multiplierTag: `${currentMult}X OVERSTEEK WINST`,
     payoutText: `BETAAL ${payout} FICHES UIT (+${profit} winst)`,
-    isGrand: currentMult >= 7.0
+    isGrand: currentMult >= 8.0
   });
 
   initChickenGame();
