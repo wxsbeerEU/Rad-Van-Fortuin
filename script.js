@@ -20,6 +20,33 @@ function playSound(type, param = 0) {
     osc.start(); osc.stop(audioCtx.currentTime + 0.035);
   }
 
+  if (type === "diamond") {
+    const notes = [659.25, 783.99, 1046.50];
+    notes.forEach((freq, idx) => {
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(freq, audioCtx.currentTime + idx * 0.06);
+      gain.gain.setValueAtTime(0.25, audioCtx.currentTime + idx * 0.06);
+      gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + idx * 0.06 + 0.25);
+      osc.connect(gain); gain.connect(audioCtx.destination);
+      osc.start(audioCtx.currentTime + idx * 0.06);
+      osc.stop(audioCtx.currentTime + idx * 0.06 + 0.25);
+    });
+  }
+
+  if (type === "explosion") {
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = "sawtooth";
+    osc.frequency.setValueAtTime(100, audioCtx.currentTime);
+    osc.frequency.linearRampToValueAtTime(30, audioCtx.currentTime + 0.4);
+    gain.gain.setValueAtTime(0.4, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
+    osc.connect(gain); gain.connect(audioCtx.destination);
+    osc.start(); osc.stop(audioCtx.currentTime + 0.4);
+  }
+
   if (type === "peg") {
     const osc = audioCtx.createOscillator();
     const gain = audioCtx.createGain();
@@ -29,17 +56,6 @@ function playSound(type, param = 0) {
     gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.04);
     osc.connect(gain); gain.connect(audioCtx.destination);
     osc.start(); osc.stop(audioCtx.currentTime + 0.04);
-  }
-
-  if (type === "keypad") {
-    const osc = audioCtx.createOscillator();
-    const gain = audioCtx.createGain();
-    osc.type = "sine";
-    osc.frequency.setValueAtTime(800 + param * 90, audioCtx.currentTime);
-    gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.05);
-    osc.connect(gain); gain.connect(audioCtx.destination);
-    osc.start(); osc.stop(audioCtx.currentTime + 0.05);
   }
 
   if (type === "horn") {
@@ -152,15 +168,8 @@ renderAmbientParticles();
 // ==========================================================
 // 🏆 SHOWCASE WINNER MODAL
 // ==========================================================
-function getPlayerName() {
-  return document.getElementById("globalPlayerName").value.trim() || "Speler";
-}
-
 function openWinnerModal(config) {
   const modal = document.getElementById("winnerModal");
-  const pName = getPlayerName();
-
-  document.getElementById("modalPlayerTitle").innerText = `SPELER / TAFEL: ${pName}`;
   document.getElementById("modalIcon").innerText = config.icon || "👑";
   document.getElementById("modalHeading").innerText = config.heading;
   document.getElementById("modalMultiplier").innerText = config.multiplierTag;
@@ -221,10 +230,10 @@ function openGame(gameKey) {
     dealerStatus.innerText = "3 GOUDEN BEKERS";
     dealerInfo.innerText = "Zet in & klik op schudden";
     initCupsView();
-  } else if (gameKey === "vault") {
-    dealerStatus.innerText = "KRAAK DE KLUIS";
-    dealerInfo.innerText = "Toets een 3-cijferige code in";
-    initVaultGame();
+  } else if (gameKey === "mine") {
+    dealerStatus.innerText = "DIAMANTEN MIJN";
+    dealerInfo.innerText = "Zet in & begin de tocht omhoog!";
+    initMineGame();
   } else if (gameKey === "plinko") {
     dealerStatus.innerText = "PLINKO ROYALE";
     dealerInfo.innerText = "Drop de bal voor multipliers";
@@ -284,7 +293,6 @@ function buildWheelLedRing() {
   }
 }
 
-// LED Looplicht
 let ledTick = 0;
 setInterval(() => {
   if (wheelLeds.length === 0) return;
@@ -320,7 +328,6 @@ function drawWheel() {
 
   wheelCtx.clearRect(0, 0, size, size);
 
-  // Rand
   wheelCtx.save();
   wheelCtx.beginPath();
   wheelCtx.arc(center, center, radius + 5, 0, 2 * Math.PI);
@@ -328,7 +335,6 @@ function drawWheel() {
   wheelCtx.lineWidth = 6; wheelCtx.strokeStyle = "#cca000"; wheelCtx.stroke();
   wheelCtx.restore();
 
-  // Segmenten
   wheelSegments.forEach((seg, i) => {
     const angle = wheelRotation + (i * arc);
     wheelCtx.save();
@@ -423,7 +429,6 @@ function spinWheel() {
 
 function handleWheelResult(seg) {
   let logText = "";
-  const pName = getPlayerName();
 
   if (seg.type === "mult") {
     const win = wheelBet * seg.val;
@@ -432,7 +437,7 @@ function handleWheelResult(seg) {
       icon: seg.val >= 5 ? "🔥" : "🎉",
       heading: seg.label,
       multiplierTag: `${seg.val}X MULTIPLIER`,
-      payoutText: `BETAAL ${win} FICHES AAN ${pName} (+${profit} winst)`,
+      payoutText: `BETAAL ${win} FICHES UIT (+${profit} winst)`,
       isGrand: seg.val >= 5
     });
     logText = `WINST: ${seg.label} ➔ ${win}`;
@@ -442,7 +447,7 @@ function handleWheelResult(seg) {
       icon: "🎁",
       heading: `+${seg.val} BONUS FICHES!`,
       multiplierTag: "EXTRA BONUS",
-      payoutText: `BETAAL ${win} FICHES AAN ${pName}`,
+      payoutText: `BETAAL ${win} FICHES UIT`,
       isGrand: false
     });
     logText = `BONUS: +${seg.val} ➔ ${win}`;
@@ -451,7 +456,7 @@ function handleWheelResult(seg) {
       icon: "💀",
       heading: "BANKROET / HUIS WINT",
       multiplierTag: "VERLOREN",
-      payoutText: `NEEM ${wheelBet} FICHES IN VAN ${pName}`,
+      payoutText: `NEEM INZET VAN ${wheelBet} FICHES IN`,
       isLoss: true
     });
     logText = `BANKROET (-${wheelBet})`;
@@ -460,7 +465,7 @@ function handleWheelResult(seg) {
       icon: "🎭",
       heading: "SPECIALE OPDRACHT!",
       multiplierTag: "KAMP OPDRACHT",
-      payoutText: `${pName} MOET: ${seg.label}`,
+      payoutText: `OPDRACHT: ${seg.label}`,
       isGrand: false
     });
     logText = `OPDRACHT: ${seg.label}`;
@@ -473,7 +478,7 @@ function handleWheelResult(seg) {
 }
 
 // ==========================================================
-// 🐎 GAME 2: PAARDENRACE DERBY EXTRAVAGANZA
+// 🐎 GAME 2: PAARDENRACE DERBY
 // ==========================================================
 const horses = [
   { id: 0, name: "Bliksem Bob", avatar: "⚡🐎", color: "#e74c3c", odds: 2.2 },
@@ -556,7 +561,6 @@ function startHorseRace() {
       }
     });
 
-    // Dynamic Live Commentary
     const leaderIdx = positions.indexOf(Math.max(...positions));
     commentaryEl.innerText = `🎙️ KOPLOPER: ${horses[leaderIdx].name.toUpperCase()} LEIDT HET VELD!`;
 
@@ -567,7 +571,6 @@ function startHorseRace() {
       document.querySelectorAll(".horse-runner").forEach(el => el.classList.remove("horse-running"));
       commentaryEl.innerText = `🏆 FINISH: ${winner.name.toUpperCase()} WINT DE DERBY!`;
 
-      const pName = getPlayerName();
       if (winner.id === selectedHorse) {
         const payout = Math.round(raceBet * winner.odds);
         const profit = payout - raceBet;
@@ -575,7 +578,7 @@ function startHorseRace() {
           icon: "🏆",
           heading: `${winner.name} WINT DE RACE!`,
           multiplierTag: `${winner.odds}X DERBY ODDS`,
-          payoutText: `BETAAL ${payout} FICHES AAN ${pName} (+${profit} winst)`,
+          payoutText: `BETAAL ${payout} FICHES UIT (+${profit} winst)`,
           isGrand: winner.odds >= 5.0
         });
       } else {
@@ -583,7 +586,7 @@ function startHorseRace() {
           icon: "💀",
           heading: `${winner.name} HEEFT GEWONNEN`,
           multiplierTag: "VERKEERD GEGOKT",
-          payoutText: `NEEM ${raceBet} FICHES IN VAN ${pName}`,
+          payoutText: `NEEM INZET VAN ${raceBet} FICHES IN`,
           isLoss: true
         });
       }
@@ -696,7 +699,6 @@ function pickCup(clickedCupId) {
     document.getElementById(`cupAsset-${i}`).classList.add("lifted");
   }
 
-  const pName = getPlayerName();
   if (clickedCupId === ballSlot) {
     const win = cupsBet * 3;
     const profit = win - cupsBet;
@@ -704,7 +706,7 @@ function pickCup(clickedCupId) {
       icon: "🎪",
       heading: "JUIST GERADEN!",
       multiplierTag: "3X TRIPLE WINST",
-      payoutText: `BETAAL ${win} FICHES AAN ${pName} (+${profit} winst)`,
+      payoutText: `BETAAL ${win} FICHES UIT (+${profit} winst)`,
       isGrand: false
     });
   } else {
@@ -712,7 +714,7 @@ function pickCup(clickedCupId) {
       icon: "💀",
       heading: "VERKEERDE BEKER!",
       multiplierTag: "BAL ZAT IN BEKER " + (ballSlot + 1),
-      payoutText: `NEEM ${cupsBet} FICHES IN VAN ${pName}`,
+      payoutText: `NEEM INZET VAN ${cupsBet} FICHES IN`,
       isLoss: true
     });
   }
@@ -721,92 +723,181 @@ function pickCup(clickedCupId) {
 }
 
 // ==========================================================
-// 🗄️ GAME 4: KRAAK DE KLUIS (VAULT ROYALE)
+// 💎 GAME 4: DE DIAMANTEN MIJN (TOWER RUN - LANGDURIG SPANNEND!)
 // ==========================================================
-let vaultBet = 50;
-let secretCode = "742";
-let currentCodeInput = "";
-let vaultJackpot = 1500;
+let mineBet = 50;
+let mineFloor = 0; // 0 = start, 1..8
+let isMineActive = false;
+const mineLevels = [
+  { floor: 1, mult: 1.4, bombs: 1 },
+  { floor: 2, mult: 2.0, bombs: 1 },
+  { floor: 3, mult: 3.0, bombs: 1 },
+  { floor: 4, mult: 5.0, bombs: 1 },
+  { floor: 5, mult: 8.0, bombs: 1 },
+  { floor: 6, mult: 15.0, bombs: 1 },
+  { floor: 7, mult: 30.0, bombs: 1 },
+  { floor: 8, mult: 100.0, bombs: 1 } // TOP ETAPPE!
+];
+let floorBombPositions = []; // Index van bom per etappe (0, 1 of 2)
 
-function setVaultBet(amt) {
-  vaultBet = Math.max(5, amt);
-  document.getElementById("vaultBetInput").value = vaultBet;
+function setMineBet(amt) {
+  if (isMineActive) return;
+  mineBet = Math.max(5, amt);
+  document.getElementById("mineBetInput").value = mineBet;
 }
 
-document.getElementById("vaultBetInput").addEventListener("input", (e) => {
-  vaultBet = Math.max(1, parseInt(e.target.value) || 0);
+document.getElementById("mineBetInput").addEventListener("input", (e) => {
+  mineBet = Math.max(1, parseInt(e.target.value) || 0);
 });
 
-function initVaultGame() {
-  const digits = [0,1,2,3,4,5,6,7,8,9].sort(() => Math.random() - 0.5);
-  secretCode = `${digits[0]}${digits[1]}${digits[2]}`;
-  clearKeypad();
-  document.getElementById("vaultJackpotAmount").innerText = `${vaultJackpot} FICHES`;
+function initMineGame() {
+  isMineActive = false;
+  mineFloor = 0;
+  document.getElementById("startMineBtn").classList.remove("hidden");
+  document.getElementById("cashoutMineBtn").classList.add("hidden");
+  document.getElementById("mineCurrentCashout").innerText = "0 FICHES";
+  renderMineTower();
 }
 
-function pressKey(num) {
-  if (currentCodeInput.length < 3) {
-    currentCodeInput += num;
-    playSound("keypad", num);
-    updatePinDisplay();
+function renderMineTower() {
+  const container = document.getElementById("mineTower");
+  container.innerHTML = "";
+
+  // Render van boven naar beneden (verdieping 8 bovenaan)
+  for (let f = 8; f >= 1; f--) {
+    const lvl = mineLevels[f - 1];
+    const isCurrent = (f === mineFloor + 1) && isMineActive;
+    const isCleared = (f <= mineFloor);
+    const isLocked = (f > mineFloor + 1) || !isMineActive;
+
+    const row = document.createElement("div");
+    row.className = `mine-floor-row ${isCurrent ? 'active-floor' : ''} ${isCleared ? 'cleared-floor' : ''} ${isLocked ? 'locked-floor' : ''}`;
+    row.id = `mineFloorRow-${f}`;
+
+    row.innerHTML = `
+      <span class="floor-badge">LVL ${f}</span>
+      <div class="floor-tiles-grid">
+        <button class="mine-tile-btn" id="tile-${f}-0" onclick="chooseMineTile(${f}, 0)">❓</button>
+        <button class="mine-tile-btn" id="tile-${f}-1" onclick="chooseMineTile(${f}, 1)">❓</button>
+        <button class="mine-tile-btn" id="tile-${f}-2" onclick="chooseMineTile(${f}, 2)">❓</button>
+      </div>
+      <span class="floor-multiplier">${lvl.mult}x</span>
+    `;
+
+    container.appendChild(row);
   }
 }
 
-function clearKeypad() {
-  currentCodeInput = "";
-  updatePinDisplay();
-  for (let i = 0; i < 3; i++) {
-    const dot = document.getElementById(`hdot-${i}`);
-    dot.className = `hint-dot dot-${i+1}`;
-  }
-}
+function startMineExpedition() {
+  isMineActive = true;
+  mineFloor = 0;
 
-function updatePinDisplay() {
-  const padded = (currentCodeInput + "___").slice(0, 3).split("").join(" ");
-  document.getElementById("vaultPinDisplay").innerText = padded;
-}
-
-function submitVaultGuess() {
-  if (currentCodeInput.length !== 3) {
-    alert("Toets eerst een 3-cijferige code in!");
-    return;
+  // Genereer bom posities per etappe
+  floorBombPositions = [];
+  for (let i = 0; i < 8; i++) {
+    floorBombPositions.push(Math.floor(Math.random() * 3));
   }
 
-  vaultJackpot += vaultBet;
-  document.getElementById("vaultJackpotAmount").innerText = `${vaultJackpot} FICHES`;
+  document.getElementById("startMineBtn").classList.add("hidden");
+  document.getElementById("cashoutMineBtn").classList.remove("hidden");
+  document.getElementById("mineCurrentCashout").innerText = `${mineBet} FICHES`;
+  
+  dealerStatus.innerText = "⛏️ EXPEDITIE GESTART!";
+  dealerInfo.innerText = "Kies 1 van de 3 deuren op Verdieping 1";
+  playSound("whoosh");
+  renderMineTower();
+}
 
-  const pName = getPlayerName();
-  let exactCount = 0;
+function chooseMineTile(floorNum, tileIdx) {
+  if (!isMineActive || floorNum !== mineFloor + 1) return;
 
-  for (let i = 0; i < 3; i++) {
-    const dot = document.getElementById(`hdot-${i}`);
-    dot.className = `hint-dot dot-${i+1}`;
+  const bombIdx = floorBombPositions[floorNum - 1];
+  const clickedBtn = document.getElementById(`tile-${floorNum}-${tileIdx}`);
 
-    if (currentCodeInput[i] === secretCode[i]) {
-      dot.classList.add("exact");
-      exactCount++;
-    } else if (secretCode.includes(currentCodeInput[i])) {
-      dot.classList.add("near");
+  if (tileIdx === bombIdx) {
+    // 💥 BOM GERAAKT! ALLES VERLOREN
+    clickedBtn.innerText = "💣";
+    clickedBtn.classList.add("revealed-bomb");
+    playSound("explosion");
+
+    // Onthul andere diamanten op de vloer
+    for (let i = 0; i < 3; i++) {
+      if (i !== bombIdx) {
+        document.getElementById(`tile-${floorNum}-${i}`).innerText = "💎";
+      }
+    }
+
+    isMineActive = false;
+    document.getElementById("cashoutMineBtn").classList.add("hidden");
+    document.getElementById("startMineBtn").classList.remove("hidden");
+    document.getElementById("mineCurrentCashout").innerText = "0 FICHES";
+
+    setTimeout(() => {
+      openWinnerModal({
+        icon: "💥",
+        heading: "BOOM! TNT ONTPLOFT!",
+        multiplierTag: `VERLOREN OP VERDIEPING ${floorNum}`,
+        payoutText: `NEEM INZET VAN ${mineBet} FICHES IN`,
+        isLoss: true
+      });
+    }, 600);
+
+  } else {
+    // 💎 DIAMANT GEVONDEN!
+    clickedBtn.innerText = "💎";
+    clickedBtn.classList.add("revealed-diamond");
+    playSound("diamond");
+
+    mineFloor = floorNum;
+    const currentMult = mineLevels[mineFloor - 1].mult;
+    const currentVal = Math.round(mineBet * currentMult);
+    document.getElementById("mineCurrentCashout").innerText = `${currentVal} FICHES (${currentMult}x)`;
+
+    if (mineFloor === 8) {
+      // TOP BEREIKT! 100X GRAND WIN!
+      isMineActive = false;
+      document.getElementById("cashoutMineBtn").classList.add("hidden");
+      document.getElementById("startMineBtn").classList.remove("hidden");
+
+      setTimeout(() => {
+        openWinnerModal({
+          icon: "👑",
+          heading: "TOP VAN DE MIJN BEREIKT!",
+          multiplierTag: "100X MEGA JACKPOT!",
+          payoutText: `BETAAL DE HOOFDPRIJS VAN ${currentVal} FICHES UIT!`,
+          isGrand: true
+        });
+      }, 500);
+
     } else {
-      dot.classList.add("miss");
+      dealerStatus.innerText = `💎 DIAMANT OP VERDIEPING ${mineFloor}!`;
+      dealerInfo.innerText = `Waarde nu: ${currentVal} fiches. Cash out of ga door naar LVL ${mineFloor + 1}!`;
+      renderMineTower();
     }
   }
+}
 
-  if (exactCount === 3) {
-    openWinnerModal({
-      icon: "🔓",
-      heading: "KLUIS GEKRAAKT!",
-      multiplierTag: "GRAND JACKPOT POOL",
-      payoutText: `BETAAL DE VOLLEDIGE KLUIS VAN ${vaultJackpot} FICHES AAN ${pName}!`,
-      isGrand: true
-    });
-    vaultJackpot = 1000;
-    initVaultGame();
-  } else {
-    playSound("click");
-    dealerStatus.innerText = "CODE WAS ONJUIST";
-    dealerInfo.innerText = "Check de groene/gele lampjes & probeer opnieuw!";
-  }
+function cashoutMine() {
+  if (!isMineActive || mineFloor === 0) return;
+
+  const currentMult = mineLevels[mineFloor - 1].mult;
+  const payout = Math.round(mineBet * currentMult);
+  const profit = payout - mineBet;
+
+  isMineActive = false;
+  document.getElementById("cashoutMineBtn").classList.add("hidden");
+  document.getElementById("startMineBtn").classList.remove("hidden");
+  document.getElementById("mineCurrentCashout").innerText = "0 FICHES";
+
+  openWinnerModal({
+    icon: "💰",
+    heading: "SUCCESVOLLE CASHOUT!",
+    multiplierTag: `${currentMult}X EXPEDITIE WINST`,
+    payoutText: `BETAAL ${payout} FICHES UIT (+${profit} winst)`,
+    isGrand: currentMult >= 8.0
+  });
+
+  initMineGame();
 }
 
 // ==========================================================
@@ -962,7 +1053,6 @@ function dropPlinkoBall() {
 }
 
 function handlePlinkoResult(mult) {
-  const pName = getPlayerName();
   const payout = Math.round(plinkoBet * mult);
   const profit = payout - plinkoBet;
 
@@ -971,7 +1061,7 @@ function handlePlinkoResult(mult) {
       icon: mult >= 10 ? "⚡" : "🎯",
       heading: `${mult}X PLINKO MULTIPLIER!`,
       multiplierTag: `${mult}X SLOT HIT`,
-      payoutText: `BETAAL ${payout} FICHES AAN ${pName} (+${profit} winst)`,
+      payoutText: `BETAAL ${payout} FICHES UIT (+${profit} winst)`,
       isGrand: mult >= 10
     });
   } else {
