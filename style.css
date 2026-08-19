@@ -3,13 +3,14 @@
   --gold-2: #ffd700;
   --gold-3: #cca000;
   --gold-grad: linear-gradient(135deg, #fff2a3 0%, #ffd700 40%, #cca000 75%, #806000 100%);
-  --bg-dark: #07090e;
-  --panel-bg: rgba(16, 21, 35, 0.94);
-  --border-gold: 1px solid rgba(255, 215, 0, 0.35);
-  --glow-gold: 0 0 20px rgba(255, 215, 0, 0.4);
+  --bg-dark: #05070c;
+  --panel-bg: rgba(14, 18, 30, 0.95);
+  --border-gold: 1px solid rgba(255, 215, 0, 0.4);
+  --glow-gold: 0 0 25px rgba(255, 215, 0, 0.5);
   --neon-green: #00ff88;
   --neon-red: #ff2a55;
   --neon-yellow: #ffbb00;
+  --neon-blue: #00d4ff;
 }
 
 * {
@@ -27,9 +28,47 @@ html, body {
   overflow: hidden;
   background: var(--bg-dark);
   color: #fff;
+  position: relative;
 }
 
+/* Sfeer Canvas & Spotlights */
+#ambientParticlesCanvas {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.spotlight {
+  position: fixed;
+  top: -150px;
+  width: 450px;
+  height: 1400px;
+  opacity: 0.08;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.spot-1 {
+  left: 15%;
+  background: linear-gradient(180deg, #ffd700 0%, transparent 80%);
+  transform: rotate(-25deg);
+  animation: sweepLeft 9s infinite alternate ease-in-out;
+}
+
+.spot-2 {
+  right: 15%;
+  background: linear-gradient(180deg, #ff0055 0%, transparent 80%);
+  transform: rotate(25deg);
+  animation: sweepRight 9s infinite alternate ease-in-out;
+}
+
+@keyframes sweepLeft { to { transform: rotate(-10deg); } }
+@keyframes sweepRight { to { transform: rotate(10deg); } }
+
 .casino-app {
+  position: relative;
+  z-index: 1;
   width: 100vw;
   height: 100vh;
   height: 100dvh;
@@ -38,8 +77,6 @@ html, body {
   flex-direction: column;
   justify-content: space-between;
   gap: clamp(6px, 1vh, 10px);
-  background: radial-gradient(circle at 50% 30%, #151a2a 0%, #07090e 75%);
-  position: relative;
 }
 
 /* TOP NAVIGATION */
@@ -52,7 +89,8 @@ html, body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+  box-shadow: 0 4px 25px rgba(0,0,0,0.8);
+  backdrop-filter: blur(12px);
   flex-shrink: 0;
 }
 
@@ -74,7 +112,7 @@ html, body {
   transition: 0.2s;
 }
 
-.lobby-back-btn:hover { background: var(--gold-2); color: #000; }
+.lobby-back-btn:hover { background: var(--gold-2); color: #000; box-shadow: 0 0 12px var(--gold-2); }
 .lobby-back-btn.hidden { display: none; }
 
 .brand {
@@ -85,16 +123,17 @@ html, body {
 
 .crown {
   font-size: clamp(1.3rem, 2.2vw, 1.7rem);
-  filter: drop-shadow(0 0 6px var(--gold-2));
+  filter: drop-shadow(0 0 8px var(--gold-2));
 }
 
 .brand-title h1 {
-  font-family: 'Cinzel', serif;
+  font-family: 'Cinzel Decorative', serif;
   font-size: clamp(0.95rem, 1.5vw, 1.3rem);
   font-weight: 900;
   background: var(--gold-grad);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  letter-spacing: 1px;
 }
 
 .edition-badge {
@@ -119,6 +158,7 @@ html, body {
   border: 1px solid var(--gold-2);
   border-radius: 8px;
   padding: 2px 8px;
+  box-shadow: inset 0 0 8px rgba(0,0,0,0.8);
 }
 
 .player-tag-label {
@@ -160,7 +200,7 @@ html, body {
   text-shadow: 0 0 8px rgba(255, 215, 0, 0.4);
 }
 
-/* VIEWPORT CONTAINER */
+/* VIEWPORT */
 .view-viewport {
   flex: 1;
   min-height: 0;
@@ -175,7 +215,7 @@ html, body {
 
 .game-view.active { display: flex; }
 
-/* LOBBY VIEW (5 GAMES GRID) */
+/* LOBBY VIEW (5 GAMES) */
 #view-lobby {
   align-items: center;
   justify-content: center;
@@ -211,10 +251,10 @@ html, body {
   box-shadow: 0 15px 40px rgba(255, 215, 0, 0.35);
 }
 
-.card-glow {
+.card-neon-border {
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at 50% 0%, rgba(255,215,0,0.15) 0%, transparent 70%);
+  background: radial-gradient(circle at 50% 0%, rgba(255,215,0,0.18) 0%, transparent 70%);
   pointer-events: none;
 }
 
@@ -265,7 +305,7 @@ html, body {
   box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
 }
 
-/* SHARED GAME LAYOUT */
+/* SHARED GAME SPLIT */
 .game-split {
   width: 100%;
   height: 100%;
@@ -515,10 +555,49 @@ html, body {
   gap: clamp(6px, 1.2vh, 12px);
 }
 
-.wheel-mount {
+.wheel-casing-frame {
   position: relative;
   width: min(60vh, 45vw, 480px);
   height: min(60vh, 45vw, 480px);
+  border-radius: 50%;
+  background: radial-gradient(circle, #221a05 0%, #080602 85%);
+  border: 8px solid #1a1403;
+  box-shadow: 0 0 40px rgba(0,0,0,0.9), var(--glow-gold);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.led-bulb-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.led-node {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #ffea9f;
+  box-shadow: 0 0 10px #ffd700, 0 0 15px #ffae00;
+  top: 50%;
+  left: 50%;
+  transform-origin: center center;
+  transition: opacity 0.1s;
+}
+
+.led-node.off {
+  background: #2b220b;
+  box-shadow: none;
+  opacity: 0.25;
+}
+
+.wheel-mount {
+  position: relative;
+  width: 88%;
+  height: 88%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -527,12 +606,12 @@ html, body {
 #wheelCanvas {
   width: 100%;
   height: 100%;
-  filter: drop-shadow(0 0 20px rgba(0,0,0,0.95));
+  filter: drop-shadow(0 0 15px rgba(0,0,0,0.95));
 }
 
 .wheel-flipper {
   position: absolute;
-  top: -10px;
+  top: -12px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 30;
@@ -547,6 +626,7 @@ html, body {
   background: var(--gold-grad);
   border-radius: 50%;
   border: 2px solid #000;
+  box-shadow: 0 0 8px var(--gold-2);
   z-index: 31;
 }
 
@@ -564,22 +644,36 @@ html, body {
 
 .wheel-center-gem {
   position: absolute;
-  width: clamp(40px, 6.5vh, 55px);
-  height: clamp(40px, 6.5vh, 55px);
+  width: clamp(38px, 6vh, 52px);
+  height: clamp(38px, 6vh, 52px);
   border-radius: 50%;
   background: var(--gold-grad);
   border: 3px solid #111;
-  box-shadow: 0 0 15px rgba(0,0,0,0.9);
+  box-shadow: 0 0 15px rgba(0,0,0,0.9), inset 0 0 8px rgba(255,255,255,0.8);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 10;
-  font-size: clamp(1.1rem, 2vh, 1.4rem);
+  font-size: clamp(1rem, 1.8vh, 1.3rem);
   color: #111;
   pointer-events: none;
 }
 
 /* VIEW 2: PAARDENRACE */
+.race-commentary-bar {
+  background: #000;
+  border: 1px solid var(--gold-2);
+  border-radius: 8px;
+  padding: 6px 14px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: var(--gold-2);
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+  text-align: center;
+  box-shadow: 0 0 12px rgba(255, 215, 0, 0.2);
+}
+
 .horse-selection-list {
   display: flex;
   flex-direction: column;
@@ -625,13 +719,14 @@ html, body {
 .race-stage {
   height: 100%;
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .track-casing {
   position: relative;
   width: 100%;
-  height: min(65vh, 480px);
+  height: min(62vh, 460px);
   background: radial-gradient(circle at 50% 50%, #2e7d32 0%, #1b5e20 80%);
   border: 4px solid #3e2723;
   border-radius: 16px;
@@ -953,13 +1048,13 @@ html, body {
 }
 
 /* ==========================================================
-   VEGAS WINNER & SHOWCASE MODAL
+   VEGAS WINNER & SHOWCASE MODAL (AAA CINEMATIC)
 ========================================================== */
 .winner-modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.85);
-  backdrop-filter: blur(12px);
+  background: rgba(0, 0, 0, 0.88);
+  backdrop-filter: blur(14px);
   z-index: 100;
   display: flex;
   align-items: center;
@@ -969,9 +1064,18 @@ html, body {
 
 .winner-modal-overlay.hidden { display: none; }
 
-@keyframes fadeInModal {
-  from { opacity: 0; }
-  to { opacity: 1; }
+.winner-god-rays {
+  position: absolute;
+  width: 900px;
+  height: 900px;
+  background: radial-gradient(circle, rgba(255,215,0,0.25) 0%, transparent 70%);
+  animation: rotateGodRays 18s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes rotateGodRays {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 .winner-card {
@@ -981,9 +1085,9 @@ html, body {
   border-radius: 24px;
   padding: 30px 40px;
   text-align: center;
-  max-width: 500px;
+  max-width: 520px;
   width: 90%;
-  box-shadow: 0 0 50px rgba(255, 215, 0, 0.5);
+  box-shadow: 0 0 60px rgba(255, 215, 0, 0.6);
   animation: popModal 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
@@ -995,14 +1099,14 @@ html, body {
 .winner-glow {
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at 50% 0%, rgba(255, 215, 0, 0.2) 0%, transparent 70%);
+  background: radial-gradient(circle at 50% 0%, rgba(255, 215, 0, 0.25) 0%, transparent 70%);
   pointer-events: none;
 }
 
 .winner-icon {
-  font-size: 3.5rem;
+  font-size: 3.8rem;
   margin-bottom: 8px;
-  filter: drop-shadow(0 4px 12px rgba(255, 215, 0, 0.6));
+  filter: drop-shadow(0 4px 14px rgba(255, 215, 0, 0.8));
 }
 
 .winner-player-title {
@@ -1015,7 +1119,7 @@ html, body {
 }
 
 .winner-main-heading {
-  font-family: 'Cinzel', serif;
+  font-family: 'Cinzel Decorative', serif;
   font-size: 1.8rem;
   font-weight: 900;
   margin: 6px 0 12px 0;
@@ -1059,7 +1163,7 @@ html, body {
 
 .payout-val {
   font-family: 'Cinzel', serif;
-  font-size: 1.3rem;
+  font-size: 1.35rem;
   font-weight: 900;
   color: var(--neon-green);
 }
