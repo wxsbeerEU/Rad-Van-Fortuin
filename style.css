@@ -10,7 +10,6 @@
   --neon-green: #00ff88;
   --neon-red: #ff2a55;
   --neon-yellow: #ffbb00;
-  --neon-orange: #ff7700;
 }
 
 * {
@@ -112,7 +111,12 @@ html, body {
   transition: 0.2s;
 }
 
-.lobby-back-btn:hover { background: var(--gold-2); color: #000; box-shadow: 0 0 12px var(--gold-2); }
+.lobby-back-btn:hover { 
+  background: var(--gold-2); 
+  color: #000; 
+  box-shadow: 0 0 12px var(--gold-2); 
+}
+
 .lobby-back-btn.hidden { display: none; }
 
 .brand {
@@ -183,7 +187,7 @@ html, body {
 
 .game-view.active { display: flex; }
 
-/* LOBBY VIEW (5 GAMES) */
+/* LOBBY VIEW (5 GAMES) - VOLLEDIG IN UNIFORM GOUD THEMA */
 #view-lobby {
   align-items: center;
   justify-content: center;
@@ -217,15 +221,6 @@ html, body {
   transform: translateY(-6px) scale(1.03);
   border-color: var(--gold-2);
   box-shadow: 0 15px 40px rgba(255, 215, 0, 0.35);
-}
-
-.card-chicken {
-  border-color: rgba(255, 119, 0, 0.45);
-}
-
-.card-chicken:hover {
-  border-color: var(--neon-orange);
-  box-shadow: 0 15px 40px rgba(255, 119, 0, 0.4);
 }
 
 .card-neon-border {
@@ -468,7 +463,7 @@ html, body {
   margin-bottom: 2px;
 }
 
-/* ACTION BUTTON */
+/* UNIFORME VEGAS GOUDEN ACTION BUTTONS */
 .gold-action-btn {
   position: relative;
   overflow: hidden;
@@ -789,7 +784,7 @@ html, body {
   white-space: nowrap;
 }
 
-/* VIEW 3: 3 BEKERS & BALLETJE (HARDCORE FLUID) */
+/* VIEW 3: 3 BEKERS & BALLETJE */
 .cups-stage {
   height: 100%;
   display: flex;
@@ -891,75 +886,47 @@ html, body {
 }
 
 /* ==========================================================
-   VIEW 4: DE KIP STEEKT OVER (LIVE ANIMATED HIGHWAY)
+   VIEW 4: DE KIP STEEKT OVER (GEÜNIFIEERD GOUD THEMA)
 ========================================================== */
 .chicken-status-card {
-  background: rgba(255, 119, 0, 0.12);
-  border: 1px solid var(--neon-orange);
-  border-radius: 10px;
-  padding: 8px;
+  background: rgba(255, 215, 0, 0.12);
+  border: 1px solid var(--gold-2);
+  border-radius: 12px;
+  padding: 10px;
   text-align: center;
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
 }
 
 .c-card-lbl {
   display: block;
-  font-size: 0.6rem;
+  font-size: 0.65rem;
   font-weight: 900;
-  color: var(--neon-orange);
+  color: var(--gold-2);
+  letter-spacing: 1px;
 }
 
 .c-card-val {
   font-family: 'Cinzel', serif;
-  font-size: 1.25rem;
+  font-size: 1.4rem;
   font-weight: 900;
   color: #fff;
-  text-shadow: 0 0 10px var(--neon-orange);
+  text-shadow: 0 0 12px rgba(255, 215, 0, 0.4);
 }
 
 .chicken-action-stack {
   display: flex;
   flex-direction: column;
-  gap: 6px;
-}
-
-.chicken-hop-btn {
-  background: linear-gradient(135deg, #ff9900 0%, #e65c00 100%);
-  border: 2px solid #fff;
-  border-radius: 50px;
-  padding: 12px 20px;
-  cursor: pointer;
-  box-shadow: 0 6px 20px rgba(255, 119, 0, 0.6);
-  transition: all 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  animation: pulseHop 1s infinite alternate;
-}
-
-.chicken-hop-btn:hover:not(:disabled) {
-  transform: translateY(-2px) scale(1.04);
-  box-shadow: 0 8px 25px rgba(255, 119, 0, 0.9);
-}
-
-@keyframes pulseHop {
-  from { transform: scale(1); }
-  to { transform: scale(1.03); }
-}
-
-.chicken-hop-btn .btn-txt {
-  font-family: 'Cinzel', serif;
-  font-size: 0.95rem;
-  font-weight: 900;
-  color: #fff;
-  text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+  gap: 8px;
 }
 
 .cashout-action-btn {
   background: linear-gradient(135deg, #00ff88 0%, #00b359 100%);
   border: 2px solid #fff;
   border-radius: 50px;
-  padding: 10px 18px;
+  padding: 12px 20px;
   cursor: pointer;
   box-shadow: 0 6px 20px rgba(0, 255, 136, 0.5);
   transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  animation: pulseCashout 1.2s infinite alternate;
 }
 
 .cashout-action-btn:hover {
@@ -967,14 +934,9 @@ html, body {
   box-shadow: 0 10px 30px rgba(0, 255, 136, 0.8);
 }
 
-@keyframes pulseCashout {
-  from { box-shadow: 0 0 15px rgba(0, 255, 136, 0.4); }
-  to { box-shadow: 0 0 30px rgba(0, 255, 136, 0.9); }
-}
-
 .cashout-action-btn .btn-txt {
   font-family: 'Cinzel', serif;
-  font-size: 0.88rem;
+  font-size: 0.92rem;
   font-weight: 900;
   color: #000;
 }
@@ -989,10 +951,10 @@ html, body {
 .chicken-canvas-casing {
   width: min(65vh, 490px);
   height: min(65vh, 490px);
-  background: #11141c;
-  border: 5px solid #ff7700;
+  background: #181b24;
+  border: 6px solid #cca000;
   border-radius: 20px;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.9), 0 0 20px rgba(255, 119, 0, 0.3);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.9), var(--glow-gold);
   display: flex;
   justify-content: center;
   align-items: center;
