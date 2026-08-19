@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>👑 GRAND CASINO ROYALE - Kamp Editie</title>
+  <title>👑 GRAND CASINO ROYALE - 5-in-1 Suite</title>
   <!-- Google Fonts & Confetti CDN -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -24,15 +24,21 @@
           <span class="crown">👑</span>
           <div class="brand-title">
             <h1 id="appTitle">CASINO ROYALE</h1>
-            <span class="edition-badge">KAMP HIGH-ROLLER SUITE</span>
+            <span class="edition-badge">KAMP HIGH-ROLLER 5-IN-1</span>
           </div>
         </div>
       </div>
 
-      <!-- Live Dealer Status Display -->
-      <div class="dealer-screen">
-        <span class="dealer-label" id="dealerStatus">CASINO LOBBY</span>
-        <span class="dealer-main" id="dealerInfo">Kies een spel om te openen</span>
+      <!-- Speler ID & Live Dealer Display -->
+      <div class="nav-right">
+        <div class="player-tag-box">
+          <span class="player-tag-label">SPELER / TAFEL:</span>
+          <input type="text" id="globalPlayerName" value="Gokker 1" placeholder="Naam speler">
+        </div>
+        <div class="dealer-screen">
+          <span class="dealer-label" id="dealerStatus">CASINO LOBBY</span>
+          <span class="dealer-main" id="dealerInfo">Kies een spel om te openen</span>
+        </div>
       </div>
     </header>
 
@@ -40,7 +46,7 @@
     <main class="view-viewport">
 
       <!-- ==========================================
-           VIEW 0: LOBBY / HOOFDMENU
+           VIEW 0: LOBBY / HOOFDMENU (5 GAMES)
       =========================================== -->
       <section id="view-lobby" class="game-view active">
         <div class="lobby-grid">
@@ -50,8 +56,8 @@
             <div class="card-glow"></div>
             <div class="card-icon">🎡</div>
             <h2>RAD VAN FORTUIN</h2>
-            <p>Draai voor enorme winsten, extra bonusfiches of maffe kampopdrachten!</p>
-            <div class="card-tag">HIGH MULTIPLIERS</div>
+            <p>Draai voor 10x vermenigvuldigers, fiches of maffe kampopdrachten!</p>
+            <div class="card-tag">HIGH MULTIPLIER</div>
             <button class="play-btn">SPEEL RAD ▶</button>
           </div>
 
@@ -60,9 +66,9 @@
             <div class="card-glow"></div>
             <div class="card-icon">🐎</div>
             <h2>PAARDENRACE</h2>
-            <p>Zet in op jouw favoriete kamp-paard en bekijk live de spannende finish!</p>
+            <p>Zet in op kamp-paarden met dynamische odds en live commentaar!</p>
             <div class="card-tag">LIVE DERBY</div>
-            <button class="play-btn">NAAR DE RACEBAAN ▶</button>
+            <button class="play-btn">NAAR DE BAAN ▶</button>
           </div>
 
           <!-- Card 3: Bekers & Bal -->
@@ -70,9 +76,29 @@
             <div class="card-glow"></div>
             <div class="card-icon">🎪</div>
             <h2>3 BEKERS & BAL</h2>
-            <p>Houd je ogen scherp op de beker met de bal tijdens het schudden. 3× verdubbelen!</p>
-            <div class="card-tag">3X UITBETALING</div>
-            <button class="play-btn">KRAAK HET SPEL ▶</button>
+            <p>Volg de beker met de bal tijdens het schudden en win 3× je inzet!</p>
+            <div class="card-tag">3X WINST</div>
+            <button class="play-btn">KIES EEN BEKER ▶</button>
+          </div>
+
+          <!-- Card 4: Kraak de Kluis -->
+          <div class="lobby-card" onclick="openGame('vault')">
+            <div class="card-glow"></div>
+            <div class="card-icon">🗄️</div>
+            <h2>KRAAK DE KLUIS</h2>
+            <p>Kraak de geheime 3-cijferige kluiscode via Mastermind-hints!</p>
+            <div class="card-tag">JACKPOT POOL</div>
+            <button class="play-btn">KRAAK DE KLUIS ▶</button>
+          </div>
+
+          <!-- Card 5: Plinko Royale -->
+          <div class="lobby-card" onclick="openGame('plinko')">
+            <div class="card-glow"></div>
+            <div class="card-icon">⚡</div>
+            <h2>PLINKO ROYALE</h2>
+            <p>Drop de gouden fiche door de pinnen en raak de 25× jackpot slot!</p>
+            <div class="card-tag">TOT 25X WINST</div>
+            <button class="play-btn">DROP FICHE ▶</button>
           </div>
 
         </div>
@@ -83,20 +109,17 @@
       =========================================== -->
       <section id="view-wheel" class="game-view">
         <div class="game-split">
-          <!-- Linkerzijde: Inzet Deck -->
           <aside class="bet-deck">
             <div class="deck-box">
               <div class="deck-head">
                 <h2>RAD INZET</h2>
                 <p>Kies je fiches op tafel</p>
               </div>
-
               <div class="bet-input-box">
                 <span class="coin-icon">🪙</span>
                 <input type="number" id="wheelBetInput" value="50" min="5" step="5">
                 <span class="unit-tag">FICHES</span>
               </div>
-
               <div class="chip-rack">
                 <button class="chip c-10" onclick="setWheelBet(10)">10</button>
                 <button class="chip c-25" onclick="setWheelBet(25)">25</button>
@@ -105,23 +128,17 @@
                 <button class="chip c-250" onclick="setWheelBet(250)">250</button>
                 <button class="chip c-500" onclick="setWheelBet(500)">500</button>
               </div>
-
               <div class="bet-actions">
                 <button class="action-btn" onclick="multiplyWheelBet(0.5)">½ Inzet</button>
                 <button class="action-btn" onclick="multiplyWheelBet(2)">2× Inzet</button>
                 <button class="action-btn" onclick="setWheelBet(50)">Reset</button>
               </div>
-
               <div class="history-widget">
                 <span class="hw-title">LAATSTE SPINS</span>
-                <ul id="wheelHistory" class="hw-list">
-                  <li class="empty-hw">Nog geen spins gespeeld</li>
-                </ul>
+                <ul id="wheelHistory" class="hw-list"><li class="empty-hw">Nog geen spins</li></ul>
               </div>
             </div>
           </aside>
-
-          <!-- Rechterzijde: Rad Canvas -->
           <main class="wheel-stage">
             <div class="wheel-mount">
               <div class="wheel-flipper">
@@ -131,7 +148,6 @@
               <canvas id="wheelCanvas"></canvas>
               <div class="wheel-center-gem">★</div>
             </div>
-
             <button id="wheelSpinBtn" class="gold-action-btn" onclick="spinWheel()">
               <span class="btn-shine"></span>
               <span class="btn-txt">DRAAI HET RAD!</span>
@@ -141,26 +157,22 @@
       </section>
 
       <!-- ==========================================
-           VIEW 2: PAARDENRACE
+           VIEW 2: PAARDENRACE DERBY
       =========================================== -->
       <section id="view-race" class="game-view">
         <div class="game-split">
-          <!-- Inzet & Paard Keuze -->
           <aside class="bet-deck">
             <div class="deck-box">
               <div class="deck-head">
                 <h2>KIES JOUW PAARD</h2>
                 <p>Klik op een paard om in te zetten</p>
               </div>
-
               <div class="horse-selection-list" id="horseBetList"></div>
-
               <div class="bet-input-box">
                 <span class="coin-icon">🪙</span>
                 <input type="number" id="raceBetInput" value="50" min="5" step="5">
                 <span class="unit-tag">FICHES</span>
               </div>
-
               <div class="chip-rack">
                 <button class="chip c-10" onclick="setRaceBet(10)">10</button>
                 <button class="chip c-25" onclick="setRaceBet(25)">25</button>
@@ -169,20 +181,15 @@
                 <button class="chip c-250" onclick="setRaceBet(250)">250</button>
                 <button class="chip c-500" onclick="setRaceBet(500)">500</button>
               </div>
-
               <button id="startRaceBtn" class="gold-action-btn w-full" onclick="startHorseRace()">
                 <span class="btn-shine"></span>
                 <span class="btn-txt">START DE DERBY! 🏁</span>
               </button>
             </div>
           </aside>
-
-          <!-- De Racebaan -->
           <main class="race-stage">
             <div class="track-casing" id="raceTrack">
-              <div class="track-finish-line">
-                <div class="finish-badge">FINISH</div>
-              </div>
+              <div class="track-finish-line"><div class="finish-badge">FINISH</div></div>
               <div class="track-lanes" id="trackLanes"></div>
             </div>
           </main>
@@ -194,20 +201,17 @@
       =========================================== -->
       <section id="view-cups" class="game-view">
         <div class="game-split">
-          <!-- Inzet Deck -->
           <aside class="bet-deck">
             <div class="deck-box">
               <div class="deck-head">
                 <h2>BEKER INZET</h2>
                 <p>Raad de beker met de bal (3× winst!)</p>
               </div>
-
               <div class="bet-input-box">
                 <span class="coin-icon">🪙</span>
                 <input type="number" id="cupsBetInput" value="50" min="5" step="5">
                 <span class="unit-tag">FICHES</span>
               </div>
-
               <div class="chip-rack">
                 <button class="chip c-10" onclick="setCupsBet(10)">10</button>
                 <button class="chip c-25" onclick="setCupsBet(25)">25</button>
@@ -216,61 +220,168 @@
                 <button class="chip c-250" onclick="setCupsBet(250)">250</button>
                 <button class="chip c-500" onclick="setCupsBet(500)">500</button>
               </div>
-
               <div class="instruction-box">
-                <div class="inst-head">💡 HOE TE SPELEN:</div>
-                <p>1. Onthoud de startbeker met de bal.<br>2. De bekers zakken en schudden over de tafel.<br>3. Klik op een beker om te onthullen!</p>
+                <div class="inst-head">💡 REGELS:</div>
+                <p>1. Onthoud waar de bal begint.<br>2. De bekers zakken en schudden over het vilt.<br>3. Klik op een beker om te raden!</p>
               </div>
-
               <button id="shuffleCupsBtn" class="gold-action-btn w-full" onclick="startCupShuffle()">
                 <span class="btn-shine"></span>
                 <span class="btn-txt">SCHUD DE BEKERS! 🎲</span>
               </button>
             </div>
           </aside>
-
-          <!-- Speeltafel met de bekers -->
           <main class="cups-stage">
             <div class="cups-table-felt">
               <div class="cups-container" id="cupsContainer">
-                
-                <!-- Beker 0 -->
                 <div class="cup-slot" id="cupSlot-0" onclick="pickCup(0)">
-                  <div class="cup-asset" id="cupAsset-0">
-                    <div class="cup-body"></div>
-                    <div class="cup-lip"></div>
-                  </div>
+                  <div class="cup-asset" id="cupAsset-0"><div class="cup-body"></div><div class="cup-lip"></div></div>
                   <div class="table-ball" id="ball-0"></div>
                   <div class="cup-shadow"></div>
                 </div>
-
-                <!-- Beker 1 -->
                 <div class="cup-slot" id="cupSlot-1" onclick="pickCup(1)">
-                  <div class="cup-asset" id="cupAsset-1">
-                    <div class="cup-body"></div>
-                    <div class="cup-lip"></div>
-                  </div>
+                  <div class="cup-asset" id="cupAsset-1"><div class="cup-body"></div><div class="cup-lip"></div></div>
                   <div class="table-ball" id="ball-1"></div>
                   <div class="cup-shadow"></div>
                 </div>
-
-                <!-- Beker 2 -->
                 <div class="cup-slot" id="cupSlot-2" onclick="pickCup(2)">
-                  <div class="cup-asset" id="cupAsset-2">
-                    <div class="cup-body"></div>
-                    <div class="cup-lip"></div>
-                  </div>
+                  <div class="cup-asset" id="cupAsset-2"><div class="cup-body"></div><div class="cup-lip"></div></div>
                   <div class="table-ball" id="ball-2"></div>
                   <div class="cup-shadow"></div>
                 </div>
-
               </div>
             </div>
           </main>
         </div>
       </section>
 
+      <!-- ==========================================
+           VIEW 4: KRAAK DE KLUIS (VAULT)
+      =========================================== -->
+      <section id="view-vault" class="game-view">
+        <div class="game-split">
+          <aside class="bet-deck">
+            <div class="deck-box">
+              <div class="deck-head">
+                <h2>KLUIS INZET</h2>
+                <p>Elke poging kost inzet • Win de JACKPOT!</p>
+              </div>
+              <div class="bet-input-box">
+                <span class="coin-icon">🪙</span>
+                <input type="number" id="vaultBetInput" value="50" min="5" step="5">
+                <span class="unit-tag">FICHES</span>
+              </div>
+              <div class="chip-rack">
+                <button class="chip c-10" onclick="setVaultBet(10)">10</button>
+                <button class="chip c-25" onclick="setVaultBet(25)">25</button>
+                <button class="chip c-50 active" onclick="setVaultBet(50)">50</button>
+                <button class="chip c-100" onclick="setVaultBet(100)">100</button>
+                <button class="chip c-250" onclick="setVaultBet(250)">250</button>
+                <button class="chip c-500" onclick="setVaultBet(500)">500</button>
+              </div>
+              <div class="vault-pool-card">
+                <span class="pool-tag">💰 KLUIS JACKPOT:</span>
+                <span class="pool-amount" id="vaultJackpotAmount">1500 FICHES</span>
+              </div>
+              <div class="instruction-box">
+                <div class="inst-head">💡 MASTERMIND HINTS:</div>
+                <p>🟩 <strong>Groen:</strong> Cijfer klopt exact op zijn plek.<br>🟨 <strong>Geel:</strong> Cijfer zit in code, maar andere plek.<br>⬛ <strong>Grijs:</strong> Cijfer zit niet in code.</p>
+              </div>
+            </div>
+          </aside>
+          <main class="vault-stage">
+            <div class="vault-safe-door">
+              <div class="vault-dial-frame">
+                <div class="vault-screen" id="vaultPinDisplay">_ _ _</div>
+                <div class="vault-hints" id="vaultHints">
+                  <span class="hint-dot dot-1" id="hdot-0"></span>
+                  <span class="hint-dot dot-2" id="hdot-1"></span>
+                  <span class="hint-dot dot-3" id="hdot-2"></span>
+                </div>
+              </div>
+              <!-- Keypad -->
+              <div class="keypad-grid">
+                <button class="key-btn" onclick="pressKey(1)">1</button>
+                <button class="key-btn" onclick="pressKey(2)">2</button>
+                <button class="key-btn" onclick="pressKey(3)">3</button>
+                <button class="key-btn" onclick="pressKey(4)">4</button>
+                <button class="key-btn" onclick="pressKey(5)">5</button>
+                <button class="key-btn" onclick="pressKey(6)">6</button>
+                <button class="key-btn" onclick="pressKey(7)">7</button>
+                <button class="key-btn" onclick="pressKey(8)">8</button>
+                <button class="key-btn" onclick="pressKey(9)">9</button>
+                <button class="key-btn key-clear" onclick="clearKeypad()">C</button>
+                <button class="key-btn" onclick="pressKey(0)">0</button>
+                <button class="key-btn key-enter" onclick="submitVaultGuess()">KRAAK 🔓</button>
+              </div>
+            </div>
+          </main>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           VIEW 5: PLINKO ROYALE
+      =========================================== -->
+      <section id="view-plinko" class="game-view">
+        <div class="game-split">
+          <aside class="bet-deck">
+            <div class="deck-box">
+              <div class="deck-head">
+                <h2>PLINKO INZET</h2>
+                <p>Drop de bal door het veld</p>
+              </div>
+              <div class="bet-input-box">
+                <span class="coin-icon">🪙</span>
+                <input type="number" id="plinkoBetInput" value="50" min="5" step="5">
+                <span class="unit-tag">FICHES</span>
+              </div>
+              <div class="chip-rack">
+                <button class="chip c-10" onclick="setPlinkoBet(10)">10</button>
+                <button class="chip c-25" onclick="setPlinkoBet(25)">25</button>
+                <button class="chip c-50 active" onclick="setPlinkoBet(50)">50</button>
+                <button class="chip c-100" onclick="setPlinkoBet(100)">100</button>
+                <button class="chip c-250" onclick="setPlinkoBet(250)">250</button>
+                <button class="chip c-500" onclick="setPlinkoBet(500)">500</button>
+              </div>
+              <div class="instruction-box">
+                <div class="inst-head">🎯 MULTIPLIER SLOTS:</div>
+                <p>Buitenste hoeken geven tot <strong>25× JACKPOT</strong>! Het midden is safe maar lager.</p>
+              </div>
+              <button id="dropPlinkoBtn" class="gold-action-btn w-full" onclick="dropPlinkoBall()">
+                <span class="btn-shine"></span>
+                <span class="btn-txt">DROP BAL! ⚡</span>
+              </button>
+            </div>
+          </aside>
+          <main class="plinko-stage">
+            <div class="plinko-board-casing">
+              <canvas id="plinkoCanvas"></canvas>
+            </div>
+          </main>
+        </div>
+      </section>
+
     </main>
+
+    <!-- ==========================================
+         VEGAS WINNER & SHOWCASE OVERLAY MODAL
+    =========================================== -->
+    <div id="winnerModal" class="winner-modal-overlay hidden">
+      <div class="winner-card">
+        <div class="winner-glow"></div>
+        <div class="winner-icon" id="modalIcon">👑</div>
+        <span class="winner-player-title" id="modalPlayerTitle">SPELER: THOMAS</span>
+        <h2 class="winner-main-heading" id="modalHeading">MEGA JACKPOT WINNAAR!</h2>
+        <div class="winner-badge-box">
+          <span class="modal-multiplier" id="modalMultiplier">10X MULTIPLIER</span>
+        </div>
+        <div class="winner-payout-box" id="modalPayoutBox">
+          <span class="payout-label">DEALER OPDRACHT:</span>
+          <span class="payout-val" id="modalPayoutVal">BETAAL 500 FICHES UIT</span>
+        </div>
+        <button class="modal-close-btn" onclick="closeWinnerModal()">VOLGENDE SPELER ▶</button>
+      </div>
+    </div>
+
   </div>
 
   <script src="script.js"></script>
