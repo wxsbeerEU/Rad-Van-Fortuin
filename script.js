@@ -1,5 +1,5 @@
 // ==========================================================
-// 👑 GLOBAL STATE & AUDIO ENGINE (Web Audio API)
+// 👑 GLOBAL STATE & AUDIO SYNTHESIS ENGINE (Web Audio API)
 // ==========================================================
 let activeGame = "lobby";
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -24,7 +24,7 @@ function playSound(type, param = 0) {
     const osc = audioCtx.createOscillator();
     const gain = audioCtx.createGain();
     osc.type = "triangle";
-    osc.frequency.setValueAtTime(600 + Math.random() * 300, audioCtx.currentTime);
+    osc.frequency.setValueAtTime(520 + Math.random() * 400, audioCtx.currentTime);
     gain.gain.setValueAtTime(0.18, audioCtx.currentTime);
     gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.04);
     osc.connect(gain); gain.connect(audioCtx.destination);
@@ -35,11 +35,11 @@ function playSound(type, param = 0) {
     const osc = audioCtx.createOscillator();
     const gain = audioCtx.createGain();
     osc.type = "sine";
-    osc.frequency.setValueAtTime(800 + param * 100, audioCtx.currentTime);
+    osc.frequency.setValueAtTime(800 + param * 90, audioCtx.currentTime);
     gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.06);
+    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.05);
     osc.connect(gain); gain.connect(audioCtx.destination);
-    osc.start(); osc.stop(audioCtx.currentTime + 0.06);
+    osc.start(); osc.stop(audioCtx.currentTime + 0.05);
   }
 
   if (type === "horn") {
@@ -105,6 +105,51 @@ function triggerConfetti(isGrand = false) {
 }
 
 // ==========================================================
+// 🌌 PARTICLES BACKGROUND ENGINE
+// ==========================================================
+const bgCanvas = document.getElementById("ambientParticlesCanvas");
+const bgCtx = bgCanvas.getContext("2d");
+let bgParticles = [];
+
+function initAmbientParticles() {
+  bgCanvas.width = window.innerWidth;
+  bgCanvas.height = window.innerHeight;
+  bgParticles = [];
+  for (let i = 0; i < 40; i++) {
+    bgParticles.push({
+      x: Math.random() * bgCanvas.width,
+      y: Math.random() * bgCanvas.height,
+      r: Math.random() * 2 + 1,
+      vy: -(Math.random() * 0.5 + 0.2),
+      alpha: Math.random() * 0.5 + 0.2
+    });
+  }
+}
+
+function renderAmbientParticles() {
+  bgCtx.clearRect(0, 0, bgCanvas.width, bgCanvas.height);
+  bgParticles.forEach(p => {
+    p.y += p.vy;
+    if (p.y < 0) p.y = bgCanvas.height;
+    bgCtx.beginPath();
+    bgCtx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+    bgCtx.fillStyle = `rgba(255, 215, 0, ${p.alpha})`;
+    bgCtx.fill();
+  });
+  requestAnimationFrame(renderAmbientParticles);
+}
+
+window.addEventListener("resize", () => {
+  if (bgCanvas) {
+    bgCanvas.width = window.innerWidth;
+    bgCanvas.height = window.innerHeight;
+  }
+});
+
+initAmbientParticles();
+renderAmbientParticles();
+
+// ==========================================================
 // 🏆 SHOWCASE WINNER MODAL
 // ==========================================================
 function getPlayerName() {
@@ -166,13 +211,14 @@ function openGame(gameKey) {
   if (gameKey === "wheel") {
     dealerStatus.innerText = "RAD VAN FORTUIN";
     dealerInfo.innerText = "Plaats je inzet & draai!";
+    buildWheelLedRing();
     setTimeout(resizeWheelCanvas, 50);
   } else if (gameKey === "race") {
     dealerStatus.innerText = "PAARDENRACE DERBY";
     dealerInfo.innerText = "Kies je winnende paard";
     renderRaceHorses();
   } else if (gameKey === "cups") {
-    dealerStatus.innerText = "3 BEKERS & BALLETJE";
+    dealerStatus.innerText = "3 GOUDEN BEKERS";
     dealerInfo.innerText = "Zet in & klik op schudden";
     initCupsView();
   } else if (gameKey === "vault") {
@@ -187,7 +233,7 @@ function openGame(gameKey) {
 }
 
 // ==========================================================
-// 🎡 GAME 1: RAD VAN FORTUIN
+// 🎡 GAME 1: RAD VAN FORTUIN DELUXE
 // ==========================================================
 const wheelSegments = [
   { label: "⭐ JACKPOT 10X ⭐", color1: "#ffd700", color2: "#b8860b", text: "#000", type: "mult", val: 10, special: true },
@@ -209,6 +255,7 @@ let wheelRotation = 0;
 let isWheelSpinning = false;
 let lastWheelIndex = -1;
 let wheelHistory = [];
+let wheelLeds = [];
 
 const wheelCanvas = document.getElementById("wheelCanvas");
 const wheelCtx = wheelCanvas.getContext("2d");
@@ -216,6 +263,40 @@ const wheelSpinBtn = document.getElementById("wheelSpinBtn");
 const wheelBetInput = document.getElementById("wheelBetInput");
 const wheelNeedle = document.getElementById("wheelNeedle");
 const wheelHistoryEl = document.getElementById("wheelHistory");
+
+function buildWheelLedRing() {
+  const container = document.getElementById("wheelLedRing");
+  if (!container || wheelLeds.length > 0) return;
+  container.innerHTML = "";
+  wheelLeds = [];
+  const totalLeds = 24;
+  const radius = 230;
+
+  for (let i = 0; i < totalLeds; i++) {
+    const led = document.createElement("div");
+    led.className = "led-node";
+    const angle = (i / totalLeds) * (2 * Math.PI);
+    const x = Math.cos(angle) * radius;
+    const y = Math.sin(angle) * radius;
+    led.style.transform = `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`;
+    container.appendChild(led);
+    wheelLeds.push(led);
+  }
+}
+
+// LED Looplicht
+let ledTick = 0;
+setInterval(() => {
+  if (wheelLeds.length === 0) return;
+  ledTick++;
+  wheelLeds.forEach((led, idx) => {
+    if (isWheelSpinning) {
+      led.classList.toggle("off", (idx + ledTick) % 2 === 0);
+    } else {
+      led.classList.toggle("off", (idx + Math.floor(Date.now() / 400)) % 3 === 0);
+    }
+  });
+}, 70);
 
 function resizeWheelCanvas() {
   if (activeGame !== "wheel") return;
@@ -234,18 +315,20 @@ function drawWheel() {
   const size = rect.width;
   if (!size) return;
   const center = size / 2;
-  const radius = center - 10;
+  const radius = center - 8;
   const arc = (2 * Math.PI) / wheelSegments.length;
 
   wheelCtx.clearRect(0, 0, size, size);
 
+  // Rand
   wheelCtx.save();
   wheelCtx.beginPath();
-  wheelCtx.arc(center, center, radius + 6, 0, 2 * Math.PI);
+  wheelCtx.arc(center, center, radius + 5, 0, 2 * Math.PI);
   wheelCtx.fillStyle = "#161104"; wheelCtx.fill();
-  wheelCtx.lineWidth = 8; wheelCtx.strokeStyle = "#cca000"; wheelCtx.stroke();
+  wheelCtx.lineWidth = 6; wheelCtx.strokeStyle = "#cca000"; wheelCtx.stroke();
   wheelCtx.restore();
 
+  // Segmenten
   wheelSegments.forEach((seg, i) => {
     const angle = wheelRotation + (i * arc);
     wheelCtx.save();
@@ -390,7 +473,7 @@ function handleWheelResult(seg) {
 }
 
 // ==========================================================
-// 🐎 GAME 2: PAARDENRACE DERBY
+// 🐎 GAME 2: PAARDENRACE DERBY EXTRAVAGANZA
 // ==========================================================
 const horses = [
   { id: 0, name: "Bliksem Bob", avatar: "⚡🐎", color: "#e74c3c", odds: 2.2 },
@@ -455,6 +538,7 @@ function startHorseRace() {
 
   const trackWidth = document.getElementById("raceTrack").clientWidth - 110;
   const positions = horses.map(() => 0);
+  const commentaryEl = document.getElementById("raceCommentary");
   document.querySelectorAll(".horse-runner").forEach(el => el.classList.add("horse-running"));
 
   const raceInterval = setInterval(() => {
@@ -472,11 +556,16 @@ function startHorseRace() {
       }
     });
 
+    // Dynamic Live Commentary
+    const leaderIdx = positions.indexOf(Math.max(...positions));
+    commentaryEl.innerText = `🎙️ KOPLOPER: ${horses[leaderIdx].name.toUpperCase()} LEIDT HET VELD!`;
+
     if (winner !== null) {
       clearInterval(raceInterval);
       isRacing = false;
       document.getElementById("startRaceBtn").disabled = false;
       document.querySelectorAll(".horse-runner").forEach(el => el.classList.remove("horse-running"));
+      commentaryEl.innerText = `🏆 FINISH: ${winner.name.toUpperCase()} WINT DE DERBY!`;
 
       const pName = getPlayerName();
       if (winner.id === selectedHorse) {
@@ -503,7 +592,7 @@ function startHorseRace() {
 }
 
 // ==========================================================
-// 🎪 GAME 3: 3 BEKERS & BALLETJE
+// 🎪 GAME 3: 3 GOUDEN BEKERS & BALLETJE
 // ==========================================================
 let cupsBet = 50;
 let ballSlot = 1;
@@ -632,7 +721,7 @@ function pickCup(clickedCupId) {
 }
 
 // ==========================================================
-// 🗄️ GAME 4: KRAAK DE KLUIS (VAULT)
+// 🗄️ GAME 4: KRAAK DE KLUIS (VAULT ROYALE)
 // ==========================================================
 let vaultBet = 50;
 let secretCode = "742";
@@ -649,7 +738,6 @@ document.getElementById("vaultBetInput").addEventListener("input", (e) => {
 });
 
 function initVaultGame() {
-  // Genereer willekeurige 3-cijferige kluiscode (unieke cijfers)
   const digits = [0,1,2,3,4,5,6,7,8,9].sort(() => Math.random() - 0.5);
   secretCode = `${digits[0]}${digits[1]}${digits[2]}`;
   clearKeypad();
@@ -684,13 +772,12 @@ function submitVaultGuess() {
     return;
   }
 
-  vaultJackpot += vaultBet; // Pot groeit
+  vaultJackpot += vaultBet;
   document.getElementById("vaultJackpotAmount").innerText = `${vaultJackpot} FICHES`;
 
   const pName = getPlayerName();
   let exactCount = 0;
 
-  // Mastermind logic
   for (let i = 0; i < 3; i++) {
     const dot = document.getElementById(`hdot-${i}`);
     dot.className = `hint-dot dot-${i+1}`;
@@ -723,7 +810,7 @@ function submitVaultGuess() {
 }
 
 // ==========================================================
-// ⚡ GAME 5: PLINKO ROYALE
+// ⚡ GAME 5: PLINKO ROYALE DELUXE
 // ==========================================================
 let plinkoBet = 50;
 let isPlinkoRunning = false;
@@ -781,7 +868,7 @@ function drawPlinkoBoard(ball = null) {
 
   plinkoCtx.clearRect(0, 0, width, height);
 
-  // 1. Teken de pinnen
+  // 1. Pinnen
   plinkoPegs.forEach(peg => {
     plinkoCtx.beginPath();
     plinkoCtx.arc(peg.x, peg.y, 4, 0, 2 * Math.PI);
@@ -792,7 +879,7 @@ function drawPlinkoBoard(ball = null) {
     plinkoCtx.shadowBlur = 0;
   });
 
-  // 2. Teken de multiplier slots onderaan
+  // 2. Multiplier slots
   const slotWidth = width / plinkoMultipliers.length;
   plinkoMultipliers.forEach((mult, i) => {
     const x = i * slotWidth;
@@ -806,7 +893,7 @@ function drawPlinkoBoard(ball = null) {
     plinkoCtx.fillText(`${mult}x`, x + slotWidth / 2, y + 22);
   });
 
-  // 3. Teken de bal (indien actief)
+  // 3. Bal
   if (ball) {
     plinkoCtx.beginPath();
     plinkoCtx.arc(ball.x, ball.y, 9, 0, 2 * Math.PI);
@@ -834,11 +921,10 @@ function dropPlinkoBall() {
   };
 
   const anim = () => {
-    ball.vy += 0.22; // Gravity
+    ball.vy += 0.22;
     ball.x += ball.vx;
     ball.y += ball.vy;
 
-    // Pin collision
     plinkoPegs.forEach(peg => {
       const dx = ball.x - peg.x;
       const dy = ball.y - peg.y;
@@ -852,7 +938,6 @@ function dropPlinkoBall() {
       }
     });
 
-    // Rand botsingen
     if (ball.x < 15) { ball.x = 15; ball.vx *= -0.7; }
     if (ball.x > width - 15) { ball.x = width - 15; ball.vx *= -0.7; }
 
@@ -864,7 +949,6 @@ function dropPlinkoBall() {
       isPlinkoRunning = false;
       document.getElementById("dropPlinkoBtn").disabled = false;
 
-      // Bereken slot
       const slotIndex = Math.min(
         plinkoMultipliers.length - 1,
         Math.max(0, Math.floor(ball.x / (width / plinkoMultipliers.length)))
