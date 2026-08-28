@@ -4,11 +4,10 @@
   --portal-cyan: #00ffff;
   --portal-grad: linear-gradient(135deg, #a6ff00 0%, #39ff14 45%, #00d46a 80%, #06401e 100%);
   --bg-dark: #050811;
-  --panel-bg: rgba(10, 16, 30, 0.94);
+  --panel-bg: rgba(10, 16, 30, 0.96);
   --border-portal: 1.5px solid rgba(57, 255, 20, 0.45);
   --glow-portal: 0 0 25px rgba(57, 255, 20, 0.45);
   --neon-red: #ff2a55;
-  --neon-yellow: #ffea00;
 }
 
 * {
@@ -29,7 +28,6 @@ html, body {
   position: relative;
 }
 
-/* CRT Scanline Retro Sci-Fi Monitor Effect */
 .crt-scanlines {
   position: fixed;
   inset: 0;
@@ -407,101 +405,54 @@ html, body {
   background: #060912;
   border: 2px solid var(--portal-green);
   border-radius: 12px;
-  padding: clamp(4px, 0.6vh, 7px) 10px;
+  padding: clamp(6px, 1vh, 10px) 14px;
   box-shadow: inset 0 0 10px rgba(0,0,0,0.8), var(--glow-portal);
 }
 
 .coin-icon {
-  font-size: clamp(1.1rem, 1.5vw, 1.4rem);
-  margin-right: 6px;
-}
-
-.bet-input-box input {
-  background: transparent;
-  border: none;
-  color: #ffffff;
-  font-family: 'Orbitron', sans-serif;
   font-size: clamp(1.2rem, 1.6vw, 1.5rem);
-  font-weight: 900;
-  width: 100%;
-  outline: none;
+  margin-right: 8px;
 }
 
-.unit-tag {
-  font-size: 0.65rem;
+.bet-fixed-label {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.2rem;
   font-weight: 900;
-  color: var(--portal-green);
+  color: #fff;
 }
 
-/* CHIPS */
-.chip-rack {
+.bet-bills-selector {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: clamp(4px, 0.6vh, 6px);
-}
-
-.chip {
-  aspect-ratio: 1;
-  border-radius: 50%;
-  border: 3px dashed rgba(255,255,255,0.7);
-  cursor: pointer;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.6);
-  transition: all 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-family: 'Orbitron', sans-serif;
-  font-weight: 900;
-  font-size: clamp(0.72rem, 0.95vw, 0.85rem);
-  color: #fff;
-  text-shadow: 0 1px 3px rgba(0,0,0,0.9);
-}
-
-.chip:hover { transform: translateY(-2px) scale(1.06); }
-.chip.active {
-  transform: translateY(-3px) scale(1.1);
-  border: 3px solid #fff;
-  box-shadow: 0 0 14px var(--portal-green);
-}
-
-.c-10  { background: radial-gradient(circle, #00d46a, #084c24); }
-.c-25  { background: radial-gradient(circle, #00ffff, #005f73); }
-.c-50  { background: radial-gradient(circle, #e74c3c, #78281f); }
-.c-100 { background: radial-gradient(circle, #9b59b6, #4a235a); }
-.c-250 { background: radial-gradient(circle, #f39c12, #7e4a00); }
-.c-500 { background: radial-gradient(circle, #39ff14, #125e00); color: #000; }
-
-.bet-actions {
-  display: flex;
   gap: 6px;
 }
 
-.action-btn {
-  flex: 1;
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.15);
-  color: #b5c2db;
-  padding: 5px;
+.bill-btn {
+  background: rgba(57, 255, 20, 0.1);
+  border: 1px solid rgba(57, 255, 20, 0.4);
+  color: #fff;
+  padding: 8px;
   border-radius: 8px;
-  font-weight: 700;
-  font-size: 0.68rem;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 800;
+  font-size: 0.75rem;
   cursor: pointer;
   transition: 0.15s;
 }
 
-.action-btn:hover {
-  background: rgba(57, 255, 20, 0.2);
-  border-color: var(--portal-green);
-  color: #fff;
+.bill-btn:hover, .bill-btn.active {
+  background: var(--portal-green);
+  color: #000;
+  box-shadow: 0 0 12px var(--portal-green);
 }
 
 .instruction-box {
   background: rgba(0,0,0,0.35);
   border-radius: 8px;
-  padding: 6px 8px;
-  font-size: 0.68rem;
+  padding: 8px 10px;
+  font-size: 0.72rem;
   color: #a0aec0;
-  line-height: 1.35;
+  line-height: 1.4;
   border-left: 3px solid var(--portal-green);
 }
 
@@ -519,7 +470,7 @@ html, body {
   background: var(--portal-grad);
   border: 2px solid #fff;
   border-radius: 50px;
-  padding: clamp(7px, 1.2vh, 11px) clamp(20px, 2.5vw, 36px);
+  padding: clamp(8px, 1.4vh, 12px) clamp(20px, 2.5vw, 36px);
   cursor: pointer;
   box-shadow: 0 6px 20px rgba(57, 255, 20, 0.4);
   transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -542,7 +493,7 @@ html, body {
 
 .btn-txt {
   font-family: 'Orbitron', sans-serif;
-  font-size: clamp(0.75rem, 1.05vw, 0.95rem);
+  font-size: clamp(0.78rem, 1.1vw, 0.95rem);
   font-weight: 900;
   color: #000;
   letter-spacing: 1px;
@@ -593,7 +544,7 @@ html, body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 4px 8px;
+  padding: 6px 10px;
   border-radius: 8px;
   background: rgba(255,255,255,0.04);
   border: 1px solid rgba(255,255,255,0.1);
@@ -612,16 +563,16 @@ html, body {
   box-shadow: 0 0 10px rgba(57, 255, 20, 0.4);
 }
 
-.h-info { display: flex; align-items: center; gap: 6px; }
-.h-avatar { font-size: 1.05rem; }
-.h-name { font-size: 0.72rem; font-weight: 800; }
+.h-info { display: flex; align-items: center; gap: 8px; }
+.h-avatar { font-size: 1.15rem; }
+.h-name { font-size: 0.78rem; font-weight: 800; }
 .h-odds {
   font-family: 'Orbitron', sans-serif;
-  font-size: 0.68rem;
+  font-size: 0.7rem;
   font-weight: 900;
   color: var(--portal-green);
   background: #000;
-  padding: 2px 5px;
+  padding: 2px 6px;
   border-radius: 4px;
 }
 
@@ -713,10 +664,10 @@ html, body {
 }
 
 .runner-tag {
-  font-size: 0.62rem;
+  font-size: 0.65rem;
   font-weight: 800;
   background: rgba(0,0,0,0.8);
-  padding: 2px 5px;
+  padding: 2px 6px;
   border-radius: 4px;
   border-left: 3px solid var(--portal-green);
   white-space: nowrap;
@@ -778,24 +729,25 @@ html, body {
 
 .cup-asset.lifted { transform: translateY(-75px); }
 
+/* VOLLEDIG ONDOORZICHTIGE 100% OPAQUE FLASKS */
 .cup-body {
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, rgba(57, 255, 20, 0.85) 0%, rgba(0, 212, 106, 0.7) 50%, rgba(4, 40, 18, 0.95) 100%);
+  background: #061e12 !important;
+  border: 3px solid #00ffff;
   clip-path: polygon(25% 0%, 75% 0%, 100% 100%, 0% 100%);
   border-radius: 6px 6px 12px 12px;
-  box-shadow: inset 0 0 20px #39ff14, 0 0 15px rgba(57, 255, 20, 0.5);
-  border: 2px solid #00ffff;
+  box-shadow: inset 0 0 25px #39ff14, 0 0 15px rgba(57, 255, 20, 0.8);
 }
 
 .cup-lip {
   position: absolute;
   bottom: 0;
   width: 100%;
-  height: 12px;
+  height: 14px;
   background: #00ffff;
   border-radius: 4px;
-  box-shadow: 0 0 10px #00ffff;
+  box-shadow: 0 0 12px #00ffff;
 }
 
 .table-ball {
@@ -822,31 +774,6 @@ html, body {
 }
 
 /* VIEW 3: MORTY ROAD */
-.chicken-status-card {
-  background: rgba(57, 255, 20, 0.12);
-  border: 1px solid var(--portal-green);
-  border-radius: 12px;
-  padding: 10px;
-  text-align: center;
-  box-shadow: 0 0 15px rgba(57, 255, 20, 0.25);
-}
-
-.c-card-lbl {
-  display: block;
-  font-size: 0.65rem;
-  font-weight: 900;
-  color: var(--portal-green);
-  letter-spacing: 1px;
-}
-
-.c-card-val {
-  font-family: 'Orbitron', sans-serif;
-  font-size: 1.35rem;
-  font-weight: 900;
-  color: #fff;
-  text-shadow: 0 0 12px rgba(57, 255, 20, 0.6);
-}
-
 .chicken-action-stack {
   display: flex;
   flex-direction: column;
