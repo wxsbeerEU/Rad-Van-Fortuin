@@ -1,9 +1,32 @@
 // ==========================================================
-// 🧪 RICK & MORTY AUDIO ENGINE & RIGGED CASINO LOGICA
+// 🧪 RICK & MORTY AUDIO ENGINE & DEALER CHEAT ENGINE (W / V)
 // ==========================================================
 let activeGame = "lobby";
 let currentGlobalBet = 10; // Standaard 1 briefje van 10
+
+// CHEAT STATE: 'W' = Altijd Winst | 'V' = Altijd Verlies
+let dealerCheatMode = 'V'; // Standaard ingesteld op verlies
+
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+// KEYBOARD CHEAT LISTENER (Druk op 'w' voor Win, 'v' voor Verlies)
+window.addEventListener('keydown', (e) => {
+  const key = e.key.toLowerCase();
+  if (key === 'w') {
+    dealerCheatMode = 'W';
+    updateCheatIndicator();
+  } else if (key === 'v') {
+    dealerCheatMode = 'V';
+    updateCheatIndicator();
+  }
+});
+
+function updateCheatIndicator() {
+  const dot = document.getElementById('dealerCheatDot');
+  if (dot) {
+    dot.className = `cheat-indicator-dot ${dealerCheatMode === 'W' ? 'win-mode' : 'loss-mode'}`;
+  }
+}
 
 function playSound(type, param = 0) {
   if (audioCtx.state === "suspended") audioCtx.resume();
@@ -101,7 +124,7 @@ function playSound(type, param = 0) {
       osc.type = "triangle";
       osc.frequency.setValueAtTime(f, audioCtx.currentTime + i * 0.08);
       gain.gain.setValueAtTime(0.25, audioCtx.currentTime + i * 0.08);
-      gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.35);
+      gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + i * 0.08 + 0.35);
       osc.connect(gain); gain.connect(audioCtx.destination);
       osc.start(audioCtx.currentTime + i * 0.08);
       osc.stop(audioCtx.currentTime + i * 0.08 + 0.35);
@@ -289,7 +312,7 @@ function openGame(gameKey) {
 }
 
 // ==========================================================
-// 🚀 GAME 1: SPACE DERBY (RIGGED: 85% KANS OP VERLIES)
+// 🚀 GAME 1: SPACE DERBY (GEKOPPELD AAN W / V TOETS)
 // ==========================================================
 const aliens = [
   { id: 0, name: "Pickle Rick", avatar: "🥒", color: "#39ff14" },
@@ -346,10 +369,9 @@ function startHorseRace() {
   const commentaryEl = document.getElementById("raceCommentary");
   document.querySelectorAll(".horse-runner").forEach(el => el.classList.add("horse-running"));
 
-  // RIGGED: 85% kans dat speler verliest
-  const isRiggedLoss = Math.random() < 0.85;
+  // CHEAT ENGINE LOGICA
   let forcedWinnerId = selectedHorse;
-  if (isRiggedLoss) {
+  if (dealerCheatMode === 'V') {
     const otherAliens = aliens.filter(a => a.id !== selectedHorse);
     forcedWinnerId = otherAliens[Math.floor(Math.random() * otherAliens.length)].id;
   }
@@ -359,8 +381,8 @@ function startHorseRace() {
 
     aliens.forEach((h, i) => {
       let speed = (Math.random() * 3.5) + 1.2;
-      if (h.id === forcedWinnerId) speed += 1.8;
-      if (isRiggedLoss && h.id === selectedHorse) speed *= 0.75;
+      if (h.id === forcedWinnerId) speed += 2.0;
+      if (dealerCheatMode === 'V' && h.id === selectedHorse) speed *= 0.7;
 
       positions[i] += speed;
 
@@ -405,7 +427,7 @@ function startHorseRace() {
 }
 
 // ==========================================================
-// 🧪 GAME 2: 3 PORTAL FLASKS & MEGA SEED (RIGGED: 85% VERLIES)
+// 🧪 GAME 2: 3 PORTAL FLASKS (GEKOPPELD AAN W / V TOETS)
 // ==========================================================
 let ballSlot = 1;
 let isShuffling = false;
@@ -494,8 +516,10 @@ function pickCup(clickedCupId) {
   if (!canPick) return;
   canPick = false;
 
-  // RIGGED: 85% kans dat de bal stiekem verplaatst wordt
-  if (Math.random() < 0.85 && clickedCupId === ballSlot) {
+  // CHEAT ENGINE: W = dwing winst af | V = dwing verlies af
+  if (dealerCheatMode === 'W') {
+    ballSlot = clickedCupId;
+  } else {
     const otherSlots = [0, 1, 2].filter(s => s !== clickedCupId);
     ballSlot = otherSlots[Math.floor(Math.random() * otherSlots.length)];
   }
@@ -533,7 +557,7 @@ function pickCup(clickedCupId) {
 }
 
 // ==========================================================
-// 👦 GAME 3: MORTY ROAD (RIGGED: CRASH BINNEN 1 TOT 2 STAPPEN)
+// 👦 GAME 3: MORTY ROAD (GEKOPPELD AAN W / V TOETS)
 // ==========================================================
 let chickenLane = 0;
 let isChickenGameActive = false;
@@ -620,8 +644,13 @@ function hopChickenForward() {
     isChickenAlive = true;
     chickenLane = 0;
     safeConcreteLanes = [];
-    // RIGGED: 85% kans dat hij binnen stap 1 of 2 crasht
-    deadlyLane = Math.random() < 0.85 ? Math.floor(Math.random() * 2) + 1 : Math.floor(Math.random() * 3) + 3;
+    
+    // CHEAT: W = overleeft tot finish (deadlyLane 99) | V = crasht op stap 1 of 2
+    if (dealerCheatMode === 'W') {
+      deadlyLane = 99;
+    } else {
+      deadlyLane = Math.floor(Math.random() * 2) + 1;
+    }
   }
 
   isChickenHopping = true;
@@ -825,7 +854,7 @@ function drawChickenHighwayFrame() {
     chickenCtx.fillText(v.icon, v.x, v.y);
   });
 
-  // 5. RICK'S PORTAL SHIELDS
+  // 5. RICK'S PORTAL FORCEFIELD SHIELDS
   safeConcreteLanes.forEach(laneNum => {
     const laneY = (h - 40) - (laneNum * laneHeight) + (laneHeight / 2);
 
@@ -877,7 +906,7 @@ function drawChickenHighwayFrame() {
 }
 
 // ==========================================================
-// ⚡ GAME 4: CITADEL PLINKO (RIGGED: 90% NAAR VERLIES ZONE)
+// ⚡ GAME 4: CITADEL PLINKO (GEKOPPELD AAN W / V TOETS)
 // ==========================================================
 const plinkoSlots = ["WINST", "VERLIES", "VERLIES", "VERLIES", "VERLIES", "VERLIES", "VERLIES", "VERLIES", "WINST"];
 const plinkoCanvas = document.getElementById("plinkoCanvas");
@@ -962,8 +991,15 @@ function dropPlinkoBall() {
   const width = plinkoCanvas.getBoundingClientRect().width;
   const height = plinkoCanvas.getBoundingClientRect().height;
 
+  let startXOffset = 0;
+  if (dealerCheatMode === 'W') {
+    startXOffset = Math.random() > 0.5 ? -18 : 18;
+  } else {
+    startXOffset = Math.random() * 6 - 3;
+  }
+
   let ball = {
-    x: width / 2 + (Math.random() * 8 - 4),
+    x: width / 2 + startXOffset,
     y: 20,
     vx: (Math.random() - 0.5) * 0.8,
     vy: 2
@@ -971,8 +1007,15 @@ function dropPlinkoBall() {
 
   const anim = () => {
     ball.vy += 0.22;
-    // RIGGED: Zuigt 90% naar het rode midden
-    ball.vx += (width / 2 - ball.x) * 0.003;
+    
+    // CHEAT PHYSICS: Trekt naar hoeken (W) of naar midden (V)
+    if (dealerCheatMode === 'W') {
+      const targetSide = ball.x < width / 2 ? 20 : width - 20;
+      ball.vx += (targetSide - ball.x) * 0.003;
+    } else {
+      ball.vx += (width / 2 - ball.x) * 0.003;
+    }
+
     ball.x += ball.vx;
     ball.y += ball.vy;
 
@@ -1032,3 +1075,7 @@ function handlePlinkoResult(outcome) {
     });
   }
 }
+
+// Initialiseer direct op €10 en update indicator
+setCashBet(10);
+updateCheatIndicator();
