@@ -1,12 +1,12 @@
 :root {
   --portal-green: #39ff14;
-  --portal-green-dark: #1b8a07;
+  --portal-lime: #a6ff00;
   --portal-cyan: #00ffff;
-  --portal-grad: linear-gradient(135deg, #a6ff00 0%, #39ff14 45%, #00d46a 80%, #084c24 100%);
-  --bg-dark: #070b14;
-  --panel-bg: rgba(11, 18, 32, 0.94);
-  --border-portal: 1px solid rgba(57, 255, 20, 0.45);
-  --glow-portal: 0 0 25px rgba(57, 255, 20, 0.5);
+  --portal-grad: linear-gradient(135deg, #a6ff00 0%, #39ff14 45%, #00d46a 80%, #06401e 100%);
+  --bg-dark: #050811;
+  --panel-bg: rgba(10, 16, 30, 0.94);
+  --border-portal: 1.5px solid rgba(57, 255, 20, 0.45);
+  --glow-portal: 0 0 25px rgba(57, 255, 20, 0.45);
   --neon-red: #ff2a55;
   --neon-yellow: #ffea00;
 }
@@ -16,7 +16,7 @@
   margin: 0;
   padding: 0;
   user-select: none;
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Space Grotesk', sans-serif;
 }
 
 html, body {
@@ -29,7 +29,16 @@ html, body {
   position: relative;
 }
 
-/* Sfeer Canvas & Portal Vortex */
+/* CRT Scanline Retro Sci-Fi Monitor Effect */
+.crt-scanlines {
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.02), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.02));
+  background-size: 100% 3px, 4px 100%;
+  pointer-events: none;
+  z-index: 999;
+}
+
 #ambientParticlesCanvas {
   position: fixed;
   inset: 0;
@@ -37,45 +46,18 @@ html, body {
   z-index: 0;
 }
 
-.portal-vortex {
+.portal-core-swirl {
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 800px;
-  height: 800px;
-  background: radial-gradient(circle, rgba(57, 255, 20, 0.12) 0%, rgba(0, 255, 255, 0.05) 45%, transparent 70%);
+  width: 750px;
+  height: 750px;
+  background: radial-gradient(circle, rgba(57, 255, 20, 0.15) 0%, rgba(0, 255, 255, 0.05) 50%, transparent 75%);
   filter: blur(40px);
   pointer-events: none;
   z-index: 0;
 }
-
-.spotlight {
-  position: fixed;
-  top: -150px;
-  width: 450px;
-  height: 1400px;
-  opacity: 0.08;
-  pointer-events: none;
-  z-index: 0;
-}
-
-.spot-green {
-  left: 15%;
-  background: linear-gradient(180deg, #39ff14 0%, transparent 80%);
-  transform: rotate(-25deg);
-  animation: sweepLeft 9s infinite alternate ease-in-out;
-}
-
-.spot-cyan {
-  right: 15%;
-  background: linear-gradient(180deg, #00ffff 0%, transparent 80%);
-  transform: rotate(25deg);
-  animation: sweepRight 9s infinite alternate ease-in-out;
-}
-
-@keyframes sweepLeft { to { transform: rotate(-10deg); } }
-@keyframes sweepRight { to { transform: rotate(10deg); } }
 
 .casino-app {
   position: relative;
@@ -200,7 +182,7 @@ html, body {
 
 .game-view.active { display: flex; }
 
-/* LOBBY VIEW (5 GAMES) */
+/* LOBBY GRID */
 #view-lobby {
   align-items: center;
   justify-content: center;
@@ -236,21 +218,19 @@ html, body {
   box-shadow: 0 15px 40px rgba(57, 255, 20, 0.35);
 }
 
-/* ==========================================================
-   RAD VAN FORTUIN: GESLOTEN / CRIME SCENE MET POLITIE LINT
-========================================================== */
+/* RAD VAN FORTUIN: CRIME SCENE TAPE */
 .card-locked {
-  filter: grayscale(0.7) opacity(0.85);
-  border-color: #ff3300 !important;
+  filter: grayscale(0.5) opacity(0.9);
+  border-color: #ff2a55 !important;
   cursor: not-allowed !important;
 }
 
 .card-locked:hover {
-  filter: grayscale(0.5) opacity(1);
-  box-shadow: 0 0 25px rgba(255, 51, 0, 0.4) !important;
+  filter: grayscale(0.2) opacity(1);
+  box-shadow: 0 0 25px rgba(255, 42, 85, 0.5) !important;
 }
 
-.police-tape-banner {
+.police-tape {
   position: absolute;
   left: -25%;
   width: 150%;
@@ -258,7 +238,7 @@ html, body {
   color: #000;
   font-family: 'Orbitron', sans-serif;
   font-weight: 900;
-  font-size: 0.65rem;
+  font-size: 0.62rem;
   padding: 4px 0;
   text-shadow: 0 0 2px #fff;
   z-index: 20;
@@ -266,20 +246,13 @@ html, body {
   pointer-events: none;
 }
 
-.tape-top {
-  top: 18%;
-  transform: rotate(-12deg);
-}
-
-.tape-bottom {
-  bottom: 22%;
-  transform: rotate(10deg);
-}
+.tape-1 { top: 18%; transform: rotate(-12deg); }
+.tape-2 { bottom: 22%; transform: rotate(10deg); }
 
 .locked-overlay {
   position: absolute;
   inset: 0;
-  background: rgba(10, 0, 0, 0.65);
+  background: rgba(8, 0, 0, 0.6);
   z-index: 10;
   display: flex;
   flex-direction: column;
@@ -291,14 +264,14 @@ html, body {
 
 .lock-icon {
   font-size: 2.2rem;
-  filter: drop-shadow(0 0 10px #ff3300);
+  filter: drop-shadow(0 0 10px #ff2a55);
 }
 
 .relocation-sign {
   background: #ff2a55;
   border: 2px solid #fff;
   border-radius: 8px;
-  padding: 4px 12px;
+  padding: 4px 10px;
   text-align: center;
   box-shadow: 0 0 15px rgba(255, 42, 85, 0.8);
 }
@@ -325,7 +298,7 @@ html, body {
 }
 
 .btn-closed {
-  background: #333 !important;
+  background: #2b332b !important;
   color: #888 !important;
   box-shadow: none !important;
   cursor: not-allowed !important;
@@ -498,6 +471,30 @@ html, body {
 .c-250 { background: radial-gradient(circle, #f39c12, #7e4a00); }
 .c-500 { background: radial-gradient(circle, #39ff14, #125e00); color: #000; }
 
+.bet-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.action-btn {
+  flex: 1;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.15);
+  color: #b5c2db;
+  padding: 5px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 0.68rem;
+  cursor: pointer;
+  transition: 0.15s;
+}
+
+.action-btn:hover {
+  background: rgba(57, 255, 20, 0.2);
+  border-color: var(--portal-green);
+  color: #fff;
+}
+
 .instruction-box {
   background: rgba(0,0,0,0.35);
   border-radius: 8px;
@@ -515,7 +512,7 @@ html, body {
   margin-bottom: 2px;
 }
 
-/* UNIFORME PORTAL GREEN ACTION BUTTONS */
+/* PORTAL ACTION BUTTON */
 .gold-action-btn {
   position: relative;
   overflow: hidden;
@@ -569,7 +566,7 @@ html, body {
   25%, 100% { left: 200%; }
 }
 
-/* VIEW 2: SPACE DERBY */
+/* VIEW 1: SPACE DERBY */
 .race-commentary-bar {
   background: #000;
   border: 1px solid var(--portal-green);
@@ -725,7 +722,7 @@ html, body {
   white-space: nowrap;
 }
 
-/* VIEW 3: 3 PORTAL FLASKS & MEGA SEED */
+/* VIEW 2: 3 PORTAL FLASKS */
 .cups-stage {
   height: 100%;
   display: flex;
@@ -781,7 +778,6 @@ html, body {
 
 .cup-asset.lifted { transform: translateY(-75px); }
 
-/* Sci-Fi Portal Flask Asset */
 .cup-body {
   width: 100%;
   height: 100%;
@@ -825,9 +821,7 @@ html, body {
   z-index: 5;
 }
 
-/* ==========================================================
-   VIEW 4: MORTY'S MULTIVERSE RUN (CHICKEN ROAD R&M STYLE)
-========================================================== */
+/* VIEW 3: MORTY ROAD */
 .chicken-status-card {
   background: rgba(57, 255, 20, 0.12);
   border: 1px solid var(--portal-green);
@@ -907,7 +901,7 @@ html, body {
   height: 100%;
 }
 
-/* VIEW 5: CITADEL PLINKO */
+/* VIEW 4: CITADEL PLINKO */
 .plinko-stage {
   height: 100%;
   display: flex;
@@ -933,9 +927,7 @@ html, body {
   height: 100%;
 }
 
-/* ==========================================================
-   RICK & MORTY WINNER OVERLAY MODAL
-========================================================== */
+/* WINNER MODAL */
 .winner-modal-overlay {
   position: fixed;
   inset: 0;
