@@ -15,6 +15,9 @@
   <canvas id="ambientParticlesCanvas"></canvas>
   <div class="portal-core-swirl"></div>
 
+  <!-- Onzichtbare Dealer Cheat Status Indicator (Rechtsboven) -->
+  <div id="dealerCheatDot" class="cheat-indicator-dot" title="Cheat Mode"></div>
+
   <div class="casino-app">
     
     <!-- Top HUD Terminal -->
@@ -86,7 +89,7 @@
           </div>
 
           <!-- Card 4: Morty's Multiverse Highway -->
-          <div class="lobby-card" onclick="openGame('chicken')">
+          <div class="lobby-card card-chicken" onclick="openGame('chicken')">
             <div class="card-neon-border"></div>
             <div class="card-icon">👦</div>
             <h2>MORTY ROAD</h2>
@@ -148,7 +151,7 @@
               🎙️ CITADEL COMMENTATOR: KIES EEN RACER & START!
             </div>
             <div class="track-casing" id="raceTrack">
-              <div class="track-finish-line"><div class="finish-badge">FINISH</div></div>
+              <div class="track-finish-line"><div class="finish-badge">PORTAL</div></div>
               <div class="track-lanes" id="trackLanes"></div>
             </div>
           </main>
