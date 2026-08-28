@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>🧪 CITADEL CASINO // 99% WIN RATE DIMENSION</title>
+  <title>🧪 CITADEL CASINO // DIMENSIE C-137</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Space+Grotesk:wght@600;700;900&display=swap" rel="stylesheet">
@@ -15,7 +15,7 @@
   <canvas id="ambientParticlesCanvas"></canvas>
   <div class="portal-core-swirl"></div>
 
-  <!-- Geheime Dealer Cheat Indicator (Klikbaar rechtsboven!) -->
+  <!-- Klikbaar cheat-stipje rechtsboven -->
   <div id="dealerCheatDot" class="cheat-indicator-dot" onclick="toggleCheatMode()" title="Cheat: W = Win | V = Lose"></div>
 
   <div class="casino-app">
@@ -30,7 +30,7 @@
           <span class="portal-gun-icon">🧪</span>
           <div class="brand-title">
             <h1 id="appTitle">CITADEL CASINO</h1>
-            <span class="edition-badge">🔥 99% MULTIVERSE PAYOUT RATE 🔥</span>
+            <span class="edition-badge">DIMENSIE C-137 • CONTANT 10€ EDITIE</span>
           </div>
         </div>
       </div>
@@ -44,13 +44,10 @@
     <!-- Main Viewport -->
     <main class="view-viewport">
 
-      <!-- ==========================================
-           VIEW 0: LOBBY
-      =========================================== -->
+      <!-- VIEW 0: LOBBY -->
       <section id="view-lobby" class="game-view active">
         <div class="lobby-grid">
           
-          <!-- Card 1: Rad van Fortuin (AFGESLOTEN) -->
           <div class="lobby-card card-locked" onclick="lockedWheelAlert()">
             <div class="police-tape tape-1">⚠️ CITADEL POLITIE - AFGESLOTEN ⚠️</div>
             <div class="police-tape tape-2">⚠️ VERHUISD NAAR RADT ⚠️</div>
@@ -68,7 +65,6 @@
             <button class="play-btn btn-closed" disabled>GESLOTEN ⛔</button>
           </div>
 
-          <!-- Card 2: Space Derby -->
           <div class="lobby-card" onclick="openGame('race')">
             <div class="card-neon-border"></div>
             <div class="card-icon">🚀</div>
@@ -78,7 +74,6 @@
             <button class="play-btn">START RACE ▶</button>
           </div>
 
-          <!-- Card 3: 3 Portal Flasks & Mega Seed -->
           <div class="lobby-card" onclick="openGame('cups')">
             <div class="card-neon-border"></div>
             <div class="card-icon">🌰</div>
@@ -88,7 +83,6 @@
             <button class="play-btn">ZOEK SEED ▶</button>
           </div>
 
-          <!-- Card 4: Morty's Multiverse Highway -->
           <div class="lobby-card card-chicken" onclick="openGame('chicken')">
             <div class="card-neon-border"></div>
             <div class="card-icon">👦</div>
@@ -98,7 +92,6 @@
             <button class="play-btn">HELP MORTY ▶</button>
           </div>
 
-          <!-- Card 5: Citadel Plinko -->
           <div class="lobby-card" onclick="openGame('plinko')">
             <div class="card-neon-border"></div>
             <div class="card-icon">⚡</div>
@@ -111,9 +104,7 @@
         </div>
       </section>
 
-      <!-- ==========================================
-           VIEW 1: SPACE DERBY
-      =========================================== -->
+      <!-- VIEW 1: SPACE DERBY -->
       <section id="view-race" class="game-view">
         <div class="game-split">
           <aside class="bet-deck">
@@ -162,16 +153,14 @@
         </div>
       </section>
 
-      <!-- ==========================================
-           VIEW 2: 3 PORTAL FLASKS & MEGA SEED
-      =========================================== -->
+      <!-- VIEW 2: 3 PORTAL FLASKS -->
       <section id="view-cups" class="game-view">
         <div class="game-split">
           <aside class="bet-deck">
             <div class="deck-box">
               <div class="deck-head">
                 <h2>FLASK INZET</h2>
-                <p>Vind de Mega Seed (2× Verdubbeling)</p>
+                <p>Vind de Mega Seed (2× Winst)</p>
               </div>
               
               <div class="bet-input-box">
@@ -224,9 +213,7 @@
         </div>
       </section>
 
-      <!-- ==========================================
-           VIEW 3: MORTY'S MULTIVERSE HIGHWAY
-      =========================================== -->
+      <!-- VIEW 3: MORTY ROAD -->
       <section id="view-chicken" class="game-view">
         <div class="game-split">
           <aside class="bet-deck">
@@ -259,7 +246,7 @@
               <div class="chicken-action-stack">
                 <button id="hopChickenBtn" class="gold-action-btn w-full" onclick="hopChickenForward()">
                   <span class="btn-shine"></span>
-                  <span class="btn-txt">SPRING VOORUIT! (€<span class="current-bet-label">10</span>) 👦💨</span>
+                  <span class="btn-txt">SPRING VOORUIT! 👦💨</span>
                 </button>
                 <button id="cashoutChickenBtn" class="cashout-action-btn w-full hidden" onclick="cashoutChicken()">
                   <span class="btn-txt">💰 CASH OUT (€<span class="current-win-label">20</span> WINST!)</span>
@@ -276,9 +263,7 @@
         </div>
       </section>
 
-      <!-- ==========================================
-           VIEW 4: CITADEL PLINKO
-      =========================================== -->
+      <!-- VIEW 4: CITADEL PLINKO -->
       <section id="view-plinko" class="game-view">
         <div class="game-split">
           <aside class="bet-deck">
@@ -324,9 +309,7 @@
 
     </main>
 
-    <!-- ==========================================
-         RICK & MORTY WINNER OVERLAY MODAL
-    =========================================== -->
+    <!-- WINNER MODAL -->
     <div id="winnerModal" class="winner-modal-overlay hidden">
       <div class="winner-god-rays"></div>
       <div class="winner-card">
