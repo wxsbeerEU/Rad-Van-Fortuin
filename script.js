@@ -9,6 +9,7 @@ let dealerCheatMode = 'V';
 
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
+// Keyboard listener voor dealer
 window.addEventListener('keydown', (e) => {
   const key = e.key.toLowerCase();
   if (key === 'w') {
@@ -19,6 +20,12 @@ window.addEventListener('keydown', (e) => {
     updateCheatIndicator();
   }
 });
+
+// Klikbare geheime toggle op het stipje rechtsboven
+function toggleCheatMode() {
+  dealerCheatMode = (dealerCheatMode === 'W') ? 'V' : 'W';
+  updateCheatIndicator();
+}
 
 function updateCheatIndicator() {
   const dot = document.getElementById('dealerCheatDot');
@@ -407,8 +414,8 @@ function startHorseRace() {
       if (positions[selectedHorse] < trackWidth * 0.75) {
         if (h.id === selectedHorse) speed += 1.5;
       } else {
-        if (h.id === forcedWinnerId) speed += 3.2;
-        if (dealerCheatMode === 'V' && h.id === selectedHorse) speed *= 0.5;
+        if (h.id === forcedWinnerId) speed += 3.5;
+        if (dealerCheatMode === 'V' && h.id === selectedHorse) speed *= 0.4;
       }
 
       positions[i] += speed;
@@ -531,7 +538,7 @@ function startCupShuffle() {
           isShuffling = false;
           canPick = true;
           dealerStatus.innerText = "WAAR ZIT DE MEGA SEED?";
-          dealerInfo.innerText = "Klik op één van de 3 buizen om te scannen!";
+          dealerInfo.innerText = "Klik op één van de 3 buizen om te raden!";
         }
       }, 190);
 
@@ -543,6 +550,7 @@ function pickCup(clickedCupId) {
   if (!canPick) return;
   canPick = false;
 
+  // HARDCORE CHEAT LOGICA (W = speler raadt juist | V = bal verplaatst naar andere beker)
   if (dealerCheatMode === 'W') {
     ballSlot = clickedCupId;
   } else {
@@ -671,10 +679,11 @@ function hopChickenForward() {
     chickenLane = 0;
     safeConcreteLanes = [];
     
+    // HARDCORE CHEAT: W = overleeft altijd | V = crasht direct op stap 1 of 2
     if (dealerCheatMode === 'W') {
       deadlyLane = 99;
     } else {
-      deadlyLane = Math.floor(Math.random() * 2) + 2;
+      deadlyLane = Math.floor(Math.random() * 2) + 1;
     }
   }
 
@@ -1027,6 +1036,7 @@ function dropPlinkoBall() {
   const anim = () => {
     ball.vy += 0.22;
     
+    // CHEAT PHYSICS
     if (dealerCheatMode === 'V') {
       ball.vx += (width / 2 - ball.x) * 0.0035;
     } else {
@@ -1094,6 +1104,6 @@ function handlePlinkoResult(outcome) {
   }
 }
 
-// Initialiseer startbedrag
+// Initialiseer direct op €10
 setCashBet(10);
 updateCheatIndicator();
