@@ -33,24 +33,22 @@ html, body {
   position: fixed;
   top: 6px;
   right: 6px;
-  width: 7px;
-  height: 7px;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
-  background: #ff2a55; /* Standaard verlies */
-  opacity: 0.6;
+  background: #ff2a55;
+  opacity: 0.5;
   z-index: 1000;
   pointer-events: none;
-  transition: background 0.2s, box-shadow 0.2s;
+  transition: background 0.2s;
 }
 
 .cheat-indicator-dot.win-mode {
   background: #39ff14;
-  box-shadow: 0 0 8px #39ff14;
 }
 
 .cheat-indicator-dot.loss-mode {
   background: #ff2a55;
-  box-shadow: 0 0 8px #ff2a55;
 }
 
 .crt-scanlines {
@@ -241,6 +239,15 @@ html, body {
   box-shadow: 0 15px 40px rgba(57, 255, 20, 0.35);
 }
 
+.tag-hot {
+  background: rgba(57, 255, 20, 0.2) !important;
+  border-color: #39ff14 !important;
+  color: #39ff14 !important;
+  font-weight: 900 !important;
+  text-shadow: 0 0 6px #39ff14;
+}
+
+/* RAD VAN FORTUIN: CRIME SCENE TAPE */
 .card-locked {
   filter: grayscale(0.5) opacity(0.9);
   border-color: #ff2a55 !important;
@@ -423,13 +430,14 @@ html, body {
   margin-top: 1px;
 }
 
+/* CUSTOM INZET INPUT */
 .bet-input-box {
   display: flex;
   align-items: center;
   background: #060912;
   border: 2px solid var(--portal-green);
   border-radius: 12px;
-  padding: clamp(6px, 1vh, 10px) 14px;
+  padding: clamp(6px, 1vh, 8px) 12px;
   box-shadow: inset 0 0 10px rgba(0,0,0,0.8), var(--glow-portal);
 }
 
@@ -438,37 +446,60 @@ html, body {
   margin-right: 8px;
 }
 
-.bet-fixed-label {
+.custom-cash-input {
+  background: transparent;
+  border: none;
+  color: #ffffff;
   font-family: 'Orbitron', sans-serif;
-  font-size: 1.2rem;
+  font-size: clamp(1.3rem, 1.8vw, 1.6rem);
   font-weight: 900;
-  color: #fff;
+  width: 100%;
+  outline: none;
 }
 
-.bet-bills-selector {
+.unit-tag {
+  font-size: 0.7rem;
+  font-weight: 900;
+  color: var(--portal-green);
+}
+
+/* CHIPS */
+.chip-rack {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 6px;
+  gap: clamp(4px, 0.6vh, 6px);
 }
 
-.bill-btn {
-  background: rgba(57, 255, 20, 0.1);
-  border: 1px solid rgba(57, 255, 20, 0.4);
-  color: #fff;
-  padding: 8px;
-  border-radius: 8px;
-  font-family: 'Orbitron', sans-serif;
-  font-weight: 800;
-  font-size: 0.75rem;
+.chip {
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 3px dashed rgba(255,255,255,0.7);
   cursor: pointer;
-  transition: 0.15s;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.6);
+  transition: all 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 900;
+  font-size: clamp(0.72rem, 0.95vw, 0.85rem);
+  color: #fff;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.9);
 }
 
-.bill-btn:hover, .bill-btn.active {
-  background: var(--portal-green);
-  color: #000;
-  box-shadow: 0 0 12px var(--portal-green);
+.chip:hover { transform: translateY(-2px) scale(1.06); }
+.chip.active {
+  transform: translateY(-3px) scale(1.1);
+  border: 3px solid #fff;
+  box-shadow: 0 0 14px var(--portal-green);
 }
+
+.c-10  { background: radial-gradient(circle, #00d46a, #084c24); }
+.c-20  { background: radial-gradient(circle, #00ffff, #005f73); }
+.c-50  { background: radial-gradient(circle, #e74c3c, #78281f); }
+.c-100 { background: radial-gradient(circle, #9b59b6, #4a235a); }
+.c-250 { background: radial-gradient(circle, #f39c12, #7e4a00); }
+.c-reset { background: radial-gradient(circle, #ff2a55, #66001a); }
 
 .instruction-box {
   background: rgba(0,0,0,0.35);
@@ -478,6 +509,11 @@ html, body {
   color: #a0aec0;
   line-height: 1.4;
   border-left: 3px solid var(--portal-green);
+}
+
+.hot-box {
+  border-left-color: #39ff14;
+  background: rgba(57, 255, 20, 0.08);
 }
 
 .inst-head {
@@ -592,7 +628,7 @@ html, body {
 .h-name { font-size: 0.78rem; font-weight: 800; }
 .h-odds {
   font-family: 'Orbitron', sans-serif;
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   font-weight: 900;
   color: var(--portal-green);
   background: #000;
@@ -753,7 +789,6 @@ html, body {
 
 .cup-asset.lifted { transform: translateY(-75px); }
 
-/* VOLLEDIG ONDOORZICHTIGE 100% OPAQUE FLASKS */
 .cup-body {
   width: 100%;
   height: 100%;
