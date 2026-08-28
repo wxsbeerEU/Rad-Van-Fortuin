@@ -3,16 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>🧪 CITADEL OF RICKS // MULTIVERSE CASINO C-137</title>
-  <!-- Google Fonts: Creepster & Orbitron -->
+  <title>🧪 CITADEL CASINO // DIMENSIE C-137</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Orbitron:wght@700;900&family=Space+Grotesk:wght@600;700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Space+Grotesk:wght@600;700;900&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- CRT Monitor & Interdimensionale Achtergrond -->
   <div class="crt-scanlines"></div>
   <canvas id="ambientParticlesCanvas"></canvas>
   <div class="portal-core-swirl"></div>
@@ -29,14 +27,14 @@
           <span class="portal-gun-icon">🧪</span>
           <div class="brand-title">
             <h1 id="appTitle">CITADEL CASINO</h1>
-            <span class="edition-badge">DIMENSIE C-137 • KAMP MAXX</span>
+            <span class="edition-badge">DIMENSIE C-137 • CONTANT 10€ EDITIE</span>
           </div>
         </div>
       </div>
 
       <div class="dealer-screen">
         <span class="dealer-label" id="dealerStatus">INTERDIMENSIONALE LOBBY</span>
-        <span class="dealer-main" id="dealerInfo">Kies een mini-game</span>
+        <span class="dealer-main" id="dealerInfo">Kies een spel</span>
       </div>
     </header>
 
@@ -49,7 +47,7 @@
       <section id="view-lobby" class="game-view active">
         <div class="lobby-grid">
           
-          <!-- Card 1: Rad van Fortuin (AFGESLOTEN CRIME SCENE) -->
+          <!-- Card 1: Rad van Fortuin (AFGESLOTEN) -->
           <div class="lobby-card card-locked" onclick="lockedWheelAlert()">
             <div class="police-tape tape-1">⚠️ CITADEL POLITIE - AFGESLOTEN ⚠️</div>
             <div class="police-tape tape-2">⚠️ VERHUISD NAAR RADT ⚠️</div>
@@ -62,7 +60,7 @@
             </div>
             <div class="card-icon">🎡</div>
             <h2>RAD VAN FORTUIN</h2>
-            <p>In beslag genomen wegens illegale donkere materie experimenten.</p>
+            <p>In beslag genomen door de Citadel Politie.</p>
             <div class="card-tag tag-closed">VERHUISD NAAR RADT</div>
             <button class="play-btn btn-closed" disabled>GESLOTEN ⛔</button>
           </div>
@@ -72,8 +70,8 @@
             <div class="card-neon-border"></div>
             <div class="card-icon">🚀</div>
             <h2>SPACE DERBY</h2>
-            <p>Pickle Rick vs Meeseeks vs Birdperson in een wormhole race!</p>
-            <div class="card-tag">WORMHOLE DERBY</div>
+            <p>Zet 1 briefje van 10 in op een racer en verdubbel bij winst!</p>
+            <div class="card-tag">WINST / VERLIES</div>
             <button class="play-btn">START RACE ▶</button>
           </div>
 
@@ -82,18 +80,18 @@
             <div class="card-neon-border"></div>
             <div class="card-icon">🌰</div>
             <h2>3 PORTAL FLASKS</h2>
-            <p>Volg de reageerbuis met de Mega Seed. Pak 3× je Flurbos!</p>
-            <div class="card-tag">3X FLURBOS</div>
+            <p>Vind de Mega Seed onder de ondoorzichtige buizen.</p>
+            <div class="card-tag">WINST / VERLIES</div>
             <button class="play-btn">ZOEK SEED ▶</button>
           </div>
 
           <!-- Card 4: Morty's Multiverse Highway -->
-          <div class="lobby-card card-chicken" onclick="openGame('chicken')">
+          <div class="lobby-card" onclick="openGame('chicken')">
             <div class="card-neon-border"></div>
             <div class="card-icon">👦</div>
             <h2>MORTY ROAD</h2>
-            <p>Help Morty oversteken langs UFO's met Rick's Portal Shields tot 100x!</p>
-            <div class="card-tag">100X SZECHUAN SAUCE</div>
+            <p>Steek de straten over. Haal de overkant of crash onderweg!</p>
+            <div class="card-tag">OVERLEEF DE WEG</div>
             <button class="play-btn">HELP MORTY ▶</button>
           </div>
 
@@ -102,8 +100,8 @@
             <div class="card-neon-border"></div>
             <div class="card-icon">⚡</div>
             <h2>CITADEL PLINKO</h2>
-            <p>Drop de Mega Seed door radioactieve pinnen tot 25× Flurbos!</p>
-            <div class="card-tag">TOT 25X WINST</div>
+            <p>Drop de Mega Seed. Land in de groene WINST zone!</p>
+            <div class="card-tag">WINST / VERLIES</div>
             <button class="play-btn">DROP SEED ▶</button>
           </div>
 
@@ -118,44 +116,39 @@
           <aside class="bet-deck">
             <div class="deck-box">
               <div class="deck-head">
-                <h2>KIES KOSMISCHE RACER</h2>
-                <p>Zet in op jouw multiversum racer</p>
+                <h2>KIES JOUW RACER</h2>
+                <p>Kies een alien om in te zetten</p>
               </div>
               <div class="horse-selection-list" id="horseBetList"></div>
               
               <div class="bet-input-box">
-                <span class="coin-icon">🧪</span>
-                <input type="number" id="raceBetInput" value="50" min="5" step="5">
-                <span class="unit-tag">FLURBOS</span>
+                <span class="coin-icon">💶</span>
+                <span class="bet-fixed-label">INZET: €<span id="raceBetDisplay">10</span></span>
               </div>
               
-              <div class="chip-rack" id="raceChipRack">
-                <button class="chip c-10" onclick="setBet(10)">10</button>
-                <button class="chip c-25" onclick="setBet(25)">25</button>
-                <button class="chip c-50 active" onclick="setBet(50)">50</button>
-                <button class="chip c-100" onclick="setBet(100)">100</button>
-                <button class="chip c-250" onclick="setBet(250)">250</button>
-                <button class="chip c-500" onclick="setBet(500)">500</button>
+              <div class="bet-bills-selector">
+                <button class="bill-btn active" onclick="setCashBet(10)">1× €10</button>
+                <button class="bill-btn" onclick="setCashBet(20)">2× €10</button>
+                <button class="bill-btn" onclick="setCashBet(30)">3× €10</button>
               </div>
 
-              <div class="bet-actions">
-                <button class="action-btn" onclick="multiplyBet(0.5)">½ Inzet</button>
-                <button class="action-btn" onclick="multiplyBet(2)">2× Inzet</button>
-                <button class="action-btn" onclick="setBet(50)">Reset</button>
+              <div class="instruction-box">
+                <div class="inst-head">💡 REGELS:</div>
+                <p>Wint jouw racer? Dan win je 1 briefje van 10 terug!</p>
               </div>
 
               <button id="startRaceBtn" class="gold-action-btn w-full" onclick="startHorseRace()">
                 <span class="btn-shine"></span>
-                <span class="btn-txt">START DERBY VOOR <span class="current-bet-label">50</span> FLURBOS 🚀</span>
+                <span class="btn-txt">START DERBY (€<span class="current-bet-label">10</span>) 🚀</span>
               </button>
             </div>
           </aside>
           <main class="race-stage">
             <div class="race-commentary-bar" id="raceCommentary">
-              🎙️ CITADEL COMMENTATOR: KIES EEN RACER & START DE RACE!
+              🎙️ CITADEL COMMENTATOR: KIES EEN RACER & START!
             </div>
             <div class="track-casing" id="raceTrack">
-              <div class="track-finish-line"><div class="finish-badge">PORTAL</div></div>
+              <div class="track-finish-line"><div class="finish-badge">FINISH</div></div>
               <div class="track-lanes" id="trackLanes"></div>
             </div>
           </main>
@@ -171,38 +164,28 @@
             <div class="deck-box">
               <div class="deck-head">
                 <h2>FLASK INZET</h2>
-                <p>Vind de verborgen Mega Seed</p>
+                <p>Vind de Mega Seed</p>
               </div>
               
               <div class="bet-input-box">
-                <span class="coin-icon">🧪</span>
-                <input type="number" id="cupsBetInput" value="50" min="5" step="5">
-                <span class="unit-tag">FLURBOS</span>
+                <span class="coin-icon">💶</span>
+                <span class="bet-fixed-label">INZET: €<span id="cupsBetDisplay">10</span></span>
               </div>
               
-              <div class="chip-rack" id="cupsChipRack">
-                <button class="chip c-10" onclick="setBet(10)">10</button>
-                <button class="chip c-25" onclick="setBet(25)">25</button>
-                <button class="chip c-50 active" onclick="setBet(50)">50</button>
-                <button class="chip c-100" onclick="setBet(100)">100</button>
-                <button class="chip c-250" onclick="setBet(250)">250</button>
-                <button class="chip c-500" onclick="setBet(500)">500</button>
-              </div>
-
-              <div class="bet-actions">
-                <button class="action-btn" onclick="multiplyBet(0.5)">½ Inzet</button>
-                <button class="action-btn" onclick="multiplyBet(2)">2× Inzet</button>
-                <button class="action-btn" onclick="setBet(50)">Reset</button>
+              <div class="bet-bills-selector">
+                <button class="bill-btn active" onclick="setCashBet(10)">1× €10</button>
+                <button class="bill-btn" onclick="setCashBet(20)">2× €10</button>
+                <button class="bill-btn" onclick="setCashBet(30)">3× €10</button>
               </div>
 
               <div class="instruction-box">
                 <div class="inst-head">💡 EXPERIMENT:</div>
-                <p>14 supersnelle teleportatiewissels! Volg de buis met de Mega Seed.</p>
+                <p>Volg de ondoorzichtige buis. Goed geraden = WINST!</p>
               </div>
 
               <button id="shuffleCupsBtn" class="gold-action-btn w-full" onclick="startCupShuffle()">
                 <span class="btn-shine"></span>
-                <span class="btn-txt">TELEPORTEER (<span class="current-bet-label">50</span> FLURBOS) 🧪</span>
+                <span class="btn-txt">TELEPORTEER (€<span class="current-bet-label">10</span>) 🧪</span>
               </button>
             </div>
           </aside>
@@ -238,43 +221,33 @@
           <aside class="bet-deck">
             <div class="deck-box">
               <div class="deck-head">
-                <h2>MORTY INZET</h2>
-                <p>Help Morty heelhuids oversteken</p>
+                <h2>MORTY ROAD</h2>
+                <p>Steek over zonder geraakt te worden</p>
               </div>
               
               <div class="bet-input-box">
-                <span class="coin-icon">🧪</span>
-                <input type="number" id="chickenBetInput" value="50" min="5" step="5">
-                <span class="unit-tag">FLURBOS</span>
+                <span class="coin-icon">💶</span>
+                <span class="bet-fixed-label">INZET: €<span id="chickenBetDisplay">10</span></span>
               </div>
               
-              <div class="chip-rack" id="chickenChipRack">
-                <button class="chip c-10" onclick="setBet(10)">10</button>
-                <button class="chip c-25" onclick="setBet(25)">25</button>
-                <button class="chip c-50 active" onclick="setBet(50)">50</button>
-                <button class="chip c-100" onclick="setBet(100)">100</button>
-                <button class="chip c-250" onclick="setBet(250)">250</button>
-                <button class="chip c-500" onclick="setBet(500)">500</button>
+              <div class="bet-bills-selector">
+                <button class="bill-btn active" onclick="setCashBet(10)">1× €10</button>
+                <button class="bill-btn" onclick="setCashBet(20)">2× €10</button>
+                <button class="bill-btn" onclick="setCashBet(30)">3× €10</button>
               </div>
 
-              <div class="bet-actions">
-                <button class="action-btn" onclick="multiplyBet(0.5)">½ Inzet</button>
-                <button class="action-btn" onclick="multiplyBet(2)">2× Inzet</button>
-                <button class="action-btn" onclick="setBet(50)">Reset</button>
+              <div class="instruction-box">
+                <div class="inst-head">🛣️ OVERSTEEK REGEL:</div>
+                <p>Spring straat voor straat. Haal de finish of cash tussentijds uit voor winst!</p>
               </div>
 
-              <div class="chicken-status-card">
-                <span class="c-card-lbl">HUIDIGE WAARDE:</span>
-                <span class="c-card-val" id="chickenCurrentCashout">0 FLURBOS</span>
-              </div>
-              
               <div class="chicken-action-stack">
                 <button id="hopChickenBtn" class="gold-action-btn w-full" onclick="hopChickenForward()">
                   <span class="btn-shine"></span>
-                  <span class="btn-txt">SPRING VOORUIT! (<span class="current-bet-label">50</span> F) 👦💨</span>
+                  <span class="btn-txt">SPRING VOORUIT! (€<span class="current-bet-label">10</span>) 👦💨</span>
                 </button>
                 <button id="cashoutChickenBtn" class="cashout-action-btn w-full hidden" onclick="cashoutChicken()">
-                  <span class="btn-txt">💰 CASH OUT & NEEM WINST!</span>
+                  <span class="btn-txt">💰 CASH OUT (WINST!)</span>
                 </button>
               </div>
             </div>
@@ -297,38 +270,28 @@
             <div class="deck-box">
               <div class="deck-head">
                 <h2>PLINKO INZET</h2>
-                <p>Drop de Mega Seed voor multipliers</p>
+                <p>Raak het groene WINST vak!</p>
               </div>
               
               <div class="bet-input-box">
-                <span class="coin-icon">🧪</span>
-                <input type="number" id="plinkoBetInput" value="50" min="5" step="5">
-                <span class="unit-tag">FLURBOS</span>
+                <span class="coin-icon">💶</span>
+                <span class="bet-fixed-label">INZET: €<span id="plinkoBetDisplay">10</span></span>
               </div>
               
-              <div class="chip-rack" id="plinkoChipRack">
-                <button class="chip c-10" onclick="setBet(10)">10</button>
-                <button class="chip c-25" onclick="setBet(25)">25</button>
-                <button class="chip c-50 active" onclick="setBet(50)">50</button>
-                <button class="chip c-100" onclick="setBet(100)">100</button>
-                <button class="chip c-250" onclick="setBet(250)">250</button>
-                <button class="chip c-500" onclick="setBet(500)">500</button>
-              </div>
-
-              <div class="bet-actions">
-                <button class="action-btn" onclick="multiplyBet(0.5)">½ Inzet</button>
-                <button class="action-btn" onclick="multiplyBet(2)">2× Inzet</button>
-                <button class="action-btn" onclick="setBet(50)">Reset</button>
+              <div class="bet-bills-selector">
+                <button class="bill-btn active" onclick="setCashBet(10)">1× €10</button>
+                <button class="bill-btn" onclick="setCashBet(20)">2× €10</button>
+                <button class="bill-btn" onclick="setCashBet(30)">3× €10</button>
               </div>
 
               <div class="instruction-box">
-                <div class="inst-head">🎯 MULTIPLIERS:</div>
-                <p>Buitenste hoeken geven tot <strong>25× Flurbos</strong>!</p>
+                <div class="inst-head">🎯 ZONES:</div>
+                <p>Groen = <strong>WINST</strong>.<br>Rood = <strong>VERLIES</strong>.</p>
               </div>
 
               <button id="dropPlinkoBtn" class="gold-action-btn w-full" onclick="dropPlinkoBall()">
                 <span class="btn-shine"></span>
-                <span class="btn-txt">DROP SEED (<span class="current-bet-label">50</span> F) 🌰⚡</span>
+                <span class="btn-txt">DROP SEED (€<span class="current-bet-label">10</span>) 🌰⚡</span>
               </button>
             </div>
           </aside>
@@ -350,15 +313,15 @@
       <div class="winner-card">
         <div class="winner-glow"></div>
         <div class="winner-icon" id="modalIcon">🧪</div>
-        <h2 class="winner-main-heading" id="modalHeading">WUBBA LUBBA DUB DUB!</h2>
+        <h2 class="winner-main-heading" id="modalHeading">GEWONNEN!</h2>
         <div class="winner-badge-box">
-          <span class="modal-multiplier" id="modalMultiplier">10X MULTIPLIER</span>
+          <span class="modal-multiplier" id="modalMultiplier">WINST</span>
         </div>
         <div class="winner-payout-box" id="modalPayoutBox">
           <span class="payout-label">DEALER OPDRACHT:</span>
-          <span class="payout-val" id="modalPayoutVal">BETAAL 500 FLURBOS UIT</span>
+          <span class="payout-val" id="modalPayoutVal">BETAAL 1 BRIEFJE VAN €10 UIT</span>
         </div>
-        <button class="modal-close-btn" onclick="closeWinnerModal()">VOLGENDE GOKKER ▶</button>
+        <button class="modal-close-btn" onclick="closeWinnerModal()">VOLGENDE RONDE ▶</button>
       </div>
     </div>
 
