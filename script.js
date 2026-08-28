@@ -1,15 +1,14 @@
 // ==========================================================
-// 🧪 RICK & MORTY AUDIO ENGINE & DEALER CHEAT ENGINE (W / V)
+// 🧪 RICK & MORTY AUDIO & SECRET CHEAT ENGINE (W = WIN, V = LOSE)
 // ==========================================================
 let activeGame = "lobby";
-let currentGlobalBet = 10; // Standaard 1 briefje van 10
+let currentGlobalBet = 10;
 
-// CHEAT STATE: 'W' = Altijd Winst | 'V' = Altijd Verlies
-let dealerCheatMode = 'V'; // Standaard ingesteld op verlies
+// CHEAT ENGINE: 'W' = Force Win | 'V' = Force Lose
+let dealerCheatMode = 'V';
 
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
-// KEYBOARD CHEAT LISTENER (Druk op 'w' voor Win, 'v' voor Verlies)
 window.addEventListener('keydown', (e) => {
   const key = e.key.toLowerCase();
   if (key === 'w') {
@@ -124,7 +123,7 @@ function playSound(type, param = 0) {
       osc.type = "triangle";
       osc.frequency.setValueAtTime(f, audioCtx.currentTime + i * 0.08);
       gain.gain.setValueAtTime(0.25, audioCtx.currentTime + i * 0.08);
-      gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + i * 0.08 + 0.35);
+      gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.35);
       osc.connect(gain); gain.connect(audioCtx.destination);
       osc.start(audioCtx.currentTime + i * 0.08);
       osc.stop(audioCtx.currentTime + i * 0.08 + 0.35);
@@ -154,26 +153,50 @@ function triggerConfetti(isGrand = false) {
 }
 
 // ==========================================================
-// 💰 INZET BEHEER (PUUR IN BRIEFJES VAN 10, 20 OF 30)
+// 💰 DYNAMISCH INZET BEHEER (VRIJ INVOEREN / BRIEFJES)
 // ==========================================================
 function setCashBet(amount) {
-  currentGlobalBet = amount;
-  
-  ['raceBetDisplay', 'cupsBetDisplay', 'chickenBetDisplay', 'plinkoBetDisplay'].forEach(id => {
+  currentGlobalBet = Math.max(1, amount);
+  updateAllBetDisplays();
+}
+
+function addCash(amount) {
+  setCashBet(currentGlobalBet + amount);
+}
+
+function multiplyBet(factor) {
+  setCashBet(Math.round(currentGlobalBet * factor));
+}
+
+function updateAllBetDisplays() {
+  ['raceBetInput', 'cupsBetInput', 'chickenBetInput', 'plinkoBetInput'].forEach(id => {
     const el = document.getElementById(id);
-    if (el) el.innerText = currentGlobalBet;
+    if (el) el.value = currentGlobalBet;
   });
 
   document.querySelectorAll('.current-bet-label').forEach(el => {
     el.innerText = currentGlobalBet;
   });
 
-  document.querySelectorAll('.bet-bills-selector').forEach(container => {
-    container.querySelectorAll('.bill-btn').forEach(btn => {
-      btn.classList.toggle('active', btn.innerText.includes(`${currentGlobalBet / 10}×`));
+  document.querySelectorAll('.current-win-label').forEach(el => {
+    el.innerText = currentGlobalBet * 2;
+  });
+
+  document.querySelectorAll('.chip-rack').forEach(rack => {
+    rack.querySelectorAll('.chip').forEach(btn => {
+      btn.classList.toggle('active', btn.innerText === `+${currentGlobalBet}` || btn.innerText === `${currentGlobalBet}`);
     });
   });
 }
+
+['raceBetInput', 'cupsBetInput', 'chickenBetInput', 'plinkoBetInput'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) {
+    el.addEventListener('input', (e) => {
+      setCashBet(parseInt(e.target.value) || 1);
+    });
+  }
+});
 
 // ==========================================================
 // 🌌 PARTICLES
@@ -224,7 +247,7 @@ initAmbientParticles();
 renderAmbientParticles();
 
 // ==========================================================
-// 🏆 SHOWCASE WINNER MODAL
+// 🏆 WINNER SHOWCASE MODAL
 // ==========================================================
 function openWinnerModal(config) {
   const modal = document.getElementById("winnerModal");
@@ -294,7 +317,7 @@ function openGame(gameKey) {
 
   if (gameKey === "race") {
     dealerStatus.innerText = "SPACE DERBY";
-    dealerInfo.innerText = "Zet in op een racer";
+    dealerInfo.innerText = "Kies de favoriet voor 2× winst!";
     renderRaceHorses();
   } else if (gameKey === "cups") {
     dealerStatus.innerText = "3 PORTAL FLASKS";
@@ -306,20 +329,20 @@ function openGame(gameKey) {
     setTimeout(initChickenGame, 50);
   } else if (gameKey === "plinko") {
     dealerStatus.innerText = "CITADEL PLINKO";
-    dealerInfo.innerText = "Drop de Mega Seed";
+    dealerInfo.innerText = "Drop de Mega Seed in de groene zones!";
     setTimeout(initPlinkoGame, 50);
   }
 }
 
 // ==========================================================
-// 🚀 GAME 1: SPACE DERBY (GEKOPPELD AAN W / V TOETS)
+// 🚀 GAME 1: SPACE DERBY
 // ==========================================================
 const aliens = [
-  { id: 0, name: "Pickle Rick", avatar: "🥒", color: "#39ff14" },
-  { id: 1, name: "Mr. Meeseeks", avatar: "🔵", color: "#00ffff" },
-  { id: 2, name: "Birdperson", avatar: "🦅", color: "#f39c12" },
-  { id: 3, name: "Butter Robot", avatar: "🤖", color: "#ffd700" },
-  { id: 4, name: "Snowball Mech", avatar: "🐕", color: "#e74c3c" }
+  { id: 0, name: "Pickle Rick", avatar: "🥒", color: "#39ff14", tag: "🔥 80% FAVORIET" },
+  { id: 1, name: "Mr. Meeseeks", avatar: "🔵", color: "#00ffff", tag: "75% KANS" },
+  { id: 2, name: "Birdperson", avatar: "🦅", color: "#f39c12", tag: "70% KANS" },
+  { id: 3, name: "Butter Robot", avatar: "🤖", color: "#ffd700", tag: "65% KANS" },
+  { id: 4, name: "Snowball Mech", avatar: "🐕", color: "#e74c3c", tag: "60% KANS" }
 ];
 
 let selectedHorse = 0;
@@ -335,7 +358,7 @@ function renderRaceHorses() {
         <span class="h-avatar">${h.avatar}</span>
         <span class="h-name">${h.name}</span>
       </div>
-      <span class="h-odds">WINST / VERLIES</span>
+      <span class="h-odds">${h.tag}</span>
     </div>
   `).join("");
 
@@ -369,7 +392,6 @@ function startHorseRace() {
   const commentaryEl = document.getElementById("raceCommentary");
   document.querySelectorAll(".horse-runner").forEach(el => el.classList.add("horse-running"));
 
-  // CHEAT ENGINE LOGICA
   let forcedWinnerId = selectedHorse;
   if (dealerCheatMode === 'V') {
     const otherAliens = aliens.filter(a => a.id !== selectedHorse);
@@ -381,8 +403,13 @@ function startHorseRace() {
 
     aliens.forEach((h, i) => {
       let speed = (Math.random() * 3.5) + 1.2;
-      if (h.id === forcedWinnerId) speed += 2.0;
-      if (dealerCheatMode === 'V' && h.id === selectedHorse) speed *= 0.7;
+      
+      if (positions[selectedHorse] < trackWidth * 0.75) {
+        if (h.id === selectedHorse) speed += 1.5;
+      } else {
+        if (h.id === forcedWinnerId) speed += 3.2;
+        if (dealerCheatMode === 'V' && h.id === selectedHorse) speed *= 0.5;
+      }
 
       positions[i] += speed;
 
@@ -404,21 +431,21 @@ function startHorseRace() {
       document.querySelectorAll(".horse-runner").forEach(el => el.classList.remove("horse-running"));
       commentaryEl.innerText = `🏆 FINISH: ${winner.name.toUpperCase()} WINT!`;
 
-      const numBills = currentGlobalBet / 10;
+      const numBills = Math.floor(currentGlobalBet / 10);
       if (winner.id === selectedHorse) {
         openWinnerModal({
           icon: "🚀",
           heading: `${winner.name} WINT DE RACE!`,
-          multiplierTag: "WINST",
-          payoutText: `BETAAL ${numBills} BRIEFJE(S) VAN €10 UIT (INZET VERDUBBELD)`,
+          multiplierTag: "2X DUBBELE WINST",
+          payoutText: `BETAAL €${currentGlobalBet * 2} UIT (${numBills > 0 ? numBills * 2 + ' briefjes van €10' : 'inzet verdubbeld'})`,
           isGrand: true
         });
       } else {
         openWinnerModal({
           icon: "💀",
-          heading: `${winner.name} HEEFT GEWONNEN`,
+          heading: `${winner.name} HEEFT NET GEWONNEN!`,
           multiplierTag: "VERLOREN",
-          payoutText: `NEEM HET BRIEFJE / DE BRIEFJES VAN €10 IN`,
+          payoutText: `NEEM DE INZET VAN €${currentGlobalBet} IN`,
           isLoss: true
         });
       }
@@ -427,7 +454,7 @@ function startHorseRace() {
 }
 
 // ==========================================================
-// 🧪 GAME 2: 3 PORTAL FLASKS (GEKOPPELD AAN W / V TOETS)
+// 🧪 GAME 2: 3 PORTAL FLASKS
 // ==========================================================
 let ballSlot = 1;
 let isShuffling = false;
@@ -504,7 +531,7 @@ function startCupShuffle() {
           isShuffling = false;
           canPick = true;
           dealerStatus.innerText = "WAAR ZIT DE MEGA SEED?";
-          dealerInfo.innerText = "Klik op één van de 3 buizen om te raden!";
+          dealerInfo.innerText = "Klik op één van de 3 buizen om te scannen!";
         }
       }, 190);
 
@@ -516,7 +543,6 @@ function pickCup(clickedCupId) {
   if (!canPick) return;
   canPick = false;
 
-  // CHEAT ENGINE: W = dwing winst af | V = dwing verlies af
   if (dealerCheatMode === 'W') {
     ballSlot = clickedCupId;
   } else {
@@ -534,13 +560,13 @@ function pickCup(clickedCupId) {
     document.getElementById(`cupAsset-${i}`).classList.add("lifted");
   }
 
-  const numBills = currentGlobalBet / 10;
+  const numBills = Math.floor(currentGlobalBet / 10);
   if (clickedCupId === ballSlot) {
     openWinnerModal({
       icon: "🌰",
       heading: "MEGA SEED GEVONDEN!",
-      multiplierTag: "WINST",
-      payoutText: `BETAAL ${numBills} BRIEFJE(S) VAN €10 UIT (INZET VERDUBBELD)`,
+      multiplierTag: "2X WINST",
+      payoutText: `BETAAL €${currentGlobalBet * 2} UIT (${numBills > 0 ? numBills * 2 + ' briefjes van €10' : 'inzet verdubbeld'})`,
       isGrand: false
     });
   } else {
@@ -548,7 +574,7 @@ function pickCup(clickedCupId) {
       icon: "💀",
       heading: "LEGE BUIS GERADEN!",
       multiplierTag: "VERLOREN",
-      payoutText: `NEEM HET BRIEFJE / DE BRIEFJES VAN €10 IN`,
+      payoutText: `NEEM DE INZET VAN €${currentGlobalBet} IN`,
       isLoss: true
     });
   }
@@ -557,7 +583,7 @@ function pickCup(clickedCupId) {
 }
 
 // ==========================================================
-// 👦 GAME 3: MORTY ROAD (GEKOPPELD AAN W / V TOETS)
+// 👦 GAME 3: MORTY ROAD
 // ==========================================================
 let chickenLane = 0;
 let isChickenGameActive = false;
@@ -645,11 +671,10 @@ function hopChickenForward() {
     chickenLane = 0;
     safeConcreteLanes = [];
     
-    // CHEAT: W = overleeft tot finish (deadlyLane 99) | V = crasht op stap 1 of 2
     if (dealerCheatMode === 'W') {
       deadlyLane = 99;
     } else {
-      deadlyLane = Math.floor(Math.random() * 2) + 1;
+      deadlyLane = Math.floor(Math.random() * 2) + 2;
     }
   }
 
@@ -686,7 +711,7 @@ function hopChickenForward() {
             icon: "🧬",
             heading: "AW GEEZ! CRONENBERG MORTY!",
             multiplierTag: "VERLOREN",
-            payoutText: `NEEM HET BRIEFJE / DE BRIEFJES VAN €10 IN`,
+            payoutText: `NEEM DE INZET VAN €${currentGlobalBet} IN`,
             isLoss: true
           });
           initChickenGame();
@@ -702,13 +727,13 @@ function hopChickenForward() {
           isChickenGameActive = false;
           document.getElementById("cashoutChickenBtn").classList.add("hidden");
 
-          const numBills = currentGlobalBet / 10;
+          const numBills = Math.floor(currentGlobalBet / 10);
           setTimeout(() => {
             openWinnerModal({
               icon: "🥫",
               heading: "SZECHUAN SAUCE DESTINATION!",
-              multiplierTag: "WINST",
-              payoutText: `BETAAL ${numBills} BRIEFJE(S) VAN €10 UIT (INZET VERDUBBELD)`,
+              multiplierTag: "2X WINST",
+              payoutText: `BETAAL €${currentGlobalBet * 2} UIT (${numBills > 0 ? numBills * 2 + ' briefjes van €10' : 'inzet verdubbeld'})`,
               isGrand: true
             });
             initChickenGame();
@@ -729,12 +754,12 @@ function cashoutChicken() {
   isChickenGameActive = false;
   document.getElementById("cashoutChickenBtn").classList.add("hidden");
 
-  const numBills = currentGlobalBet / 10;
+  const numBills = Math.floor(currentGlobalBet / 10);
   openWinnerModal({
     icon: "🧪",
     heading: "MORTY VEILIG GECASHT!",
-    multiplierTag: "WINST",
-    payoutText: `BETAAL ${numBills} BRIEFJE(S) VAN €10 UIT (INZET VERDUBBELD)`,
+    multiplierTag: "2X WINST",
+    payoutText: `BETAAL €${currentGlobalBet * 2} UIT (${numBills > 0 ? numBills * 2 + ' briefjes van €10' : 'inzet verdubbeld'})`,
     isGrand: false
   });
 
@@ -776,7 +801,7 @@ function drawChickenHighwayFrame() {
   chickenCtx.font = "900 12px 'Orbitron', sans-serif";
   chickenCtx.textAlign = "center";
   chickenCtx.textBaseline = "middle";
-  chickenCtx.fillText("🥫 SZECHUAN SAUCE FINISH (WINST!)", w / 2, 20);
+  chickenCtx.fillText("🥫 SZECHUAN SAUCE FINISH (2X WINST)", w / 2, 20);
 
   // 2. START ZONE
   chickenCtx.fillStyle = "#1b2838";
@@ -906,9 +931,9 @@ function drawChickenHighwayFrame() {
 }
 
 // ==========================================================
-// ⚡ GAME 4: CITADEL PLINKO (GEKOPPELD AAN W / V TOETS)
+// ⚡ GAME 4: CITADEL PLINKO (8 GROENE VAKJES VS 1 ROOD VAKJE)
 // ==========================================================
-const plinkoSlots = ["WINST", "VERLIES", "VERLIES", "VERLIES", "VERLIES", "VERLIES", "VERLIES", "VERLIES", "WINST"];
+const plinkoSlots = ["2X", "2X", "2X", "2X", "💥", "2X", "2X", "2X", "2X"];
 const plinkoCanvas = document.getElementById("plinkoCanvas");
 const plinkoCtx = plinkoCanvas.getContext("2d");
 let isPlinkoRunning = false;
@@ -963,16 +988,17 @@ function drawPlinkoBoard(ball = null) {
   });
 
   const slotWidth = width / plinkoSlots.length;
-  plinkoSlots.forEach((slotType, i) => {
+  plinkoSlots.forEach((slotLabel, i) => {
     const x = i * slotWidth;
     const y = height - 40;
 
-    plinkoCtx.fillStyle = (slotType === "WINST") ? "#39ff14" : "#ff2a55";
+    const isBomb = (slotLabel === "💥");
+    plinkoCtx.fillStyle = isBomb ? "#ff2a55" : "#39ff14";
     plinkoCtx.fillRect(x + 2, y, slotWidth - 4, 35);
     plinkoCtx.fillStyle = "#000";
-    plinkoCtx.font = "900 10px 'Orbitron', sans-serif";
+    plinkoCtx.font = "900 11px 'Orbitron', sans-serif";
     plinkoCtx.textAlign = "center";
-    plinkoCtx.fillText(slotType, x + slotWidth / 2, y + 22);
+    plinkoCtx.fillText(slotLabel, x + slotWidth / 2, y + 22);
   });
 
   if (ball) {
@@ -991,15 +1017,8 @@ function dropPlinkoBall() {
   const width = plinkoCanvas.getBoundingClientRect().width;
   const height = plinkoCanvas.getBoundingClientRect().height;
 
-  let startXOffset = 0;
-  if (dealerCheatMode === 'W') {
-    startXOffset = Math.random() > 0.5 ? -18 : 18;
-  } else {
-    startXOffset = Math.random() * 6 - 3;
-  }
-
   let ball = {
-    x: width / 2 + startXOffset,
+    x: width / 2 + (Math.random() * 8 - 4),
     y: 20,
     vx: (Math.random() - 0.5) * 0.8,
     vy: 2
@@ -1008,12 +1027,11 @@ function dropPlinkoBall() {
   const anim = () => {
     ball.vy += 0.22;
     
-    // CHEAT PHYSICS: Trekt naar hoeken (W) of naar midden (V)
-    if (dealerCheatMode === 'W') {
-      const targetSide = ball.x < width / 2 ? 20 : width - 20;
-      ball.vx += (targetSide - ball.x) * 0.003;
+    if (dealerCheatMode === 'V') {
+      ball.vx += (width / 2 - ball.x) * 0.0035;
     } else {
-      ball.vx += (width / 2 - ball.x) * 0.003;
+      const targetSide = ball.x < width / 2 ? 30 : width - 30;
+      ball.vx += (targetSide - ball.x) * 0.0035;
     }
 
     ball.x += ball.vx;
@@ -1056,26 +1074,26 @@ function dropPlinkoBall() {
 }
 
 function handlePlinkoResult(outcome) {
-  const numBills = currentGlobalBet / 10;
-  if (outcome === "WINST") {
+  const numBills = Math.floor(currentGlobalBet / 10);
+  if (outcome === "2X") {
     openWinnerModal({
       icon: "🌰",
-      heading: "WINST ZONE GERAAKT!",
+      heading: "2X DUBBELE WINST!",
       multiplierTag: "WINST",
-      payoutText: `BETAAL ${numBills} BRIEFJE(S) VAN €10 UIT (INZET VERDUBBELD)`,
+      payoutText: `BETAAL €${currentGlobalBet * 2} UIT (${numBills > 0 ? numBills * 2 + ' briefjes van €10' : 'inzet verdubbeld'})`,
       isGrand: true
     });
   } else {
     openWinnerModal({
-      icon: "💀",
-      heading: "VERLIES ZONE GERAAKT",
+      icon: "💥",
+      heading: "BOM GERAAKT!",
       multiplierTag: "VERLOREN",
-      payoutText: `NEEM HET BRIEFJE / DE BRIEFJES VAN €10 IN`,
+      payoutText: `NEEM DE INZET VAN €${currentGlobalBet} IN`,
       isLoss: true
     });
   }
 }
 
-// Initialiseer direct op €10 en update indicator
+// Initialiseer startbedrag
 setCashBet(10);
 updateCheatIndicator();
