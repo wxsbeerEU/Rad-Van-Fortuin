@@ -1,5 +1,5 @@
 // ==========================================================
-// 👑 GLOBAL STATE & AUDIO SYNTHESIS ENGINE (Web Audio API)
+// 🧪 RICK & MORTY AUDIO ENGINE (Web Audio API)
 // ==========================================================
 let activeGame = "lobby";
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -11,7 +11,7 @@ function playSound(type, param = 0) {
     const osc = audioCtx.createOscillator();
     const gain = audioCtx.createGain();
     osc.type = "sine";
-    const freq = 450 + (1 - param) * 350;
+    const freq = 500 + (1 - param) * 400;
     osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
     osc.frequency.exponentialRampToValueAtTime(80, audioCtx.currentTime + 0.035);
     gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
@@ -20,47 +20,49 @@ function playSound(type, param = 0) {
     osc.start(); osc.stop(audioCtx.currentTime + 0.035);
   }
 
-  if (type === "concrete_thud") {
+  if (type === "portal_shield") {
+    // Sci-Fi Forcefield / Portal geluid
     const osc = audioCtx.createOscillator();
     const gain = audioCtx.createGain();
-    osc.type = "triangle";
-    osc.frequency.setValueAtTime(160, audioCtx.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(40, audioCtx.currentTime + 0.12);
-    gain.gain.setValueAtTime(0.4, audioCtx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.12);
+    osc.type = "sine";
+    osc.frequency.setValueAtTime(300, audioCtx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.15);
+    gain.gain.setValueAtTime(0.35, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.15);
     osc.connect(gain); gain.connect(audioCtx.destination);
-    osc.start(); osc.stop(audioCtx.currentTime + 0.12);
+    osc.start(); osc.stop(audioCtx.currentTime + 0.15);
   }
 
-  if (type === "chicken_hop") {
+  if (type === "morty_hop") {
     const osc = audioCtx.createOscillator();
     const gain = audioCtx.createGain();
     osc.type = "triangle";
-    osc.frequency.setValueAtTime(560 + param * 45, audioCtx.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(260, audioCtx.currentTime + 0.08);
-    gain.gain.setValueAtTime(0.35, audioCtx.currentTime);
+    osc.frequency.setValueAtTime(450 + param * 50, audioCtx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(220, audioCtx.currentTime + 0.08);
+    gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
     gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.08);
     osc.connect(gain); gain.connect(audioCtx.destination);
     osc.start(); osc.stop(audioCtx.currentTime + 0.08);
   }
 
-  if (type === "car_crash") {
+  if (type === "disintegrate") {
+    // Laser disintegratie / crash
     const osc = audioCtx.createOscillator();
     const gain = audioCtx.createGain();
     osc.type = "sawtooth";
-    osc.frequency.setValueAtTime(950, audioCtx.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(80, audioCtx.currentTime + 0.35);
-    gain.gain.setValueAtTime(0.45, audioCtx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.35);
+    osc.frequency.setValueAtTime(1100, audioCtx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(60, audioCtx.currentTime + 0.4);
+    gain.gain.setValueAtTime(0.4, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
     osc.connect(gain); gain.connect(audioCtx.destination);
-    osc.start(); osc.stop(audioCtx.currentTime + 0.35);
+    osc.start(); osc.stop(audioCtx.currentTime + 0.4);
   }
 
   if (type === "peg") {
     const osc = audioCtx.createOscillator();
     const gain = audioCtx.createGain();
     osc.type = "triangle";
-    osc.frequency.setValueAtTime(520 + Math.random() * 400, audioCtx.currentTime);
+    osc.frequency.setValueAtTime(600 + Math.random() * 400, audioCtx.currentTime);
     gain.gain.setValueAtTime(0.18, audioCtx.currentTime);
     gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.04);
     osc.connect(gain); gain.connect(audioCtx.destination);
@@ -68,36 +70,36 @@ function playSound(type, param = 0) {
   }
 
   if (type === "horn") {
-    [220, 277.18, 329.63, 440].forEach((f, i) => {
+    [300, 450, 600, 900].forEach((f, i) => {
       const osc = audioCtx.createOscillator();
       const gain = audioCtx.createGain();
       osc.type = "sawtooth";
-      osc.frequency.setValueAtTime(f, audioCtx.currentTime + i * 0.1);
-      gain.gain.setValueAtTime(0.2, audioCtx.currentTime + i * 0.1);
-      gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + i * 0.1 + 0.4);
+      osc.frequency.setValueAtTime(f, audioCtx.currentTime + i * 0.08);
+      gain.gain.setValueAtTime(0.2, audioCtx.currentTime + i * 0.08);
+      gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + i * 0.08 + 0.35);
       osc.connect(gain); gain.connect(audioCtx.destination);
-      osc.start(audioCtx.currentTime + i * 0.1);
-      osc.stop(audioCtx.currentTime + i * 0.1 + 0.4);
+      osc.start(audioCtx.currentTime + i * 0.08);
+      osc.stop(audioCtx.currentTime + i * 0.08 + 0.35);
     });
   }
 
-  if (type === "whoosh") {
+  if (type === "teleport") {
     const osc = audioCtx.createOscillator();
     const gain = audioCtx.createGain();
-    osc.type = "triangle";
-    osc.frequency.setValueAtTime(320, audioCtx.currentTime);
-    osc.frequency.linearRampToValueAtTime(90, audioCtx.currentTime + 0.1);
+    osc.type = "sine";
+    osc.frequency.setValueAtTime(700, audioCtx.currentTime);
+    osc.frequency.linearRampToValueAtTime(120, audioCtx.currentTime + 0.12);
     gain.gain.setValueAtTime(0.25, audioCtx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.12);
     osc.connect(gain); gain.connect(audioCtx.destination);
-    osc.start(); osc.stop(audioCtx.currentTime + 0.1);
+    osc.start(); osc.stop(audioCtx.currentTime + 0.12);
   }
 
   if (type === "win") {
     [523.25, 659.25, 783.99, 1046.50].forEach((f, i) => {
       const osc = audioCtx.createOscillator();
       const gain = audioCtx.createGain();
-      osc.type = "sine";
+      osc.type = "triangle";
       osc.frequency.setValueAtTime(f, audioCtx.currentTime + i * 0.08);
       gain.gain.setValueAtTime(0.25, audioCtx.currentTime + i * 0.08);
       gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + i * 0.08 + 0.35);
@@ -111,12 +113,12 @@ function playSound(type, param = 0) {
     const osc = audioCtx.createOscillator();
     const gain = audioCtx.createGain();
     osc.type = "sawtooth";
-    osc.frequency.setValueAtTime(140, audioCtx.currentTime);
-    osc.frequency.linearRampToValueAtTime(50, audioCtx.currentTime + 0.3);
+    osc.frequency.setValueAtTime(180, audioCtx.currentTime);
+    osc.frequency.linearRampToValueAtTime(45, audioCtx.currentTime + 0.35);
     gain.gain.setValueAtTime(0.35, audioCtx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.35);
     osc.connect(gain); gain.connect(audioCtx.destination);
-    osc.start(); osc.stop(audioCtx.currentTime + 0.3);
+    osc.start(); osc.stop(audioCtx.currentTime + 0.35);
   }
 }
 
@@ -125,12 +127,12 @@ function triggerConfetti(isGrand = false) {
     particleCount: isGrand ? 160 : 90, 
     spread: isGrand ? 100 : 75, 
     origin: { y: 0.6 }, 
-    colors: ['#ffd700', '#ffffff', '#00ff88', '#ff2a55', '#ffbb00'] 
+    colors: ['#39ff14', '#00ffff', '#a6ff00', '#ffffff', '#ff2a55'] 
   });
 }
 
 // ==========================================================
-// 🌌 PARTICLES BACKGROUND ENGINE
+// 🌌 AMBIENT SPACE PARTICLES
 // ==========================================================
 const bgCanvas = document.getElementById("ambientParticlesCanvas");
 const bgCtx = bgCanvas.getContext("2d");
@@ -140,13 +142,14 @@ function initAmbientParticles() {
   bgCanvas.width = window.innerWidth;
   bgCanvas.height = window.innerHeight;
   bgParticles = [];
-  for (let i = 0; i < 40; i++) {
+  for (let i = 0; i < 45; i++) {
     bgParticles.push({
       x: Math.random() * bgCanvas.width,
       y: Math.random() * bgCanvas.height,
-      r: Math.random() * 2 + 1,
-      vy: -(Math.random() * 0.5 + 0.2),
-      alpha: Math.random() * 0.5 + 0.2
+      r: Math.random() * 2.5 + 1,
+      vy: -(Math.random() * 0.6 + 0.2),
+      alpha: Math.random() * 0.6 + 0.2,
+      color: Math.random() > 0.5 ? '#39ff14' : '#00ffff'
     });
   }
 }
@@ -158,8 +161,10 @@ function renderAmbientParticles() {
     if (p.y < 0) p.y = bgCanvas.height;
     bgCtx.beginPath();
     bgCtx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-    bgCtx.fillStyle = `rgba(255, 215, 0, ${p.alpha})`;
+    bgCtx.fillStyle = p.color;
+    bgCtx.globalAlpha = p.alpha;
     bgCtx.fill();
+    bgCtx.globalAlpha = 1;
   });
   requestAnimationFrame(renderAmbientParticles);
 }
@@ -179,7 +184,7 @@ renderAmbientParticles();
 // ==========================================================
 function openWinnerModal(config) {
   const modal = document.getElementById("winnerModal");
-  document.getElementById("modalIcon").innerText = config.icon || "👑";
+  document.getElementById("modalIcon").innerText = config.icon || "🧪";
   document.getElementById("modalHeading").innerText = config.heading;
   document.getElementById("modalMultiplier").innerText = config.multiplierTag;
 
@@ -216,287 +221,60 @@ function showLobby() {
   document.querySelectorAll(".game-view").forEach(v => v.classList.remove("active"));
   document.getElementById("view-lobby").classList.add("active");
   backBtn.classList.add("hidden");
-  dealerStatus.innerText = "CASINO LOBBY";
-  dealerInfo.innerText = "Kies een spel om te openen";
+  dealerStatus.innerText = "INTERDIMENSIONALE LOBBY";
+  dealerInfo.innerText = "Kies een spel om te spelen";
+}
+
+function lockedWheelAlert() {
+  playSound("bust");
+  openWinnerModal({
+    icon: "🚫",
+    heading: "RAD VAN FORTUIN IS GESLOTEN!",
+    multiplierTag: "VERHUISD NAAR RADT",
+    payoutText: "DIT RAD IS IN BESLAG GENOMEN DOOR DE CITADEL POLICE. GA NAAR HET POSTJE 'RADT'!",
+    isLoss: true
+  });
 }
 
 function openGame(gameKey) {
+  if (gameKey === "wheel") {
+    lockedWheelAlert();
+    return;
+  }
+
   activeGame = gameKey;
   document.querySelectorAll(".game-view").forEach(v => v.classList.remove("active"));
   document.getElementById(`view-${gameKey}`).classList.add("active");
   backBtn.classList.remove("hidden");
 
-  if (gameKey === "wheel") {
-    dealerStatus.innerText = "RAD VAN FORTUIN";
-    dealerInfo.innerText = "Plaats je inzet & draai!";
-    buildWheelLedRing();
-    setTimeout(resizeWheelCanvas, 50);
-  } else if (gameKey === "race") {
-    dealerStatus.innerText = "PAARDENRACE DERBY";
-    dealerInfo.innerText = "Kies je winnende paard";
+  if (gameKey === "race") {
+    dealerStatus.innerText = "INTERDIMENSIONALE SPACE DERBY";
+    dealerInfo.innerText = "Kies je racer & zet in";
     renderRaceHorses();
   } else if (gameKey === "cups") {
-    dealerStatus.innerText = "3 GOUDEN BEKERS";
-    dealerInfo.innerText = "Zet in & klik op schudden";
+    dealerStatus.innerText = "3 PORTAL FLASKS & MEGA SEED";
+    dealerInfo.innerText = "Zet in & teleporteer de buizen";
     initCupsView();
   } else if (gameKey === "chicken") {
-    dealerStatus.innerText = "DE KIP STEEKT OVER";
+    dealerStatus.innerText = "MORTY'S MULTIVERSE RUN";
     dealerInfo.innerText = "Druk op 'SPRING VOORUIT' om te beginnen!";
     setTimeout(initChickenGame, 50);
   } else if (gameKey === "plinko") {
-    dealerStatus.innerText = "PLINKO ROYALE";
-    dealerInfo.innerText = "Drop de bal voor multipliers";
+    dealerStatus.innerText = "CITADEL PLINKO";
+    dealerInfo.innerText = "Drop de Mega Seed voor Flurbos";
     setTimeout(initPlinkoGame, 50);
   }
 }
 
 // ==========================================================
-// 🎡 GAME 1: RAD VAN FORTUIN DELUXE
+// 🚀 GAME 2: SPACE DERBY (ALIEN RACERS)
 // ==========================================================
-const wheelSegments = [
-  { label: "⭐ JACKPOT 10X ⭐", color1: "#ffd700", color2: "#b8860b", text: "#000", type: "mult", val: 10, special: true },
-  { label: "BANKROET",          color1: "#990000", color2: "#550000", text: "#fff", type: "bust" },
-  { label: "3X WINST",          color1: "#27ae60", color2: "#196f3d", text: "#fff", type: "mult", val: 3 },
-  { label: "ZING EEN LIEDJE",   color1: "#8e44ad", color2: "#5b2c6f", text: "#fff", type: "task" },
-  { label: "2X WINST",          color1: "#2ecc71", color2: "#229954", text: "#fff", type: "mult", val: 2 },
-  { label: "+100 BONUS",        color1: "#2980b9", color2: "#1f618d", text: "#fff", type: "fixed", val: 100 },
-  { label: "15 PUSH-UPS",       color1: "#e67e22", color2: "#a04000", text: "#fff", type: "task" },
-  { label: "5X MEGA WIN",       color1: "#e74c3c", color2: "#922b21", text: "#fff", type: "mult", val: 5, special: true },
-  { label: "BANKROET",          color1: "#990000", color2: "#550000", text: "#fff", type: "bust" },
-  { label: "TRAKTEER LEIDING",  color1: "#16a085", color2: "#117864", text: "#fff", type: "task" },
-  { label: "2X WINST",          color1: "#2ecc71", color2: "#229954", text: "#fff", type: "mult", val: 2 },
-  { label: "DRAAI OPNIEUW",     color1: "#34495e", color2: "#1a252f", text: "#fff", type: "task" }
-];
-
-let wheelBet = 50;
-let wheelRotation = 0;
-let isWheelSpinning = false;
-let lastWheelIndex = -1;
-let wheelHistory = [];
-let wheelLeds = [];
-
-const wheelCanvas = document.getElementById("wheelCanvas");
-const wheelCtx = wheelCanvas.getContext("2d");
-const wheelSpinBtn = document.getElementById("wheelSpinBtn");
-const wheelBetInput = document.getElementById("wheelBetInput");
-const wheelNeedle = document.getElementById("wheelNeedle");
-const wheelHistoryEl = document.getElementById("wheelHistory");
-
-function buildWheelLedRing() {
-  const container = document.getElementById("wheelLedRing");
-  if (!container || wheelLeds.length > 0) return;
-  container.innerHTML = "";
-  wheelLeds = [];
-  const totalLeds = 24;
-  const radius = 230;
-
-  for (let i = 0; i < totalLeds; i++) {
-    const led = document.createElement("div");
-    led.className = "led-node";
-    const angle = (i / totalLeds) * (2 * Math.PI);
-    const x = Math.cos(angle) * radius;
-    const y = Math.sin(angle) * radius;
-    led.style.transform = `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`;
-    container.appendChild(led);
-    wheelLeds.push(led);
-  }
-}
-
-let ledTick = 0;
-setInterval(() => {
-  if (wheelLeds.length === 0) return;
-  ledTick++;
-  wheelLeds.forEach((led, idx) => {
-    if (isWheelSpinning) {
-      led.classList.toggle("off", (idx + ledTick) % 2 === 0);
-    } else {
-      led.classList.toggle("off", (idx + Math.floor(Date.now() / 400)) % 3 === 0);
-    }
-  });
-}, 70);
-
-function resizeWheelCanvas() {
-  if (activeGame !== "wheel") return;
-  const rect = wheelCanvas.getBoundingClientRect();
-  const dpr = window.devicePixelRatio || 1;
-  wheelCanvas.width = rect.width * dpr;
-  wheelCanvas.height = rect.height * dpr;
-  wheelCtx.scale(dpr, dpr);
-  drawWheel();
-}
-
-window.addEventListener("resize", resizeWheelCanvas);
-
-function drawWheel() {
-  const rect = wheelCanvas.getBoundingClientRect();
-  const size = rect.width;
-  if (!size) return;
-  const center = size / 2;
-  const radius = center - 8;
-  const arc = (2 * Math.PI) / wheelSegments.length;
-
-  wheelCtx.clearRect(0, 0, size, size);
-
-  // Rand
-  wheelCtx.save();
-  wheelCtx.beginPath();
-  wheelCtx.arc(center, center, radius + 5, 0, 2 * Math.PI);
-  wheelCtx.fillStyle = "#161104"; wheelCtx.fill();
-  wheelCtx.lineWidth = 6; wheelCtx.strokeStyle = "#cca000"; wheelCtx.stroke();
-  wheelCtx.restore();
-
-  // Segmenten
-  wheelSegments.forEach((seg, i) => {
-    const angle = wheelRotation + (i * arc);
-    wheelCtx.save();
-    wheelCtx.beginPath();
-    wheelCtx.moveTo(center, center);
-    wheelCtx.arc(center, center, radius, angle, angle + arc);
-    wheelCtx.closePath();
-
-    const grad = wheelCtx.createRadialGradient(center, center, 20, center, center, radius);
-    grad.addColorStop(0, seg.color1); grad.addColorStop(1, seg.color2);
-    wheelCtx.fillStyle = grad; wheelCtx.fill();
-    wheelCtx.lineWidth = 2; wheelCtx.strokeStyle = "#ffd700"; wheelCtx.stroke();
-
-    wheelCtx.translate(center, center);
-    wheelCtx.rotate(angle + arc / 2);
-    wheelCtx.textAlign = "right";
-    wheelCtx.fillStyle = seg.text;
-    const fontSize = Math.max(10, Math.floor(size * (seg.special ? 0.038 : 0.031)));
-    wheelCtx.font = `${seg.special ? '900' : '800'} ${fontSize}px 'Montserrat'`;
-    wheelCtx.fillText(seg.label, radius - (size * 0.06), fontSize * 0.35);
-    wheelCtx.restore();
-  });
-
-  for (let i = 0; i < wheelSegments.length * 2; i++) {
-    const pegAngle = wheelRotation + (i * (Math.PI / wheelSegments.length));
-    const pegX = center + Math.cos(pegAngle) * (radius - 3);
-    const pegY = center + Math.sin(pegAngle) * (radius - 3);
-    wheelCtx.beginPath();
-    wheelCtx.arc(pegX, pegY, Math.max(3, size * 0.009), 0, 2 * Math.PI);
-    wheelCtx.fillStyle = "#fff"; wheelCtx.fill();
-    wheelCtx.strokeStyle = "#cca000"; wheelCtx.stroke();
-  }
-}
-
-function setWheelBet(amt) {
-  if (isWheelSpinning) return;
-  wheelBet = Math.max(5, amt);
-  wheelBetInput.value = wheelBet;
-}
-
-function multiplyWheelBet(f) {
-  if (isWheelSpinning) return;
-  setWheelBet(Math.round(wheelBet * f));
-}
-
-wheelBetInput.addEventListener("input", (e) => {
-  wheelBet = Math.max(1, parseInt(e.target.value) || 0);
-});
-
-function spinWheel() {
-  if (isWheelSpinning) return;
-  isWheelSpinning = true;
-  wheelSpinBtn.disabled = true;
-  dealerStatus.innerText = "RAD IS IN BEWEGING...";
-  dealerInfo.innerText = `Inzet: ${wheelBet} fiches`;
-
-  const arc = (2 * Math.PI) / wheelSegments.length;
-  const spinRounds = Math.PI * 2 * (8 + Math.random() * 3);
-  const startRotation = wheelRotation;
-  const duration = 4800;
-  const startTime = performance.now();
-
-  function anim(now) {
-    const elapsed = now - startTime;
-    const progress = Math.min(elapsed / duration, 1);
-    const easeOut = 1 - Math.pow(1 - progress, 5);
-    wheelRotation = startRotation + (spinRounds * easeOut);
-
-    const norm = (wheelRotation % (2 * Math.PI) + 2 * Math.PI) % (2 * Math.PI);
-    const pointerAngle = (1.5 * Math.PI - norm + 2 * Math.PI) % (2 * Math.PI);
-    const curIdx = Math.floor(pointerAngle / arc);
-
-    if (curIdx !== lastWheelIndex) {
-      playSound("click", progress);
-      wheelNeedle.style.transform = "rotate(-24deg)";
-      setTimeout(() => { wheelNeedle.style.transform = "rotate(0deg)"; }, 45);
-      lastWheelIndex = curIdx;
-    }
-
-    drawWheel();
-
-    if (progress < 1) {
-      requestAnimationFrame(anim);
-    } else {
-      isWheelSpinning = false;
-      wheelSpinBtn.disabled = false;
-      handleWheelResult(wheelSegments[curIdx]);
-    }
-  }
-  requestAnimationFrame(anim);
-}
-
-function handleWheelResult(seg) {
-  let logText = "";
-
-  if (seg.type === "mult") {
-    const win = wheelBet * seg.val;
-    const profit = win - wheelBet;
-    openWinnerModal({
-      icon: seg.val >= 5 ? "🔥" : "🎉",
-      heading: seg.label,
-      multiplierTag: `${seg.val}X MULTIPLIER`,
-      payoutText: `BETAAL ${win} FICHES UIT (+${profit} winst)`,
-      isGrand: seg.val >= 5
-    });
-    logText = `WINST: ${seg.label} ➔ ${win}`;
-  } else if (seg.type === "fixed") {
-    const win = wheelBet + seg.val;
-    openWinnerModal({
-      icon: "🎁",
-      heading: `+${seg.val} BONUS FICHES!`,
-      multiplierTag: "EXTRA BONUS",
-      payoutText: `BETAAL ${win} FICHES UIT`,
-      isGrand: false
-    });
-    logText = `BONUS: +${seg.val} ➔ ${win}`;
-  } else if (seg.type === "bust") {
-    openWinnerModal({
-      icon: "💀",
-      heading: "BANKROET / HUIS WINT",
-      multiplierTag: "VERLOREN",
-      payoutText: `NEEM INZET VAN ${wheelBet} FICHES IN`,
-      isLoss: true
-    });
-    logText = `BANKROET (-${wheelBet})`;
-  } else if (seg.type === "task") {
-    openWinnerModal({
-      icon: "🎭",
-      heading: "SPECIALE OPDRACHT!",
-      multiplierTag: "KAMP OPDRACHT",
-      payoutText: `OPDRACHT: ${seg.label}`,
-      isGrand: false
-    });
-    logText = `OPDRACHT: ${seg.label}`;
-  }
-
-  if (wheelHistory.length === 0) wheelHistoryEl.innerHTML = "";
-  wheelHistory.unshift(logText);
-  if (wheelHistory.length > 3) wheelHistory.pop();
-  wheelHistoryEl.innerHTML = wheelHistory.map(t => `<li class="hw-item">${t}</li>`).join("");
-}
-
-// ==========================================================
-// 🐎 GAME 2: PAARDENRACE DERBY
-// ==========================================================
-const horses = [
-  { id: 0, name: "Bliksem Bob", avatar: "⚡🐎", color: "#e74c3c", odds: 2.2 },
-  { id: 1, name: "Tornado Tom", avatar: "🌪️🐎", color: "#3498db", odds: 3.5 },
-  { id: 2, name: "Kookstaf Raket", avatar: "🚀🐎", color: "#f39c12", odds: 5.0 },
-  { id: 3, name: "Lucky Lady", avatar: "🍀🐎", color: "#2ecc71", odds: 8.0 },
-  { id: 4, name: "Kamp Mascot", avatar: "👑🐎", color: "#9b59b6", odds: 12.0 }
+const aliens = [
+  { id: 0, name: "Pickle Rick", avatar: "🥒", color: "#39ff14", odds: 2.2 },
+  { id: 1, name: "Mr. Meeseeks", avatar: "🔵", color: "#00ffff", odds: 3.5 },
+  { id: 2, name: "Birdperson", avatar: "🦅", color: "#f39c12", odds: 5.0 },
+  { id: 3, name: "Butter Robot", avatar: "🤖", color: "#ffd700", odds: 8.0 },
+  { id: 4, name: "Snowball Mech", avatar: "🐕", color: "#e74c3c", odds: 12.0 }
 ];
 
 let selectedHorse = 0;
@@ -507,7 +285,7 @@ function renderRaceHorses() {
   const list = document.getElementById("horseBetList");
   const trackLanes = document.getElementById("trackLanes");
 
-  list.innerHTML = horses.map(h => `
+  list.innerHTML = aliens.map(h => `
     <div class="horse-bet-card ${h.id === selectedHorse ? 'selected' : ''}" onclick="selectHorse(${h.id})">
       <div class="h-info">
         <span class="h-avatar">${h.avatar}</span>
@@ -517,7 +295,7 @@ function renderRaceHorses() {
     </div>
   `).join("");
 
-  trackLanes.innerHTML = horses.map(h => `
+  trackLanes.innerHTML = aliens.map(h => `
     <div class="lane" id="lane-${h.id}">
       <div class="horse-runner" id="runner-${h.id}">
         <span class="runner-sprite">${h.avatar}</span>
@@ -548,19 +326,19 @@ function startHorseRace() {
   isRacing = true;
   document.getElementById("startRaceBtn").disabled = true;
 
-  dealerStatus.innerText = "🏁 DE DERBY IS GESTART!";
-  dealerInfo.innerText = `Paard: ${horses[selectedHorse].name} (${horses[selectedHorse].odds}x)`;
+  dealerStatus.innerText = "🚀 DE WORMHOLE DERBY IS BEGONNEN!";
+  dealerInfo.innerText = `Racer: ${aliens[selectedHorse].name} (${aliens[selectedHorse].odds}x)`;
   playSound("horn");
 
   const trackWidth = document.getElementById("raceTrack").clientWidth - 110;
-  const positions = horses.map(() => 0);
+  const positions = aliens.map(() => 0);
   const commentaryEl = document.getElementById("raceCommentary");
   document.querySelectorAll(".horse-runner").forEach(el => el.classList.add("horse-running"));
 
   const raceInterval = setInterval(() => {
     let winner = null;
 
-    horses.forEach((h, i) => {
+    aliens.forEach((h, i) => {
       const speed = (Math.random() * 4.2) + (Math.random() > 0.82 ? 4.5 : 1);
       positions[i] += speed;
 
@@ -573,7 +351,7 @@ function startHorseRace() {
     });
 
     const leaderIdx = positions.indexOf(Math.max(...positions));
-    commentaryEl.innerText = `🎙️ KOPLOPER: ${horses[leaderIdx].name.toUpperCase()} LEIDT HET VELD!`;
+    commentaryEl.innerText = `🎙️ KOPLOPER: ${aliens[leaderIdx].name.toUpperCase()} VLIEGT DOOR DE PORTAL!`;
 
     if (winner !== null) {
       clearInterval(raceInterval);
@@ -586,18 +364,18 @@ function startHorseRace() {
         const payout = Math.round(raceBet * winner.odds);
         const profit = payout - raceBet;
         openWinnerModal({
-          icon: "🏆",
-          heading: `${winner.name} WINT DE RACE!`,
-          multiplierTag: `${winner.odds}X DERBY ODDS`,
-          payoutText: `BETAAL ${payout} FICHES UIT (+${profit} winst)`,
+          icon: "🚀",
+          heading: `${winner.name} WINT DE DERBY!`,
+          multiplierTag: `${winner.odds}X MULTIPLIER`,
+          payoutText: `BETAAL ${payout} FLURBOS UIT (+${profit} winst)`,
           isGrand: winner.odds >= 5.0
         });
       } else {
         openWinnerModal({
           icon: "💀",
           heading: `${winner.name} HEEFT GEWONNEN`,
-          multiplierTag: "VERKEERD GEGOKT",
-          payoutText: `NEEM INZET VAN ${raceBet} FICHES IN`,
+          multiplierTag: "VERLOREN",
+          payoutText: `NEEM INZET VAN ${raceBet} FLURBOS IN`,
           isLoss: true
         });
       }
@@ -606,7 +384,7 @@ function startHorseRace() {
 }
 
 // ==========================================================
-// 🎪 GAME 3: 3 GOUDEN BEKERS (HARDCORE SPEED MODE)
+// 🧪 GAME 3: 3 PORTAL FLASKS & MEGA SEED
 // ==========================================================
 let cupsBet = 50;
 let ballSlot = 1;
@@ -660,14 +438,14 @@ function startCupShuffle() {
     }
   }
 
-  dealerStatus.innerText = "KIJK GOED WAAR DE BAL ZIT...";
-  dealerInfo.innerText = `Beker ${ballSlot + 1} heeft de bal!`;
+  dealerStatus.innerText = "KIJK GOED WAAR DE MEGA SEED ZIT...";
+  dealerInfo.innerText = `Buis ${ballSlot + 1} bevat de Mega Seed!`;
   playSound("win");
 
   setTimeout(() => {
     document.getElementById(`cupAsset-${ballSlot}`).classList.remove("lifted");
-    dealerStatus.innerText = "⚡ VEGAS SPEED SHUFFLE...";
-    dealerInfo.innerText = "Focus je ogen op de beker!";
+    dealerStatus.innerText = "🧪 REAGEERBUIZEN TELEPORTEREN...";
+    dealerInfo.innerText = "Focus op de juiste buis!";
 
     setTimeout(() => {
       let slots = [0, 1, 2];
@@ -686,15 +464,15 @@ function startCupShuffle() {
           document.getElementById(`cupSlot-${slotId}`).style.left = `${cupSlotPositions[visualIndex]}%`;
         });
 
-        playSound("whoosh");
+        playSound("teleport");
         shufflesLeft--;
 
         if (shufflesLeft <= 0) {
           clearInterval(shuffleTimer);
           isShuffling = false;
           canPick = true;
-          dealerStatus.innerText = "WAAR ZIT DE BAL?";
-          dealerInfo.innerText = "Klik op één van de 3 bekers om te raden!";
+          dealerStatus.innerText = "WAAR ZIT DE MEGA SEED?";
+          dealerInfo.innerText = "Klik op één van de 3 buizen om te scannen!";
         }
       }, 190);
 
@@ -714,18 +492,18 @@ function pickCup(clickedCupId) {
     const win = cupsBet * 3;
     const profit = win - cupsBet;
     openWinnerModal({
-      icon: "🎪",
-      heading: "JUIST GERADEN!",
-      multiplierTag: "3X HARDCORE WINST",
-      payoutText: `BETAAL ${win} FICHES UIT (+${profit} winst)`,
+      icon: "🌰",
+      heading: "MEGA SEED GEVONDEN!",
+      multiplierTag: "3X FLURBO WINST",
+      payoutText: `BETAAL ${win} FLURBOS UIT (+${profit} winst)`,
       isGrand: false
     });
   } else {
     openWinnerModal({
       icon: "💀",
-      heading: "VERKEERDE BEKER!",
-      multiplierTag: "BAL ZAT IN BEKER " + (ballSlot + 1),
-      payoutText: `NEEM INZET VAN ${cupsBet} FICHES IN`,
+      heading: "LEGE BUIS GERAAD!",
+      multiplierTag: "MEGA SEED ZAT IN BUIS " + (ballSlot + 1),
+      payoutText: `NEEM INZET VAN ${cupsBet} FLURBOS IN`,
       isLoss: true
     });
   }
@@ -734,10 +512,10 @@ function pickCup(clickedCupId) {
 }
 
 // ==========================================================
-// 🐔 GAME 4: DE KIP STEEKT OVER (UNIFORM VEGAS GOLD THEMA)
+// 👦 GAME 4: MORTY'S MULTIVERSE RUN (CHICKEN ROAD R&M)
 // ==========================================================
 let chickenBet = 50;
-let chickenLane = 0; // 0 = startgras onderaan, 1..8 = banen
+let chickenLane = 0;
 let isChickenGameActive = false;
 let isChickenAlive = true;
 let isChickenHopping = false;
@@ -772,7 +550,7 @@ function initChickenGame() {
 
   document.getElementById("hopChickenBtn").classList.remove("hidden");
   document.getElementById("cashoutChickenBtn").classList.add("hidden");
-  document.getElementById("chickenCurrentCashout").innerText = "0 FICHES";
+  document.getElementById("chickenCurrentCashout").innerText = "0 FLURBOS";
 
   resizeChickenCanvas();
   spawnHighwayVehicles();
@@ -799,7 +577,7 @@ function spawnHighwayVehicles() {
   const h = rect.height || 480;
   const laneHeight = (h - 80) / 8;
 
-  const carIcons = ["🏎️", "🚗", "🚕", "🚙", "🚌", "🚛", "🚓", "🚜"];
+  const spaceCrafts = ["🛸", "🚀", "🛰️", "🛸", "👾", "🛸", "🌌", "🛸"];
 
   for (let l = 1; l <= 8; l++) {
     const laneY = (h - 40) - (l * laneHeight) + (laneHeight / 2);
@@ -812,7 +590,7 @@ function spawnHighwayVehicles() {
       y: laneY,
       speed: speed,
       baseSpeed: speed,
-      icon: carIcons[l - 1]
+      icon: spaceCrafts[l - 1]
     });
 
     chickenVehicles.push({
@@ -821,7 +599,7 @@ function spawnHighwayVehicles() {
       y: laneY,
       speed: speed,
       baseSpeed: speed,
-      icon: carIcons[(l + 2) % carIcons.length]
+      icon: spaceCrafts[(l + 2) % spaceCrafts.length]
     });
   }
 }
@@ -848,7 +626,7 @@ function hopChickenForward() {
 
   const isDoomed = (nextLane >= deadlyLane);
 
-  playSound("chicken_hop", nextLane);
+  playSound("morty_hop", nextLane);
 
   const hopInterval = setInterval(() => {
     hopProgress += 0.12;
@@ -859,51 +637,54 @@ function hopChickenForward() {
       chickenLane = nextLane;
 
       if (isDoomed) {
+        // 💥 DISINTEGRATED! CRONENBERG MORTY
         isChickenAlive = false;
         isChickenGameActive = false;
-        playSound("car_crash");
+        playSound("disintegrate");
 
         document.getElementById("cashoutChickenBtn").classList.add("hidden");
-        document.getElementById("chickenCurrentCashout").innerText = "0 FICHES";
+        document.getElementById("chickenCurrentCashout").innerText = "0 FLURBOS";
 
         setTimeout(() => {
           openWinnerModal({
-            icon: "🍗",
-            heading: "AANGEREDEN DOOR VERKEER!",
-            multiplierTag: `GEROOSTERD OP STRAAT ${nextLane}`,
-            payoutText: `NEEM INZET VAN ${chickenBet} FICHES IN`,
+            icon: "🧬",
+            heading: "AW GEEZ! CRONENBERG MORTY!",
+            multiplierTag: `GERAAKT DOOR UFO OP BAAN ${nextLane}`,
+            payoutText: `NEEM INZET VAN ${chickenBet} FLURBOS IN`,
             isLoss: true
           });
           initChickenGame();
         }, 600);
 
       } else {
+        // ✅ PORTAL SHIELD DROPS
         safeConcreteLanes.push(chickenLane);
-        playSound("concrete_thud");
+        playSound("portal_shield");
 
         const currentMult = chickenMultipliers[chickenLane - 1];
         const currentVal = Math.round(chickenBet * currentMult);
-        document.getElementById("chickenCurrentCashout").innerText = `${currentVal} FICHES (${currentMult}x)`;
+        document.getElementById("chickenCurrentCashout").innerText = `${currentVal} FLURBOS (${currentMult}x)`;
         document.getElementById("cashoutChickenBtn").classList.remove("hidden");
 
         if (chickenLane === 8) {
+          // 🥫 100X SZECHUAN SAUCE
           isChickenGameActive = false;
           document.getElementById("cashoutChickenBtn").classList.add("hidden");
 
           setTimeout(() => {
             openWinnerModal({
-              icon: "👑",
-              heading: "GOUDEN EI BEREIKT! 100X WINST!",
+              icon: "🥫",
+              heading: "SZECHUAN SAUCE BEREIKT!",
               multiplierTag: "100X GRAND JACKPOT!",
-              payoutText: `BETAAL DE HOOFDPRIJS VAN ${currentVal} FICHES UIT!`,
+              payoutText: `BETAAL DE HOOFDPRIJS VAN ${currentVal} FLURBOS UIT!`,
               isGrand: true
             });
             initChickenGame();
           }, 500);
 
         } else {
-          dealerStatus.innerText = `🧱 BETONBLOK BESCHERMT KIP OP STRAAT ${chickenLane}!`;
-          dealerInfo.innerText = `Waarde nu: ${currentVal} fiches. Druk op 'SPRING VOORUIT' of 'CASH OUT'!`;
+          dealerStatus.innerText = `🛡️ PORTAL SHIELD ACTIEF OP BAAN ${chickenLane}!`;
+          dealerInfo.innerText = `Waarde: ${currentVal} Flurbos. Druk op 'SPRING VOORUIT' of 'CASH OUT'!`;
         }
       }
     }
@@ -919,13 +700,13 @@ function cashoutChicken() {
 
   isChickenGameActive = false;
   document.getElementById("cashoutChickenBtn").classList.add("hidden");
-  document.getElementById("chickenCurrentCashout").innerText = "0 FICHES";
+  document.getElementById("chickenCurrentCashout").innerText = "0 FLURBOS";
 
   openWinnerModal({
-    icon: "💰",
-    heading: "KIP VEILIG GECASHT!",
-    multiplierTag: `${currentMult}X OVERSTEEK WINST`,
-    payoutText: `BETAAL ${payout} FICHES UIT (+${profit} winst)`,
+    icon: "🧪",
+    heading: "MORTY VEILIG GECASHT!",
+    multiplierTag: `${currentMult}X MULTIVERSE WINST`,
+    payoutText: `BETAAL ${payout} FLURBOS UIT (+${profit} winst)`,
     isGrand: currentMult >= 8.0
   });
 
@@ -955,40 +736,40 @@ function drawChickenHighwayFrame() {
   const laneHeight = (h - 80) / 8;
   const centerX = w / 2;
 
-  // 1. FINISH ZONE (Gouden Podium)
+  // 1. FINISH ZONE (Szechuan Sauce / Portal Destination)
   const finishGrad = chickenCtx.createLinearGradient(0, 0, w, 0);
-  finishGrad.addColorStop(0, "#ffd700");
-  finishGrad.addColorStop(0.5, "#fff3a8");
-  finishGrad.addColorStop(1, "#ffd700");
+  finishGrad.addColorStop(0, "#39ff14");
+  finishGrad.addColorStop(0.5, "#a6ff00");
+  finishGrad.addColorStop(1, "#39ff14");
   chickenCtx.fillStyle = finishGrad;
   chickenCtx.fillRect(0, 0, w, 40);
 
-  chickenCtx.fillStyle = "#110b00";
-  chickenCtx.font = "900 13px 'Cinzel Decorative', serif";
+  chickenCtx.fillStyle = "#000";
+  chickenCtx.font = "900 12px 'Orbitron', sans-serif";
   chickenCtx.textAlign = "center";
   chickenCtx.textBaseline = "middle";
-  chickenCtx.fillText("🏆 GOUDEN EI FINISH • 100X 🏆", w / 2, 20);
+  chickenCtx.fillText("🥫 SZECHUAN SAUCE DESTINATION • 100X", w / 2, 20);
 
-  // 2. START ZONE (Groen Gras)
-  chickenCtx.fillStyle = "#1f9c3f";
+  // 2. START ZONE (Garage Earth)
+  chickenCtx.fillStyle = "#1b2838";
   chickenCtx.fillRect(0, h - 40, w, 40);
-  chickenCtx.fillStyle = "#ffffff";
-  chickenCtx.font = "900 12px Montserrat";
+  chickenCtx.fillStyle = "#00ffff";
+  chickenCtx.font = "900 11px 'Orbitron', sans-serif";
   chickenCtx.textAlign = "center";
   chickenCtx.textBaseline = "middle";
-  chickenCtx.fillText("🟢 VEILIGE STARTZONE", w / 2, h - 20);
+  chickenCtx.fillText("🧪 RICK'S GARAGE (VEILIG)", w / 2, h - 20);
 
-  // 3. 8 HOOG-CONTRAST ASFALT BANEN
+  // 3. 8 SPACE HIGHWAY LANES
   for (let l = 1; l <= 8; l++) {
     const laneY = (h - 40) - (l * laneHeight);
     const isSafe = safeConcreteLanes.includes(l);
 
-    chickenCtx.fillStyle = isSafe ? "#22352a" : (l % 2 === 0 ? "#232733" : "#1a1e27");
+    chickenCtx.fillStyle = isSafe ? "#10281b" : (l % 2 === 0 ? "#0c1524" : "#080e18");
     chickenCtx.fillRect(0, laneY, w, laneHeight);
 
-    // Reflecterende gele/witte strepen
-    chickenCtx.strokeStyle = isSafe ? "rgba(0, 255, 136, 0.4)" : "#ffcc00";
-    chickenCtx.lineWidth = 2.5;
+    // Laser / Portal lijnen
+    chickenCtx.strokeStyle = isSafe ? "rgba(57, 255, 20, 0.5)" : "rgba(0, 255, 255, 0.25)";
+    chickenCtx.lineWidth = 2;
     chickenCtx.setLineDash([16, 12]);
     chickenCtx.beginPath();
     chickenCtx.moveTo(0, laneY);
@@ -996,23 +777,23 @@ function drawChickenHighwayFrame() {
     chickenCtx.stroke();
     chickenCtx.setLineDash([]);
 
-    // Multiplier Badge aan de rechterkant
+    // Multiplier Badge
     const badgeX = w - 55;
     const badgeY = laneY + laneHeight / 2 - 10;
-    chickenCtx.fillStyle = "#090c14";
+    chickenCtx.fillStyle = "#04070f";
     chickenCtx.fillRect(badgeX, badgeY, 48, 20);
-    chickenCtx.strokeStyle = isSafe ? "#00ff88" : "#ffd700";
+    chickenCtx.strokeStyle = isSafe ? "#39ff14" : "#00ffff";
     chickenCtx.lineWidth = 1.5;
     chickenCtx.strokeRect(badgeX, badgeY, 48, 20);
 
-    chickenCtx.fillStyle = isSafe ? "#00ff88" : "#ffd700";
-    chickenCtx.font = "900 11px Montserrat";
+    chickenCtx.fillStyle = isSafe ? "#39ff14" : "#00ffff";
+    chickenCtx.font = "900 11px 'Orbitron', sans-serif";
     chickenCtx.textAlign = "center";
     chickenCtx.textBaseline = "middle";
     chickenCtx.fillText(`${chickenMultipliers[l - 1]}x`, badgeX + 24, badgeY + 10);
   }
 
-  // 4. AUTO'S MET KOPLAMPEN & BOTSING-PHYSICS
+  // 4. UFO'S MET LASER-EFFECTEN
   chickenVehicles.forEach(v => {
     const isProtectedLane = safeConcreteLanes.includes(v.lane);
 
@@ -1033,26 +814,26 @@ function drawChickenHighwayFrame() {
     if (v.speed > 0 && v.x > w + 45) v.x = -45;
     if (v.speed < 0 && v.x < -45) v.x = w + 45;
 
-    // Koplampen
+    // Laser stralen
     if (v.speed > 0) {
       const beamGrad = chickenCtx.createLinearGradient(v.x, v.y, v.x + 75, v.y);
-      beamGrad.addColorStop(0, "rgba(255, 255, 180, 0.4)");
-      beamGrad.addColorStop(1, "rgba(255, 255, 180, 0)");
+      beamGrad.addColorStop(0, "rgba(57, 255, 20, 0.4)");
+      beamGrad.addColorStop(1, "rgba(57, 255, 20, 0)");
       chickenCtx.fillStyle = beamGrad;
       chickenCtx.beginPath();
       chickenCtx.moveTo(v.x + 15, v.y);
-      chickenCtx.lineTo(v.x + 75, v.y - 12);
-      chickenCtx.lineTo(v.x + 75, v.y + 12);
+      chickenCtx.lineTo(v.x + 75, v.y - 10);
+      chickenCtx.lineTo(v.x + 75, v.y + 10);
       chickenCtx.fill();
     } else {
       const beamGrad = chickenCtx.createLinearGradient(v.x, v.y, v.x - 75, v.y);
-      beamGrad.addColorStop(0, "rgba(255, 255, 180, 0.4)");
-      beamGrad.addColorStop(1, "rgba(255, 255, 180, 0)");
+      beamGrad.addColorStop(0, "rgba(0, 255, 255, 0.4)");
+      beamGrad.addColorStop(1, "rgba(0, 255, 255, 0)");
       chickenCtx.fillStyle = beamGrad;
       chickenCtx.beginPath();
       chickenCtx.moveTo(v.x - 15, v.y);
-      chickenCtx.lineTo(v.x - 75, v.y - 12);
-      chickenCtx.lineTo(v.x - 75, v.y + 12);
+      chickenCtx.lineTo(v.x - 75, v.y - 10);
+      chickenCtx.lineTo(v.x - 75, v.y + 10);
       chickenCtx.fill();
     }
 
@@ -1062,28 +843,27 @@ function drawChickenHighwayFrame() {
     chickenCtx.fillText(v.icon, v.x, v.y);
   });
 
-  // 5. VEILIGHEIDS-BETONBLOKKEN MET HAZARD STRIPES (🧱)
+  // 5. RICK'S PORTAL FORCEFIELD SHIELDS (🛡️🧪)
   safeConcreteLanes.forEach(laneNum => {
     const laneY = (h - 40) - (laneNum * laneHeight) + (laneHeight / 2);
 
     [centerX - 35, centerX + 35].forEach(bx => {
-      chickenCtx.fillStyle = "#ffd700";
-      chickenCtx.fillRect(bx - 12, laneY - 10, 24, 20);
-      chickenCtx.strokeStyle = "#111";
-      chickenCtx.lineWidth = 2;
-      chickenCtx.strokeRect(bx - 12, laneY - 10, 24, 20);
-
-      chickenCtx.fillStyle = "#111";
+      chickenCtx.fillStyle = "#39ff14";
+      chickenCtx.shadowColor = "#39ff14";
+      chickenCtx.shadowBlur = 10;
       chickenCtx.beginPath();
-      chickenCtx.moveTo(bx - 8, laneY - 10);
-      chickenCtx.lineTo(bx - 2, laneY + 10);
-      chickenCtx.lineTo(bx + 4, laneY + 10);
-      chickenCtx.lineTo(bx - 2, laneY - 10);
+      chickenCtx.arc(bx, laneY, 12, 0, Math.PI * 2);
       chickenCtx.fill();
+      chickenCtx.shadowBlur = 0;
+
+      chickenCtx.font = "16px sans-serif";
+      chickenCtx.textAlign = "center";
+      chickenCtx.textBaseline = "middle";
+      chickenCtx.fillText("🛡️", bx, laneY);
     });
   });
 
-  // 6. RENDER DE KIP MET GOUDEN LICHTKRANS
+  // 6. RENDER MORTY
   let curY = targetChickenY;
   if (isChickenHopping) {
     const prevY = (h - 40) - ((chickenLane) * laneHeight) + (laneHeight / 2);
@@ -1094,33 +874,30 @@ function drawChickenHighwayFrame() {
   }
 
   if (isChickenAlive) {
+    // Portal aura onder Morty
     const auraGrad = chickenCtx.createRadialGradient(centerX, curY, 5, centerX, curY, 26);
-    auraGrad.addColorStop(0, "rgba(255, 215, 0, 0.45)");
-    auraGrad.addColorStop(1, "rgba(255, 215, 0, 0)");
+    auraGrad.addColorStop(0, "rgba(57, 255, 20, 0.45)");
+    auraGrad.addColorStop(1, "rgba(57, 255, 20, 0)");
     chickenCtx.fillStyle = auraGrad;
     chickenCtx.beginPath();
     chickenCtx.arc(centerX, curY, 26, 0, Math.PI * 2);
     chickenCtx.fill();
 
-    chickenCtx.fillStyle = "rgba(0,0,0,0.5)";
-    chickenCtx.beginPath();
-    chickenCtx.ellipse(centerX, curY + 14, 12, 5, 0, 0, Math.PI * 2);
-    chickenCtx.fill();
-
     chickenCtx.font = "32px sans-serif";
     chickenCtx.textAlign = "center";
     chickenCtx.textBaseline = "middle";
-    chickenCtx.fillText("🐔", centerX, curY);
+    chickenCtx.fillText("👦", centerX, curY);
   } else {
-    chickenCtx.font = "36px sans-serif";
+    // Cronenberg Morty / Slime
+    chickenCtx.font = "34px sans-serif";
     chickenCtx.textAlign = "center";
     chickenCtx.textBaseline = "middle";
-    chickenCtx.fillText("🍗💥", centerX, curY);
+    chickenCtx.fillText("🧬💥", centerX, curY);
   }
 }
 
 // ==========================================================
-// ⚡ GAME 5: PLINKO ROYALE DELUXE
+// ⚡ GAME 5: CITADEL PLINKO
 // ==========================================================
 let plinkoBet = 50;
 let isPlinkoRunning = false;
@@ -1178,13 +955,13 @@ function drawPlinkoBoard(ball = null) {
 
   plinkoCtx.clearRect(0, 0, width, height);
 
-  // 1. Pinnen
+  // 1. Radioactieve Pinnen
   plinkoPegs.forEach(peg => {
     plinkoCtx.beginPath();
     plinkoCtx.arc(peg.x, peg.y, 4, 0, 2 * Math.PI);
-    plinkoCtx.fillStyle = "#ffd700";
-    plinkoCtx.shadowColor = "rgba(255, 215, 0, 0.8)";
-    plinkoCtx.shadowBlur = 6;
+    plinkoCtx.fillStyle = "#39ff14";
+    plinkoCtx.shadowColor = "rgba(57, 255, 20, 0.8)";
+    plinkoCtx.shadowBlur = 8;
     plinkoCtx.fill();
     plinkoCtx.shadowBlur = 0;
   });
@@ -1195,23 +972,20 @@ function drawPlinkoBoard(ball = null) {
     const x = i * slotWidth;
     const y = height - 40;
 
-    plinkoCtx.fillStyle = mult >= 10 ? "#e74c3c" : mult >= 2 ? "#2ecc71" : mult >= 1 ? "#3498db" : "#34495e";
+    plinkoCtx.fillStyle = mult >= 10 ? "#ff2a55" : mult >= 2 ? "#39ff14" : mult >= 1 ? "#00ffff" : "#1a2c3d";
     plinkoCtx.fillRect(x + 2, y, slotWidth - 4, 35);
-    plinkoCtx.fillStyle = "#fff";
-    plinkoCtx.font = "900 11px Montserrat";
+    plinkoCtx.fillStyle = mult >= 2 ? "#000" : "#fff";
+    plinkoCtx.font = "900 11px 'Orbitron', sans-serif";
     plinkoCtx.textAlign = "center";
     plinkoCtx.fillText(`${mult}x`, x + slotWidth / 2, y + 22);
   });
 
-  // 3. Bal
+  // 3. Mega Seed
   if (ball) {
-    plinkoCtx.beginPath();
-    plinkoCtx.arc(ball.x, ball.y, 9, 0, 2 * Math.PI);
-    plinkoCtx.fillStyle = "#ffffff";
-    plinkoCtx.shadowColor = "#00ff88";
-    plinkoCtx.shadowBlur = 12;
-    plinkoCtx.fill();
-    plinkoCtx.shadowBlur = 0;
+    plinkoCtx.font = "20px sans-serif";
+    plinkoCtx.textAlign = "center";
+    plinkoCtx.textBaseline = "middle";
+    plinkoCtx.fillText("🌰", ball.x, ball.y);
   }
 }
 
@@ -1240,7 +1014,7 @@ function dropPlinkoBall() {
       const dy = ball.y - peg.y;
       const dist = Math.sqrt(dx * dx + dy * dy);
 
-      if (dist < 13) {
+      if (dist < 14) {
         playSound("peg");
         const angle = Math.atan2(dy, dx);
         ball.vx = Math.cos(angle) * (2.2 + Math.random() * 1.2);
@@ -1277,10 +1051,10 @@ function handlePlinkoResult(mult) {
 
   if (mult >= 1) {
     openWinnerModal({
-      icon: mult >= 10 ? "⚡" : "🎯",
-      heading: `${mult}X PLINKO MULTIPLIER!`,
+      icon: mult >= 10 ? "⚡" : "🌰",
+      heading: `${mult}X MEGA SEED MULTIPLIER!`,
       multiplierTag: `${mult}X SLOT HIT`,
-      payoutText: `BETAAL ${payout} FICHES UIT (+${profit} winst)`,
+      payoutText: `BETAAL ${payout} FLURBOS UIT (+${profit} winst)`,
       isGrand: mult >= 10
     });
   } else {
@@ -1288,7 +1062,7 @@ function handlePlinkoResult(mult) {
       icon: "💀",
       heading: `${mult}X SLOT GERAAKT`,
       multiplierTag: "LAGERE UITBETALING",
-      payoutText: `NEEM ${plinkoBet - payout} FICHES IN (speler houdt ${payout})`,
+      payoutText: `NEEM ${plinkoBet - payout} FLURBOS IN (speler houdt ${payout})`,
       isLoss: true
     });
   }
