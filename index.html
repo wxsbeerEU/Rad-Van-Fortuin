@@ -16,7 +16,7 @@
   <div class="portal-core-swirl"></div>
 
   <!-- Onzichtbare Dealer Cheat Status Indicator (Rechtsboven) -->
-  <div id="dealerCheatDot" class="cheat-indicator-dot" title="Cheat Mode"></div>
+  <div id="dealerCheatDot" class="cheat-indicator-dot" title="W = Win | V = Lose"></div>
 
   <div class="casino-app">
     
@@ -30,14 +30,14 @@
           <span class="portal-gun-icon">🧪</span>
           <div class="brand-title">
             <h1 id="appTitle">CITADEL CASINO</h1>
-            <span class="edition-badge">DIMENSIE C-137 • CONTANT 10€ EDITIE</span>
+            <span class="edition-badge">DIMENSIE C-137 • HIGH-ROLLER FLURBO SUITE</span>
           </div>
         </div>
       </div>
 
       <div class="dealer-screen">
         <span class="dealer-label" id="dealerStatus">INTERDIMENSIONALE LOBBY</span>
-        <span class="dealer-main" id="dealerInfo">Kies een spel</span>
+        <span class="dealer-main" id="dealerInfo">Kies een spel & zet in!</span>
       </div>
     </header>
 
@@ -73,8 +73,8 @@
             <div class="card-neon-border"></div>
             <div class="card-icon">🚀</div>
             <h2>SPACE DERBY</h2>
-            <p>Zet 1 briefje van 10 in op een racer en verdubbel bij winst!</p>
-            <div class="card-tag">WINST / VERLIES</div>
+            <p>Zet elk gewenst bedrag in op een racer en verdubbel bij winst!</p>
+            <div class="card-tag tag-hot">🔥 85% KANS OP WINST</div>
             <button class="play-btn">START RACE ▶</button>
           </div>
 
@@ -84,7 +84,7 @@
             <div class="card-icon">🌰</div>
             <h2>3 PORTAL FLASKS</h2>
             <p>Vind de Mega Seed onder de ondoorzichtige buizen.</p>
-            <div class="card-tag">WINST / VERLIES</div>
+            <div class="card-tag tag-hot">💎 EASY 2X DUBBEL</div>
             <button class="play-btn">ZOEK SEED ▶</button>
           </div>
 
@@ -94,7 +94,7 @@
             <div class="card-icon">👦</div>
             <h2>MORTY ROAD</h2>
             <p>Steek de straten over. Haal de overkant of crash onderweg!</p>
-            <div class="card-tag">OVERLEEF DE WEG</div>
+            <div class="card-tag tag-hot">🟢 VEILIGE OVERSTEEK</div>
             <button class="play-btn">HELP MORTY ▶</button>
           </div>
 
@@ -103,8 +103,8 @@
             <div class="card-neon-border"></div>
             <div class="card-icon">⚡</div>
             <h2>CITADEL PLINKO</h2>
-            <p>Drop de Mega Seed. Land in de groene WINST zone!</p>
-            <div class="card-tag">WINST / VERLIES</div>
+            <p>8 van de 9 vakjes zijn WINST (2X)! Bijna onmogelijk te verliezen.</p>
+            <div class="card-tag tag-hot">⚡ 8/9 VAKJES WINST</div>
             <button class="play-btn">DROP SEED ▶</button>
           </div>
 
@@ -124,20 +124,25 @@
               </div>
               <div class="horse-selection-list" id="horseBetList"></div>
               
+              <!-- Fancy Custom Inzet Box -->
               <div class="bet-input-box">
                 <span class="coin-icon">💶</span>
-                <span class="bet-fixed-label">INZET: €<span id="raceBetDisplay">10</span></span>
+                <input type="number" id="raceBetInput" class="custom-cash-input" value="10" min="5" step="5">
+                <span class="unit-tag">EUR</span>
               </div>
               
-              <div class="bet-bills-selector">
-                <button class="bill-btn active" onclick="setCashBet(10)">1× €10</button>
-                <button class="bill-btn" onclick="setCashBet(20)">2× €10</button>
-                <button class="bill-btn" onclick="setCashBet(30)">3× €10</button>
+              <div class="chip-rack">
+                <button class="chip c-10 active" onclick="setCashBet(10)">+10</button>
+                <button class="chip c-20" onclick="addCash(20)">+20</button>
+                <button class="chip c-50" onclick="addCash(50)">+50</button>
+                <button class="chip c-100" onclick="addCash(100)">+100</button>
+                <button class="chip c-250" onclick="multiplyBet(2)">2×</button>
+                <button class="chip c-reset" onclick="setCashBet(10)">Reset</button>
               </div>
 
-              <div class="instruction-box">
-                <div class="inst-head">💡 REGELS:</div>
-                <p>Wint jouw racer? Dan win je 1 briefje van 10 terug!</p>
+              <div class="instruction-box hot-box">
+                <div class="inst-head">🔥 RICK'S TIP:</div>
+                <p>Zet in op de favoriet. Winst = 2× je inzet (€<span class="current-win-label">20</span>)!</p>
               </div>
 
               <button id="startRaceBtn" class="gold-action-btn w-full" onclick="startHorseRace()">
@@ -167,23 +172,27 @@
             <div class="deck-box">
               <div class="deck-head">
                 <h2>FLASK INZET</h2>
-                <p>Vind de Mega Seed</p>
+                <p>Vind de Mega Seed (2× Winst)</p>
               </div>
               
               <div class="bet-input-box">
                 <span class="coin-icon">💶</span>
-                <span class="bet-fixed-label">INZET: €<span id="cupsBetDisplay">10</span></span>
+                <input type="number" id="cupsBetInput" class="custom-cash-input" value="10" min="5" step="5">
+                <span class="unit-tag">EUR</span>
               </div>
               
-              <div class="bet-bills-selector">
-                <button class="bill-btn active" onclick="setCashBet(10)">1× €10</button>
-                <button class="bill-btn" onclick="setCashBet(20)">2× €10</button>
-                <button class="bill-btn" onclick="setCashBet(30)">3× €10</button>
+              <div class="chip-rack">
+                <button class="chip c-10 active" onclick="setCashBet(10)">+10</button>
+                <button class="chip c-20" onclick="addCash(20)">+20</button>
+                <button class="chip c-50" onclick="addCash(50)">+50</button>
+                <button class="chip c-100" onclick="addCash(100)">+100</button>
+                <button class="chip c-250" onclick="multiplyBet(2)">2×</button>
+                <button class="chip c-reset" onclick="setCashBet(10)">Reset</button>
               </div>
 
-              <div class="instruction-box">
+              <div class="instruction-box hot-box">
                 <div class="inst-head">💡 EXPERIMENT:</div>
-                <p>Volg de ondoorzichtige buis. Goed geraden = WINST!</p>
+                <p>Volg de ondoorzichtige buis. Goed geraden = WINST (€<span class="current-win-label">20</span>)!</p>
               </div>
 
               <button id="shuffleCupsBtn" class="gold-action-btn w-full" onclick="startCupShuffle()">
@@ -230,18 +239,22 @@
               
               <div class="bet-input-box">
                 <span class="coin-icon">💶</span>
-                <span class="bet-fixed-label">INZET: €<span id="chickenBetDisplay">10</span></span>
+                <input type="number" id="chickenBetInput" class="custom-cash-input" value="10" min="5" step="5">
+                <span class="unit-tag">EUR</span>
               </div>
               
-              <div class="bet-bills-selector">
-                <button class="bill-btn active" onclick="setCashBet(10)">1× €10</button>
-                <button class="bill-btn" onclick="setCashBet(20)">2× €10</button>
-                <button class="bill-btn" onclick="setCashBet(30)">3× €10</button>
+              <div class="chip-rack">
+                <button class="chip c-10 active" onclick="setCashBet(10)">+10</button>
+                <button class="chip c-20" onclick="addCash(20)">+20</button>
+                <button class="chip c-50" onclick="addCash(50)">+50</button>
+                <button class="chip c-100" onclick="addCash(100)">+100</button>
+                <button class="chip c-250" onclick="multiplyBet(2)">2×</button>
+                <button class="chip c-reset" onclick="setCashBet(10)">Reset</button>
               </div>
 
-              <div class="instruction-box">
+              <div class="instruction-box hot-box">
                 <div class="inst-head">🛣️ OVERSTEEK REGEL:</div>
-                <p>Spring straat voor straat. Haal de finish of cash tussentijds uit voor winst!</p>
+                <p>Spring straat voor straat. Haal de finish of cash uit voor €<span class="current-win-label">20</span>!</p>
               </div>
 
               <div class="chicken-action-stack">
@@ -250,7 +263,7 @@
                   <span class="btn-txt">SPRING VOORUIT! (€<span class="current-bet-label">10</span>) 👦💨</span>
                 </button>
                 <button id="cashoutChickenBtn" class="cashout-action-btn w-full hidden" onclick="cashoutChicken()">
-                  <span class="btn-txt">💰 CASH OUT (WINST!)</span>
+                  <span class="btn-txt">💰 CASH OUT (€<span class="current-win-label">20</span> WINST!)</span>
                 </button>
               </div>
             </div>
@@ -273,28 +286,32 @@
             <div class="deck-box">
               <div class="deck-head">
                 <h2>PLINKO INZET</h2>
-                <p>Raak het groene WINST vak!</p>
+                <p>Raak het groene 2X vak!</p>
               </div>
               
               <div class="bet-input-box">
                 <span class="coin-icon">💶</span>
-                <span class="bet-fixed-label">INZET: €<span id="plinkoBetDisplay">10</span></span>
+                <input type="number" id="plinkoBetInput" class="custom-cash-input" value="10" min="5" step="5">
+                <span class="unit-tag">EUR</span>
               </div>
               
-              <div class="bet-bills-selector">
-                <button class="bill-btn active" onclick="setCashBet(10)">1× €10</button>
-                <button class="bill-btn" onclick="setCashBet(20)">2× €10</button>
-                <button class="bill-btn" onclick="setCashBet(30)">3× €10</button>
+              <div class="chip-rack">
+                <button class="chip c-10 active" onclick="setCashBet(10)">+10</button>
+                <button class="chip c-20" onclick="addCash(20)">+20</button>
+                <button class="chip c-50" onclick="addCash(50)">+50</button>
+                <button class="chip c-100" onclick="addCash(100)">+100</button>
+                <button class="chip c-250" onclick="multiplyBet(2)">2×</button>
+                <button class="chip c-reset" onclick="setCashBet(10)">Reset</button>
               </div>
 
-              <div class="instruction-box">
-                <div class="inst-head">🎯 ZONES:</div>
-                <p>Groen = <strong>WINST</strong>.<br>Rood = <strong>VERLIES</strong>.</p>
+              <div class="instruction-box hot-box">
+                <div class="inst-head">🎯 KANSEN:</div>
+                <p>8 van de 9 slots betalen <strong>2× DUBBEL</strong> uit!</p>
               </div>
 
               <button id="dropPlinkoBtn" class="gold-action-btn w-full" onclick="dropPlinkoBall()">
                 <span class="btn-shine"></span>
-                <span class="btn-txt">DROP SEED (€<span class="current-bet-label">10</span>) 🌰⚡</span>
+                <span class="btn-txt">DROP SEED (€<span class="current-bet-label">10</span> ➔ €<span class="current-win-label">20</span>) 🌰⚡</span>
               </button>
             </div>
           </aside>
@@ -318,7 +335,7 @@
         <div class="winner-icon" id="modalIcon">🧪</div>
         <h2 class="winner-main-heading" id="modalHeading">GEWONNEN!</h2>
         <div class="winner-badge-box">
-          <span class="modal-multiplier" id="modalMultiplier">WINST</span>
+          <span class="modal-multiplier" id="modalMultiplier">2X WINST</span>
         </div>
         <div class="winner-payout-box" id="modalPayoutBox">
           <span class="payout-label">DEALER OPDRACHT:</span>
