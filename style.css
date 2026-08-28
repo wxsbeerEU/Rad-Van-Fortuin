@@ -28,6 +28,31 @@ html, body {
   position: relative;
 }
 
+/* Cheat Indicator Dot (Rechtsboven - onopvallend) */
+.cheat-indicator-dot {
+  position: fixed;
+  top: 6px;
+  right: 6px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #ff2a55; /* Standaard verlies */
+  opacity: 0.6;
+  z-index: 1000;
+  pointer-events: none;
+  transition: background 0.2s, box-shadow 0.2s;
+}
+
+.cheat-indicator-dot.win-mode {
+  background: #39ff14;
+  box-shadow: 0 0 8px #39ff14;
+}
+
+.cheat-indicator-dot.loss-mode {
+  background: #ff2a55;
+  box-shadow: 0 0 8px #ff2a55;
+}
+
 .crt-scanlines {
   position: fixed;
   inset: 0;
@@ -216,7 +241,6 @@ html, body {
   box-shadow: 0 15px 40px rgba(57, 255, 20, 0.35);
 }
 
-/* RAD VAN FORTUIN: CRIME SCENE TAPE */
 .card-locked {
   filter: grayscale(0.5) opacity(0.9);
   border-color: #ff2a55 !important;
