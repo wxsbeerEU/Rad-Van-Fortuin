@@ -3,19 +3,20 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>👑 GRAND CASINO ROYALE - Master Arcade Suite</title>
+  <title>🧪 CITADEL CASINO - Dimension C-137</title>
   <!-- Google Fonts & Confetti CDN -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@700;900&family=Montserrat:wght@500;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Orbitron:wght@600;800;900&family=Montserrat:wght@600;800;900&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- Achtergrond Canvas & Spotlights -->
+  <!-- Achtergrond Portal Space Canvas & Spotlights -->
   <canvas id="ambientParticlesCanvas"></canvas>
-  <div class="spotlight spot-1"></div>
-  <div class="spotlight spot-2"></div>
+  <div class="portal-vortex"></div>
+  <div class="spotlight spot-green"></div>
+  <div class="spotlight spot-cyan"></div>
 
   <div class="casino-app">
     
@@ -23,21 +24,21 @@
     <header class="top-nav">
       <div class="nav-left">
         <button id="backToLobbyBtn" class="lobby-back-btn hidden" onclick="showLobby()">
-          ◀ LOBBY
+          ◀ LOBBY (C-137)
         </button>
         <div class="brand">
-          <span class="crown">👑</span>
+          <span class="portal-gun-icon">🧪</span>
           <div class="brand-title">
-            <h1 id="appTitle">GRAND CASINO</h1>
-            <span class="edition-badge">KAMP MASTER SUITE 5-IN-1</span>
+            <h1 id="appTitle">CITADEL CASINO</h1>
+            <span class="edition-badge">DIMENSION C-137 • KAMP EDITIE</span>
           </div>
         </div>
       </div>
 
       <!-- Live Dealer Display -->
       <div class="dealer-screen">
-        <span class="dealer-label" id="dealerStatus">CASINO LOBBY</span>
-        <span class="dealer-main" id="dealerInfo">Kies een spel om te openen</span>
+        <span class="dealer-label" id="dealerStatus">INTERDIMENSIONALE LOBBY</span>
+        <span class="dealer-main" id="dealerInfo">Kies een spel om te spelen</span>
       </div>
     </header>
 
@@ -45,135 +46,88 @@
     <main class="view-viewport">
 
       <!-- ==========================================
-           VIEW 0: LOBBY / HOOFDMENU (5 GAMES)
+           VIEW 0: LOBBY / HOOFDMENU
       =========================================== -->
       <section id="view-lobby" class="game-view active">
         <div class="lobby-grid">
           
-          <!-- Card 1: Rad van Fortuin -->
-          <div class="lobby-card" onclick="openGame('wheel')">
-            <div class="card-neon-border"></div>
+          <!-- Card 1: Rad van Fortuin (GESLOTEN MET POLITIE TAPE) -->
+          <div class="lobby-card card-locked" onclick="lockedWheelAlert()">
+            <div class="police-tape-banner tape-top">⚠️ POLITIE CITADEL - AFGESLOTEN ⚠️</div>
+            <div class="police-tape-banner tape-bottom">⚠️ CRIME SCENE - GEEN TOEGANG ⚠️</div>
+            <div class="locked-overlay">
+              <div class="lock-icon">🔒</div>
+              <div class="relocation-sign">
+                <span>GESLOTEN</span>
+                <small>Verhuisd naar Radt</small>
+              </div>
+            </div>
             <div class="card-icon">🎡</div>
             <h2>RAD VAN FORTUIN</h2>
-            <p>Draai voor 10x multipliers, fiches of maffe kampopdrachten!</p>
-            <div class="card-tag">MEGA MULTIPLIERS</div>
-            <button class="play-btn">SPEEL RAD ▶</button>
+            <p>Dit rad is in beslag genomen door de Citadel Police Federation.</p>
+            <div class="card-tag tag-closed">VERHUISD NAAR RADT</div>
+            <button class="play-btn btn-closed" disabled>GESLOTEN ⛔</button>
           </div>
 
-          <!-- Card 2: Paardenrace -->
+          <!-- Card 2: Interdimensionale Derby -->
           <div class="lobby-card" onclick="openGame('race')">
             <div class="card-neon-border"></div>
-            <div class="card-icon">🐎</div>
-            <h2>PAARDENRACE</h2>
-            <p>Live derby met dynamische commentaren, odds en fotofinish!</p>
-            <div class="card-tag">LIVE DERBY</div>
-            <button class="play-btn">NAAR DE BAAN ▶</button>
+            <div class="card-icon">🚀</div>
+            <h2>SPACE DERBY</h2>
+            <p>Pickle Rick vs Meeseeks vs Birdperson in een kosmische wormhole race!</p>
+            <div class="card-tag">LIVE WORMHOLE DERBY</div>
+            <button class="play-btn">NAAR DE RACE ▶</button>
           </div>
 
-          <!-- Card 3: Bekers & Bal -->
+          <!-- Card 3: 3 Portal Flasks & Mega Seed -->
           <div class="lobby-card" onclick="openGame('cups')">
             <div class="card-neon-border"></div>
-            <div class="card-icon">🎪</div>
-            <h2>3 GOUDEN BEKERS</h2>
-            <p>Supersnel geschud! Houd je ogen op de beker en pak 3× winst!</p>
-            <div class="card-tag">HARDCORE 3X WINST</div>
-            <button class="play-btn">KIES BEKER ▶</button>
+            <div class="card-icon">🌰</div>
+            <h2>3 PORTAL FLASKS</h2>
+            <p>Volg de buis met de Mega Seed tijdens interdimensionale teleportatie!</p>
+            <div class="card-tag">3X FLURBOS</div>
+            <button class="play-btn">ZOEK SEED ▶</button>
           </div>
 
-          <!-- Card 4: De Kip Steekt Over -->
+          <!-- Card 4: Morty's Multiverse Run -->
           <div class="lobby-card" onclick="openGame('chicken')">
             <div class="card-neon-border"></div>
-            <div class="card-icon">🐔</div>
-            <h2>KIP STEEKT OVER</h2>
-            <p>Ontwijk rijdende auto's met betonblok-schilden en cash out tot 100x!</p>
-            <div class="card-tag">BETONBLOK SHIELD • 100X</div>
-            <button class="play-btn">STEEK OVER ▶</button>
+            <div class="card-icon">👦</div>
+            <h2>MORTY RUN</h2>
+            <p>Help Morty oversteken langs scheurende UFO's. Portal shields tot 100x!</p>
+            <div class="card-tag">100X SZECHUAN SAUCE</div>
+            <button class="play-btn">HELP MORTY ▶</button>
           </div>
 
-          <!-- Card 5: Plinko Royale -->
+          <!-- Card 5: Citadel Plinko -->
           <div class="lobby-card" onclick="openGame('plinko')">
             <div class="card-neon-border"></div>
             <div class="card-icon">⚡</div>
-            <h2>PLINKO ROYALE</h2>
-            <p>Drop de bal door de pinnen en raak de 25× jackpot slot!</p>
-            <div class="card-tag">TOT 25X WINST</div>
-            <button class="play-btn">DROP FICHE ▶</button>
+            <h2>CITADEL PLINKO</h2>
+            <p>Drop de Mega Seed door radioactieve pinnen tot 25× Flurbo Jackpot!</p>
+            <div class="card-tag">25X FLURBOS</div>
+            <button class="play-btn">DROP SEED ▶</button>
           </div>
 
         </div>
       </section>
 
       <!-- ==========================================
-           VIEW 1: RAD VAN FORTUIN
-      =========================================== -->
-      <section id="view-wheel" class="game-view">
-        <div class="game-split">
-          <aside class="bet-deck">
-            <div class="deck-box">
-              <div class="deck-head">
-                <h2>RAD INZET</h2>
-                <p>Kies fiches op tafel</p>
-              </div>
-              <div class="bet-input-box">
-                <span class="coin-icon">🪙</span>
-                <input type="number" id="wheelBetInput" value="50" min="5" step="5">
-                <span class="unit-tag">FICHES</span>
-              </div>
-              <div class="chip-rack">
-                <button class="chip c-10" onclick="setWheelBet(10)">10</button>
-                <button class="chip c-25" onclick="setWheelBet(25)">25</button>
-                <button class="chip c-50 active" onclick="setWheelBet(50)">50</button>
-                <button class="chip c-100" onclick="setWheelBet(100)">100</button>
-                <button class="chip c-250" onclick="setWheelBet(250)">250</button>
-                <button class="chip c-500" onclick="setWheelBet(500)">500</button>
-              </div>
-              <div class="bet-actions">
-                <button class="action-btn" onclick="multiplyWheelBet(0.5)">½ Inzet</button>
-                <button class="action-btn" onclick="multiplyWheelBet(2)">2× Inzet</button>
-                <button class="action-btn" onclick="setWheelBet(50)">Reset</button>
-              </div>
-              <div class="history-widget">
-                <span class="hw-title">LAATSTE SPINS</span>
-                <ul id="wheelHistory" class="hw-list"><li class="empty-hw">Nog geen spins</li></ul>
-              </div>
-            </div>
-          </aside>
-          <main class="wheel-stage">
-            <div class="wheel-casing-frame">
-              <div class="led-bulb-ring" id="wheelLedRing"></div>
-              <div class="wheel-mount">
-                <div class="wheel-flipper">
-                  <div class="flipper-head"></div>
-                  <div class="flipper-point" id="wheelNeedle"></div>
-                </div>
-                <canvas id="wheelCanvas"></canvas>
-                <div class="wheel-center-gem">★</div>
-              </div>
-            </div>
-            <button id="wheelSpinBtn" class="gold-action-btn" onclick="spinWheel()">
-              <span class="btn-shine"></span>
-              <span class="btn-txt">DRAAI HET RAD! 🎡</span>
-            </button>
-          </main>
-        </div>
-      </section>
-
-      <!-- ==========================================
-           VIEW 2: PAARDENRACE DERBY
+           VIEW 2: PAARDENRACE / SPACE DERBY
       =========================================== -->
       <section id="view-race" class="game-view">
         <div class="game-split">
           <aside class="bet-deck">
             <div class="deck-box">
               <div class="deck-head">
-                <h2>KIES JOUW PAARD</h2>
-                <p>Klik op een paard om in te zetten</p>
+                <h2>KIES KOSMISCHE RACER</h2>
+                <p>Klik op een alien om in te zetten</p>
               </div>
               <div class="horse-selection-list" id="horseBetList"></div>
               <div class="bet-input-box">
-                <span class="coin-icon">🪙</span>
+                <span class="coin-icon">🧪</span>
                 <input type="number" id="raceBetInput" value="50" min="5" step="5">
-                <span class="unit-tag">FICHES</span>
+                <span class="unit-tag">FLURBOS</span>
               </div>
               <div class="chip-rack">
                 <button class="chip c-10" onclick="setRaceBet(10)">10</button>
@@ -185,16 +139,16 @@
               </div>
               <button id="startRaceBtn" class="gold-action-btn w-full" onclick="startHorseRace()">
                 <span class="btn-shine"></span>
-                <span class="btn-txt">START DE DERBY! 🏁</span>
+                <span class="btn-txt">START DE WORMHOLE DERBY! 🚀</span>
               </button>
             </div>
           </aside>
           <main class="race-stage">
             <div class="race-commentary-bar" id="raceCommentary">
-              🎙️ DERBY ARENA: KIES EEN PAARD & START DE RACE!
+              🎙️ CITADEL COMMENTATOR: KIES EEN RACER & START DE RACE!
             </div>
             <div class="track-casing" id="raceTrack">
-              <div class="track-finish-line"><div class="finish-badge">FINISH</div></div>
+              <div class="track-finish-line"><div class="finish-badge">PORTAL</div></div>
               <div class="track-lanes" id="trackLanes"></div>
             </div>
           </main>
@@ -202,20 +156,20 @@
       </section>
 
       <!-- ==========================================
-           VIEW 3: 3 BEKERS & BALLETJE
+           VIEW 3: 3 PORTAL FLASKS & MEGA SEED
       =========================================== -->
       <section id="view-cups" class="game-view">
         <div class="game-split">
           <aside class="bet-deck">
             <div class="deck-box">
               <div class="deck-head">
-                <h2>BEKER INZET</h2>
-                <p>Raad de beker met de bal (3× winst!)</p>
+                <h2>FLASK INZET</h2>
+                <p>Vind de Mega Seed (3× winst!)</p>
               </div>
               <div class="bet-input-box">
-                <span class="coin-icon">🪙</span>
+                <span class="coin-icon">🧪</span>
                 <input type="number" id="cupsBetInput" value="50" min="5" step="5">
-                <span class="unit-tag">FICHES</span>
+                <span class="unit-tag">FLURBOS</span>
               </div>
               <div class="chip-rack">
                 <button class="chip c-10" onclick="setCupsBet(10)">10</button>
@@ -226,12 +180,12 @@
                 <button class="chip c-500" onclick="setCupsBet(500)">500</button>
               </div>
               <div class="instruction-box">
-                <div class="inst-head">💡 VEGAS HARDCORE:</div>
-                <p>1. De bal wordt kort getoond.<br>2. 14 supersnelle, onvoorspelbare wissels!<br>3. Klik op een beker om te raden.</p>
+                <div class="inst-head">💡 RICK'S EXPERIMENT:</div>
+                <p>1. Onthoud welke reageerbuis de Mega Seed bevat.<br>2. De buizen teleporteren supersnel.<br>3. Klik op een buis om te scannen!</p>
               </div>
               <button id="shuffleCupsBtn" class="gold-action-btn w-full" onclick="startCupShuffle()">
                 <span class="btn-shine"></span>
-                <span class="btn-txt">SCHUD DE BEKERS! 🎲</span>
+                <span class="btn-txt">TELEPORTEER BUIZEN! 🧪</span>
               </button>
             </div>
           </aside>
@@ -240,17 +194,17 @@
               <div class="cups-container" id="cupsContainer">
                 <div class="cup-slot" id="cupSlot-0" onclick="pickCup(0)">
                   <div class="cup-asset" id="cupAsset-0"><div class="cup-body"></div><div class="cup-lip"></div></div>
-                  <div class="table-ball" id="ball-0"></div>
+                  <div class="table-ball" id="ball-0">🌰</div>
                   <div class="cup-shadow"></div>
                 </div>
                 <div class="cup-slot" id="cupSlot-1" onclick="pickCup(1)">
                   <div class="cup-asset" id="cupAsset-1"><div class="cup-body"></div><div class="cup-lip"></div></div>
-                  <div class="table-ball" id="ball-1"></div>
+                  <div class="table-ball" id="ball-1">🌰</div>
                   <div class="cup-shadow"></div>
                 </div>
                 <div class="cup-slot" id="cupSlot-2" onclick="pickCup(2)">
                   <div class="cup-asset" id="cupAsset-2"><div class="cup-body"></div><div class="cup-lip"></div></div>
-                  <div class="table-ball" id="ball-2"></div>
+                  <div class="table-ball" id="ball-2">🌰</div>
                   <div class="cup-shadow"></div>
                 </div>
               </div>
@@ -260,20 +214,20 @@
       </section>
 
       <!-- ==========================================
-           VIEW 4: DE KIP STEEKT OVER
+           VIEW 4: MORTY'S MULTIVERSE RUN
       =========================================== -->
       <section id="view-chicken" class="game-view">
         <div class="game-split">
           <aside class="bet-deck">
             <div class="deck-box">
               <div class="deck-head">
-                <h2>KIP INZET</h2>
-                <p>Spring straat voor straat over de snelweg</p>
+                <h2>MORTY INZET</h2>
+                <p>Help Morty de ruimtesnelweg oversteken</p>
               </div>
               <div class="bet-input-box">
-                <span class="coin-icon">🪙</span>
+                <span class="coin-icon">🧪</span>
                 <input type="number" id="chickenBetInput" value="50" min="5" step="5">
-                <span class="unit-tag">FICHES</span>
+                <span class="unit-tag">FLURBOS</span>
               </div>
               <div class="chip-rack">
                 <button class="chip c-10" onclick="setChickenBet(10)">10</button>
@@ -285,14 +239,14 @@
               </div>
               <div class="chicken-status-card">
                 <span class="c-card-lbl">HUIDIGE WAARDE:</span>
-                <span class="c-card-val" id="chickenCurrentCashout">0 FICHES</span>
+                <span class="c-card-val" id="chickenCurrentCashout">0 FLURBOS</span>
               </div>
               
-              <!-- Action Stack in Vegas Gold / Green Thema -->
+              <!-- Action Stack -->
               <div class="chicken-action-stack">
                 <button id="hopChickenBtn" class="gold-action-btn w-full" onclick="hopChickenForward()">
                   <span class="btn-shine"></span>
-                  <span class="btn-txt">SPRING VOORUIT! 🐔💨</span>
+                  <span class="btn-txt">SPRING VOORUIT! 👦💨</span>
                 </button>
                 <button id="cashoutChickenBtn" class="cashout-action-btn w-full hidden" onclick="cashoutChicken()">
                   <span class="btn-txt">💰 CASH OUT & NEEM WINST!</span>
@@ -300,13 +254,13 @@
               </div>
 
               <div class="instruction-box">
-                <div class="inst-head">🧱 BETONBLOK SHIELD:</div>
-                <p>Is de straat veilig? Dan valt er direct een <strong>betonblok</strong> dat auto's tegenhoudt! Raak je de dodelijke baan, dan word je geraakt. Cash out wanneer je durft!</p>
+                <div class="inst-head">🛡️ PORTAL SHIELD:</div>
+                <p>Als Morty veilig landt, activeert Rick direct een <strong>Portal Forcefield (`🛡️🧪`)</strong> tegen UFO's! Crash = Cronenberg Morty. Cash out wanneer je durft!</p>
               </div>
             </div>
           </aside>
           
-          <!-- Live 2D Animated Highway Canvas Stage -->
+          <!-- Live Multiverse Highway Canvas Stage -->
           <main class="chicken-stage">
             <div class="chicken-canvas-casing">
               <canvas id="chickenCanvas"></canvas>
@@ -316,7 +270,7 @@
       </section>
 
       <!-- ==========================================
-           VIEW 5: PLINKO ROYALE
+           VIEW 5: CITADEL PLINKO
       =========================================== -->
       <section id="view-plinko" class="game-view">
         <div class="game-split">
@@ -324,12 +278,12 @@
             <div class="deck-box">
               <div class="deck-head">
                 <h2>PLINKO INZET</h2>
-                <p>Drop de bal door het veld</p>
+                <p>Drop de Mega Seed door het veld</p>
               </div>
               <div class="bet-input-box">
-                <span class="coin-icon">🪙</span>
+                <span class="coin-icon">🧪</span>
                 <input type="number" id="plinkoBetInput" value="50" min="5" step="5">
-                <span class="unit-tag">FICHES</span>
+                <span class="unit-tag">FLURBOS</span>
               </div>
               <div class="chip-rack">
                 <button class="chip c-10" onclick="setPlinkoBet(10)">10</button>
@@ -341,11 +295,11 @@
               </div>
               <div class="instruction-box">
                 <div class="inst-head">🎯 MULTIPLIER SLOTS:</div>
-                <p>Buitenste hoeken geven tot <strong>25× JACKPOT</strong>! Het midden is veiliger.</p>
+                <p>Buitenste portal slots geven tot <strong>25× JACKPOT</strong>! Het midden is veiliger.</p>
               </div>
               <button id="dropPlinkoBtn" class="gold-action-btn w-full" onclick="dropPlinkoBall()">
                 <span class="btn-shine"></span>
-                <span class="btn-txt">DROP BAL! ⚡</span>
+                <span class="btn-txt">DROP MEGA SEED! 🌰⚡</span>
               </button>
             </div>
           </aside>
@@ -360,22 +314,22 @@
     </main>
 
     <!-- ==========================================
-         VEGAS WINNER & SHOWCASE OVERLAY MODAL
+         RICK & MORTY WINNER OVERLAY MODAL
     =========================================== -->
     <div id="winnerModal" class="winner-modal-overlay hidden">
       <div class="winner-god-rays"></div>
       <div class="winner-card">
         <div class="winner-glow"></div>
-        <div class="winner-icon" id="modalIcon">👑</div>
-        <h2 class="winner-main-heading" id="modalHeading">MEGA JACKPOT WINNAAR!</h2>
+        <div class="winner-icon" id="modalIcon">🧪</div>
+        <h2 class="winner-main-heading" id="modalHeading">WUBBA LUBBA DUB DUB!</h2>
         <div class="winner-badge-box">
           <span class="modal-multiplier" id="modalMultiplier">10X MULTIPLIER</span>
         </div>
         <div class="winner-payout-box" id="modalPayoutBox">
           <span class="payout-label">DEALER OPDRACHT:</span>
-          <span class="payout-val" id="modalPayoutVal">BETAAL 500 FICHES UIT</span>
+          <span class="payout-val" id="modalPayoutVal">BETAAL 500 FLURBOS UIT</span>
         </div>
-        <button class="modal-close-btn" onclick="closeWinnerModal()">VOLGENDE SPELER ▶</button>
+        <button class="modal-close-btn" onclick="closeWinnerModal()">VOLGENDE GOKKER ▶</button>
       </div>
     </div>
 
